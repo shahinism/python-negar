@@ -12,7 +12,7 @@ class PersianEditor():
         """
         """
         self.text = text
-        self.fix_dashes = True
+        self.fix_dashes = False
         self.fix_three_dots = True
         self.fix_english_quotes = True
         self.fix_hamzeh = True
@@ -21,8 +21,8 @@ class PersianEditor():
         self.fix_arabic_numbers = False
         self.fix_english_numbers = False
         self.fix_misc_non_persian_chars = False
-        self.fix_perfix_spacing = False
-        self.fix_suffix_spacing = False
+        self.fix_perfix_spacing = True
+        self.fix_suffix_spacing = True
         self.aggresive = False
         self.cleanup_kashidas = False
         self.cleanup_extra_marks = False
@@ -50,10 +50,12 @@ class PersianEditor():
             text = re.sub("([\"'`]+)(.+?)(\1)", '«\2»', text)
 
         # should convert ه ی to ه
+        # The original regex to find was: (\S)(ه[\s]+[ی])(\s)
+        # and in python it removes one more letter at first.
+        # I mean = 'همه ی' after this function changed to 'ههٔ'
         if self.fix_hamzeh:
-            find = re.compile(r'\Sه[\s]+[ی]\s')
-            print find.search(text)
-            text = find.sub('\13هٔ', text)
+            #find = re.compile(ur'(ه[\s]+[ی])(\s)', flags = re.U)
+            text = re.sub(ur'(ه[\s]+[ی])(\s)',ur'هٔ ', text)
 
         # remove unnecessary zwnj char that are succeeded/preceded by a space
         if self.cleanup_zwnj:
@@ -61,11 +63,11 @@ class PersianEditor():
 
         # character replacement
         # Resource: http://langref.org/ruby+python/search?q=tr&s=go
-        persian_numbers = "۱۲۳۴۵۶۷۸۹۰"
+        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         bad_chars = ",;كي%"
         good_chars = "،؛کی٪"
-        arabic_numbers = string.maketrans("١٢٣٤٥٦٧٨٩٠", persian_numbers)
-        #english_numbers = string.maketrans("1234567890", persian_numbers)
+        #arabic_numbers = string.maketrans(u"١٢٣٤٥٦٧٨٩٠", persian_numbers)
+        #english_numbers = string.maketrans(u"1234567890", persian_numbers)
         #fix_chars = string.maketrans(bad_chars, good_chars)
         
         if self.fix_english_numbers:
@@ -82,12 +84,13 @@ class PersianEditor():
         # put zwnj between word and prefix (mi* nemi*)
         # there's a possible bug here: می and نمی could separate nouns and not prefix
         if self.fix_perfix_spacing:
-            text = re.sub(r'\s+(ن?می)\s+', ' \1', text)
+            #find = re.compile(ur"\s+(ن?می)\s+", flags = re.U)
+            text = re.sub(ur"\s+(ن?می)\s+",ur' \1‌', text)
 
         # put zwnj between word and suffix (*tar *tarin *ha *haye)
         # there's a possible bug here: های and تر could be separate nouns and not suffix
-        if self.fix_suffix_spacing:
-            text.sub(r'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', '\1 ') # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
+        #if self.fix_suffix_spacing:
+        #    text.sub(r'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', '\1 ') # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
 
         # -- Aggressive Editing -------------------------------------------------
         if self.aggresive:
@@ -132,10 +135,10 @@ class PersianEditor():
         if self.cleanup_begin_and_end:
             text.strip()
 
-        print text
+        print text.encode('utf-8')
 
 if __name__ == "__main__":
-    sstring = 'سلام همه ی این یک -- متن---"سلام" تست است.'
+    sstring = unicode( 'همه ی شما ها می توانید باشید ها عمه ات', encoding='utf-8')
     run = PersianEditor(sstring)
     print run 
     
