@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import sys
 import string
 
 class PersianEditor():
@@ -138,8 +139,33 @@ class PersianEditor():
 
         print text.encode('utf-8')
 
+def helpMessage():
+    print """Hi, I'm negars virastar!
+    you can use me with a command like this:
+    ./Virastar.py [FILE-NAME]/[Argumant]
+    My Argumants are:
+    \t\t--help : show this message
+    \n\n\n
+    you can use me more effectively with a command like this:
+    \t\t$./Virastar.py FILE-NAME > OutPut\n"""
+        
 if __name__ == "__main__":
-    sstring = unicode( 'همه ی شما ها می توانـــــید باشید ها عمه ات!!!؟؟؟ (این هم برای تست پرانتز)', encoding='utf-8')
-    run = PersianEditor(sstring)
-    print run 
-    
+    if len(sys.argv) < 2:
+        helpMessage()
+        sys.exit()
+    if sys.argv[1].startswith('--'):
+        option = sys.argv[1][2:]
+        if option == 'help':
+            helpMessage()
+    else:
+        try:
+            fileName = sys.argv[1]
+            file     = open(fileName)
+            while True:
+                line = unicode( file.readline(), encoding='utf-8')
+                if len(line) == 0:
+                    break
+                    #print line
+                run2 = PersianEditor(line)
+        finally:
+            file.close()
