@@ -25,7 +25,7 @@ class PersianEditor():
         self.fix_suffix_spacing = True
         self.aggresive = True
         self.cleanup_kashidas = True
-        self.cleanup_extra_marks = False
+        self.cleanup_extra_marks = True
         self.cleanup_spacing = False
         self.cleanup_begin_and_end = False
         self.cleanup()
@@ -98,7 +98,7 @@ class PersianEditor():
             # replace more than one ! or ? mark with just one
             if self.cleanup_extra_marks:
                 text = re.sub(ur'(!){2,}', ur'\1', text)
-                text = re.sub(ur'(؟){2,}', '\1', text)
+                text = re.sub(ur'(؟){2,}', ur'\1', text)
 
             # should remove all kashida
             if self.cleanup_kashidas:
@@ -139,7 +139,7 @@ class PersianEditor():
         print text.encode('utf-8')
 
 if __name__ == "__main__":
-    sstring = unicode( 'همه ی شما ها می توانـــــید باشید ها عمه ات', encoding='utf-8')
+    sstring = unicode( 'همه ی شما ها می توانـــــید باشید ها عمه ات!!!؟؟؟', encoding='utf-8')
     run = PersianEditor(sstring)
     print run 
     
