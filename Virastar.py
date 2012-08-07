@@ -89,8 +89,9 @@ class PersianEditor():
 
         # put zwnj between word and suffix (*tar *tarin *ha *haye)
         # there's a possible bug here: های and تر could be separate nouns and not suffix
-        #if self.fix_suffix_spacing:
-        #    text.sub(r'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', '\1 ') # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
+        if self.fix_suffix_spacing:
+            text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'\1 ', text)
+            # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
 
         # -- Aggressive Editing -------------------------------------------------
         if self.aggresive:
