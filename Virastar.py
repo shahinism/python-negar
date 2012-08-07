@@ -23,8 +23,8 @@ class PersianEditor():
         self.fix_misc_non_persian_chars = False
         self.fix_perfix_spacing = True
         self.fix_suffix_spacing = True
-        self.aggresive = False
-        self.cleanup_kashidas = False
+        self.aggresive = True
+        self.cleanup_kashidas = True
         self.cleanup_extra_marks = False
         self.cleanup_spacing = False
         self.cleanup_begin_and_end = False
@@ -55,7 +55,7 @@ class PersianEditor():
         # I mean = 'همه ی' after this function changed to 'ههٔ'
         if self.fix_hamzeh:
             #find = re.compile(ur'(ه[\s]+[ی])(\s)', flags = re.U)
-            text = re.sub(ur'(ه[\s]+[ی])(\s)',ur'هٔ ', text)
+            text = re.sub(ur'(ه[\s]+[یي])(\s)',ur'هٔ ', text)
 
         # remove unnecessary zwnj char that are succeeded/preceded by a space
         if self.cleanup_zwnj:
@@ -97,12 +97,12 @@ class PersianEditor():
         if self.aggresive:
             # replace more than one ! or ? mark with just one
             if self.cleanup_extra_marks:
-                text.sub(r'(!){2,}', '\1')
-                text.sub(r'(؟){2,}', '\1')
+                text = re.sub(ur'(!){2,}', ur'\1', text)
+                text = re.sub(ur'(؟){2,}', '\1', text)
 
             # should remove all kashida
             if self.cleanup_kashidas:
-                text.sub(r'_+', "")
+                text = re.sub(ur'ـ+', "", text)
             
         # -----------------------------------------------------------------------
         # should fix outside and inside spacing for () [] {} "" «»
@@ -139,7 +139,7 @@ class PersianEditor():
         print text.encode('utf-8')
 
 if __name__ == "__main__":
-    sstring = unicode( 'همه ی شما ها می توانید باشید ها عمه ات', encoding='utf-8')
+    sstring = unicode( 'همه ی شما ها می توانـــــید باشید ها عمه ات', encoding='utf-8')
     run = PersianEditor(sstring)
     print run 
     
