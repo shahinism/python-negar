@@ -1,7 +1,7 @@
 Negar
 =====
 
-Negar trying to be a spell currector for persian language.I'm working on new ٰalgorithm that I found from here:
+Negar trying to be a spell corrector for persian language.I'm working on new ٰalgorithm that I found from here:
 
 https://github.com/aziz/virastar/blob/master/lib/virastar.rb
 
