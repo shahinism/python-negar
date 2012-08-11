@@ -19,8 +19,8 @@ class PersianEditor():
         self.fix_hamzeh = True
         self.cleanup_zwnj = False
         self.fix_spacing_for_braces_and_quotes = True
-        self.fix_arabic_numbers = False
-        self.fix_english_numbers = False
+        self.fix_arabic_numbers = True
+        self.fix_english_numbers = True
         self.fix_misc_non_persian_chars = False
         self.fix_perfix_spacing = True
         self.fix_suffix_spacing = True
@@ -60,21 +60,33 @@ class PersianEditor():
 
         # remove unnecessary zwnj char that are succeeded/preceded by a space
         if self.cleanup_zwnj:
-            text = re.sub(r'\s+|\s+', ' ', text)
+            text = re.sub(ur'\s+|\s+', ur' ', text)
 
         # character replacement
         # Resource: http://langref.org/ruby+python/search?q=tr&s=go
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
-        bad_chars = ",;كي%"
-        good_chars = "،؛کی٪"
-        #arabic_numbers = string.maketrans(u"١٢٣٤٥٦٧٨٩٠", persian_numbers)
-        #english_numbers = string.maketrans(u"1234567890", persian_numbers)
+        english_numbers = u"1234567890"
+        arabic_numbers  = u"١٢٣٤٥٦٧٨٩٠"
+        bad_chars  = u",;كي%"
+        good_chars = u"،؛کی٪"
         #fix_chars = string.maketrans(bad_chars, good_chars)
-        
+
+        persian_regexp  = u"(%s)" % u"|".join(persian_numbers)
+        arabic_regexp   = u"(%s)" % u"|".join(arabic_numbers)
+        english_regexp  = u"(%s)" % u"|".join(english_numbers)
+        def _sub(match_object, digits):
+            return persian_numbers[digits.find(match_object.group(0))]
+        def _sub_arabic(match_object):
+            return _sub(match_object, arabic_numbers)
+
+        def _sub_english(match_object):
+            return _sub(match_object, english_numbers)
+
+
         if self.fix_english_numbers:
-            text.translate(english_numbers)
+            text = re.sub(english_regexp, _sub_english, text)
         if self.fix_arabic_numbers:
-            text.translate(arabic_numbers)
+            text = re.sub(arabic_regexp, _sub_arabic, text)
         if self.fix_misc_non_persian_chars:
             text.translate(fix_chars)
 
@@ -82,6 +94,7 @@ class PersianEditor():
         #
         # I have to look here later
 
+            
         # put zwnj between word and prefix (mi* nemi*)
         # there's a possible bug here: می and نمی could separate nouns and not prefix
         if self.fix_perfix_spacing:
