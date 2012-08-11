@@ -69,26 +69,26 @@ class PersianEditor():
         arabic_numbers  = u"١٢٣٤٥٦٧٨٩٠"
         bad_chars  = u",;كي%"
         good_chars = u"،؛کی٪"
-        #fix_chars = string.maketrans(bad_chars, good_chars)
 
-        persian_regexp  = u"(%s)" % u"|".join(persian_numbers)
-        arabic_regexp   = u"(%s)" % u"|".join(arabic_numbers)
-        english_regexp  = u"(%s)" % u"|".join(english_numbers)
+
+        persian_regexp   = u"(%s)" % u"|".join(persian_numbers)
+        arabic_regexp    = u"(%s)" % u"|".join(arabic_numbers)
+        english_regexp   = u"(%s)" % u"|".join(english_numbers)
+
         def _sub(match_object, digits):
             return persian_numbers[digits.find(match_object.group(0))]
         def _sub_arabic(match_object):
             return _sub(match_object, arabic_numbers)
-
         def _sub_english(match_object):
             return _sub(match_object, english_numbers)
-
 
         if self.fix_english_numbers:
             text = re.sub(english_regexp, _sub_english, text)
         if self.fix_arabic_numbers:
             text = re.sub(arabic_regexp, _sub_arabic, text)
         if self.fix_misc_non_persian_chars:
-            text.translate(fix_chars)
+            for i in range(len(bad_chars)):
+                text = re.sub(bad_chars[i], good_chars[i], text)
 
         # should not replace english chars in english phrases
         #
@@ -104,7 +104,7 @@ class PersianEditor():
         # put zwnj between word and suffix (*tar *tarin *ha *haye)
         # there's a possible bug here: های and تر could be separate nouns and not suffix
         if self.fix_suffix_spacing:
-            text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'\1 ', text)
+            text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'‌\1 ', text)
             # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
 
         # -- Aggressive Editing -------------------------------------------------
@@ -150,7 +150,7 @@ class PersianEditor():
         if self.cleanup_begin_and_end:
             text.strip()
 
-        print text.encode('utf-8')
+        print text.encode('utf-8'),
 
 def helpMessage():
     print """Hi, I'm negars virastar!
