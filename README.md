@@ -22,3 +22,4 @@ My arguments are:
 
 you can use me more effectively with a command like this:
 
+    ./Virastar.py [FILE-NAME] > output
