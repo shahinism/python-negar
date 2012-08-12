@@ -21,7 +21,7 @@ class PersianEditor():
         self.fix_spacing_for_braces_and_quotes = True
         self.fix_arabic_numbers = True
         self.fix_english_numbers = True
-        self.fix_misc_non_persian_chars = True
+        self.fix_misc_non_persian_chars = False
         self.fix_perfix_spacing = True
         self.fix_suffix_spacing = True
         self.aggresive = True
@@ -53,10 +53,11 @@ class PersianEditor():
         # should convert ه ی to ه
         # The original regex to find was: (\S)(ه[\s]+[ی])(\s)
         # and in python it removes one more letter at first.
-        # I mean = 'همهٔ' after this function changed to 'همه‌ی'
+        # I mean = 'همه ی' after this function changed to 'ههٔ'
         if self.fix_hamzeh:
             #find = re.compile(ur'(ه[\s]+[ی])(\s)', flags = re.U)
-            text = re.sub(ur'هٔ',ur'ه‌ی ', text)
+            text = re.sub(ur'(ه[\s]+[یي])(\s)',ur'هٔ ', text)
+
         # remove unnecessary zwnj char that are succeeded/preceded by a space
         if self.cleanup_zwnj:
             text = re.sub(ur'\s+|\s+', ur' ', text)
@@ -66,8 +67,8 @@ class PersianEditor():
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         english_numbers = u"1234567890"
         arabic_numbers  = u"١٢٣٤٥٦٧٨٩٠"
-        bad_chars  = u",;%يك"
-        good_chars = u"،؛٪یک"
+        bad_chars  = u",;كي%"
+        good_chars = u"،؛کی٪"
 
 
         persian_regexp   = u"(%s)" % u"|".join(persian_numbers)
@@ -86,8 +87,8 @@ class PersianEditor():
         if self.fix_arabic_numbers:
             text = re.sub(arabic_regexp, _sub_arabic, text)
         if self.fix_misc_non_persian_chars:
-            for i in bad_chars:
-                text = re.sub(i, good_chars[bad_chars.index(i)], text)
+            for i in range(len(bad_chars)):
+                text = re.sub(bad_chars[i], good_chars[i], text)
 
         # should not replace english chars in english phrases
         #

@@ -23,3 +23,20 @@ My arguments are:
 you can use me more effectively with a command like this:
 
     ./Virastar.py [FILE-NAME] > output
+
+BUGS
+=====
+
+*Line 89-90:
+            for i in range(len(bad_chars)):
+                text = re.sub(bad_chars[i], good_chars[i], text)
+
+Changed to:
+            for i in bad_chars:
+                text = re.sub(i, good_chars[bad_chars.index(i)], text)
+
+then "self.fix_misc_non_persian_chars = True" now WORKS :D*
+
+*Line 59:
+	Changed! Convert هٔ To ه‌ی
+23-09-1391  04:13  Ramin Najjarbashi*
