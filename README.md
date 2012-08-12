@@ -14,11 +14,11 @@ How to use
 
 you can use me with a command like this:
 
-   ./Virastar.py [FILE-NAME]/[Argumant]
+    ./Virastar.py [FILE-NAME]/[Argumant]
 
 My arguments are:
 
-   --help : show this message
+    --help : show this message
 
 you can use me more effectively with a command like this:
 
