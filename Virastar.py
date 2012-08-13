@@ -66,8 +66,8 @@ class PersianEditor():
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         english_numbers = u"1234567890"
         arabic_numbers  = u"١٢٣٤٥٦٧٨٩٠"
-        bad_chars  = u",;%يك"
-        good_chars = u"،؛٪یک"
+        bad_chars  = u",;%يةك"
+        good_chars = u"،؛٪یهک"
 
 
         persian_regexp   = u"(%s)" % u"|".join(persian_numbers)
@@ -129,7 +129,7 @@ class PersianEditor():
 
         # : ; , ! ? and their persian equivalents should have one space after and no space before
         if self.fix_spacing_for_braces_and_quotes:
-            text = re.sub(ur'[ ‌  ]*([:;,؛،.؟!]{1})[ ‌  ]*',ur'\1', text)
+            text = re.sub(ur'[ ]+([:;,؛،.؟!]{1} )[   ]*',ur'\1', text)
             text = re.sub(ur'([۰-۹]+):\s+([۰-۹]+)', ur'\1:\2', text)
 
         # should fix inside spacing for () [] {} "" «»
