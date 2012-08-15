@@ -3,164 +3,209 @@
 
 import re
 import sys
-import string
 
 class PersianEditor():
     """
+    This class includes some functions to standard edit a Persian text
     """
     
     def __init__(self, text):
         """
+        This is the base part of the class
         """
         self.text = text
         self.fix_dashes = True
         self.fix_three_dots = True
         self.fix_english_quotes = True
         self.fix_hamzeh = True
+        self.hamzeh_with_yeh = True
         self.cleanup_zwnj = False
         self.fix_spacing_for_braces_and_quotes = True
         self.fix_arabic_numbers = True
         self.fix_english_numbers = True
-        self.fix_misc_non_persian_chars = False
+        self.fix_misc_non_persian_chars = True
         self.fix_perfix_spacing = True
         self.fix_suffix_spacing = True
         self.aggresive = True
         self.cleanup_kashidas = True
         self.cleanup_extra_marks = True
         self.cleanup_spacing = True
-        self.cleanup_begin_and_end = True
         self.cleanup()
+
     def cleanup(self):
         """
-        
-        Arguments:
-        - `self`:
+        This is the main function who call other functions if need!
         """
-        text = self.text
-
-        # replace double dash to ndash and triple dash to mdash
         if self.fix_dashes:
-            text = re.sub(ur'-{3}', ur'—', text)
-            text = re.sub(ur'-{2}', ur'–', text)
-        # replace three dots with ellipsis
+            self.fix_dashes_func()
+
         if self.fix_three_dots:
-            text = re.sub(ur'\s*\.{3,}', ur'…', text)
+            self.fix_three_dots_func()
 
-        # replace English quotes with their Persian equivalent
         if self.fix_english_quotes:
-            text = re.sub(ur"([\"'`]+)(.+?)(\1)", ur'«\2»', text)
+            self.fix_english_quotes_func()
 
-        # should convert ه ی to ه
-        # The original regex to find was: (\S)(ه[\s]+[ی])(\s)
-        # and in python it removes one more letter at first.
-        # I mean = 'همه ی' after this function changed to 'ههٔ'
         if self.fix_hamzeh:
-            #find = re.compile(ur'(ه[\s]+[ی])(\s)', flags = re.U)
-            text = re.sub(ur'(ه[\s]+[یي])(\s)',ur'هٔ ', text)
+            self.fix_hamzeh_func()
 
-        # remove unnecessary zwnj char that are succeeded/preceded by a space
         if self.cleanup_zwnj:
-            text = re.sub(ur'\s+|\s+', ur' ', text)
+            self.cleanup_zwnj_func()
 
-        # character replacement
-        # Resource: http://langref.org/ruby+python/search?q=tr&s=go
-        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
-        english_numbers = u"1234567890"
-        arabic_numbers  = u"١٢٣٤٥٦٧٨٩٠"
-        bad_chars  = u",;كي%"
-        good_chars = u"،؛کی٪"
+        if self.fix_misc_non_persian_chars:
+            self.char_validator()
 
-
-        persian_regexp   = u"(%s)" % u"|".join(persian_numbers)
-        arabic_regexp    = u"(%s)" % u"|".join(arabic_numbers)
-        english_regexp   = u"(%s)" % u"|".join(english_numbers)
-
-        def _sub(match_object, digits):
-            return persian_numbers[digits.find(match_object.group(0))]
-        def _sub_arabic(match_object):
-            return _sub(match_object, arabic_numbers)
-        def _sub_english(match_object):
-            return _sub(match_object, english_numbers)
+        if self.fix_arabic_numbers:
+            self.fix_arabic_numbers_func()
 
         if self.fix_english_numbers:
-            text = re.sub(english_regexp, _sub_english, text)
-        if self.fix_arabic_numbers:
-            text = re.sub(arabic_regexp, _sub_arabic, text)
-        if self.fix_misc_non_persian_chars:
-            for i in range(len(bad_chars)):
-                text = re.sub(bad_chars[i], good_chars[i], text)
+            self.fix_english_numbers_func()
 
-        # should not replace english chars in english phrases
-        #
-        # I have to look here later
-
-            
-        # put zwnj between word and prefix (mi* nemi*)
-        # there's a possible bug here: می and نمی could separate nouns and not prefix
         if self.fix_perfix_spacing:
-            #find = re.compile(ur"\s+(ن?می)\s+", flags = re.U)
-            text = re.sub(ur"\s+(ن?می)\s+",ur' \1‌', text)
-
-        # put zwnj between word and suffix (*tar *tarin *ha *haye)
-        # there's a possible bug here: های and تر could be separate nouns and not suffix
-        if self.fix_suffix_spacing:
-            text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'‌\1 ', text)
-            # in case you can not read it: \s+(tar(i(n)?)?|ha(ye)?)\s+
-
-        # -- Aggressive Editing -------------------------------------------------
-        if self.aggresive:
-            # replace more than one ! or ? mark with just one
-            if self.cleanup_extra_marks:
-                text = re.sub(ur'(!){2,}', ur'\1', text)
-                text = re.sub(ur'(؟){2,}', ur'\1', text)
-
-            # should remove all kashida
-            if self.cleanup_kashidas:
-                text = re.sub(ur'ـ+', "", text)
+            self.fix_perfix_spacing_func()
             
-        # -----------------------------------------------------------------------
-        # should fix outside and inside spacing for () [] {} "" «»
+        if self.fix_suffix_spacing:
+            self.fix_suffix_spacing_func()
+
+        if self.aggresive:
+            self.aggresive_func()
 
         if self.fix_spacing_for_braces_and_quotes:
-            text = re.sub(ur'[   ‌]*(\()\s*([^)]+?)\s*?(\))[   ‌]*', ur' \1\2\3 ', text)
-            text = re.sub(ur'[   ‌]*(\[)\s*([^)]+?)\s*?(\])[   ‌]*', ur' \1\2\3 ', text)
-            text = re.sub(ur'[   ‌]*(\{)\s*([^)]+?)\s*?(\})[   ‌]*', ur' \1\2\3 ', text)
-            text = re.sub(ur'[   ‌]*(“)\s*([^)]+?)\s*?(”)[   ‌]*', ur' \1\2\3 ', text)
-            text = re.sub(ur'[   ‌]*(«)\s*([^)]+?)\s*?(»)[   ‌]*', ur' \1\2\3 ', text)
+            self.fix_spacing_for_braces_and_quotes_func()
 
-        # : ; , ! ? and their persian equivalents should have one space after and no space before
-        if self.fix_spacing_for_braces_and_quotes:
-            text = re.sub(ur'[ ‌  ]*([:;,؛،.؟!]{1})[ ‌  ]*',ur'\1', text)
-            text = re.sub(ur'([۰-۹]+):\s+([۰-۹]+)', ur'\1:\2', text)
-
-        # should fix inside spacing for () [] {} "" «»
-        if self.fix_spacing_for_braces_and_quotes:
-            text = re.sub(ur'(\()\s*([^)]+?)\s*?(\))', ur'\1\2\3', text)
-            text = re.sub(ur'(\[)\s*([^)]+?)\s*?(\])', ur'\1\2\3', text)
-            text = re.sub(ur'(\{)\s*([^)]+?)\s*?(\})', ur'\1\2\3', text)
-            text = re.sub(ur'(“)\s*([^)]+?)\s*?(”)', ur'\1\2\3', text)
-            text = re.sub(ur'(«)\s*([^)]+?)\s*?(»)', ur'\1\2\3', text)
-
-        # should replace more than one space with just a single one
         if self.cleanup_spacing:
-            text = re.sub(ur'[ ]+', ur' ', text)
-            text = re.sub(ur'([\n]+)[   ‌]', ur'\1', text)
+            self.cleanup_spacing_func()
 
-        # remove spaces, tabs, and new lines from the beginning and end of file
-        if self.cleanup_begin_and_end:
-            text.strip()
+        print self.text.encode('utf-8'),
+        
+    def fix_dashes_func(self):
+        """
+        This function will replace double dash to ndash and triple dash to mdash
+        """
+        self.text = re.sub(ur'-{3}', ur'—', self.text)
+        self.text = re.sub(ur'-{2}', ur'–', self.text)
 
-        print text.encode('utf-8'),
+    def fix_three_dots_func(self):
+        """
+        This function will replace three dots with ellipsis
+        """
+        self.text = re.sub(ur'\s*\.{3,}', ur'…', self.text)
 
+    def fix_english_quotes_func(self):
+        """
+        This function will replace English quotes with their persian equivalent
+        """
+        self.text = re.sub(ur"([\"'`]+)(.+?)(\1)", ur'«\2»', self.text)
+
+    def fix_hamzeh_func(self):
+        """
+        This function will replace end of any word which finished with 'ه ی' with
+        'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
+        """
+        if self.hamzeh_with_yeh:
+            self.text = re.sub(ur'(\S)(ه[\s]+[یي])(\s)',ur'\1ه‌ی\3', self.text)
+        else:
+            self.text = re.sub(ur'(\S)(ه[\s]+[یي])(\s)',ur'\1هٔ\3', self.text)
+
+    def cleanup_zwnj_func(self):
+        '''
+        This function will remove unnecessary zwnj that are succeeded/preceded by a space
+        '''
+        self.text = re.sub(ur'\s+|\s+', ur' ', self.text)
+
+    def char_validator(self):
+        """
+        This function will change invalid characters to validate ones.
+
+        it uses char_translator function to do it.
+        """
+        bad_chars  = u",;%يةك"
+        good_chars = u"،؛٪یهک"
+        for i in range(len(bad_chars)):
+            self.char_translator(bad_chars[i], good_chars[i])
+
+    def fix_arabic_numbers_func(self):
+        """
+        This function will translate Arabic numbers to their Persian equivalants.
+
+        it uses char_translator function to do it.
+        """
+        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
+        arabic_numbers = u"١٢٣٤٥٦٧٨٩٠"
+        for i in range(10):
+            self.char_translator(arabic_numbers[i], persian_numbers[i])
+
+    def fix_english_numbers_func(self):
+        """
+        This function will translate English numbers to their Persian equivalants.
+
+        it will avoid to do this translation at a English string!
+        it uses char_translator function to do it.
+        """
+        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
+        english_numbers = u"1234567890"
+        for i in range(10):
+            self.char_translator(english_numbers[i], persian_numbers[i])
+
+    def fix_perfix_spacing_func(self):
+        """
+        Put zwnj between word and prefix (mi* nemi*)
+
+        there's a possible bug here: می and نمی could separate nouns and not prefix
+        """
+        self.text = re.sub(ur"\s+(ن?می)\s+",ur' \1‌', self.text)
+
+    def fix_suffix_spacing_func(self):
+        self.text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'‌\1 ', self.text)
+
+    def aggresive_func(self):
+        """
+        Aggressive Editing
+        """
+        # replace more than one ! or ? mark with just one
+        if self.cleanup_extra_marks:
+            self.text = re.sub(ur'(!){2,}', ur'\1', self.text)
+            self.text = re.sub(ur'(؟){2,}', ur'\1', self.text)
+            
+        # should remove all kashida
+        if self.cleanup_kashidas:
+            self.text = re.sub(ur'ـ+', "", self.text)
+
+    def fix_spacing_for_braces_and_quotes_func(self):
+        """
+        This function will fix the braces and quotes spacing problems.
+        """
+        # ()[]{}""«» should have one space before and one virtual space after (inside)
+        self.text = re.sub(ur'[ ‌]*(\()\s*([^)]+?)\s*?(\))[ ‌]*', ur' \1‌\2‌\3 ', self.text)
+        self.text = re.sub(ur'[ ‌]*(\[)\s*([^)]+?)\s*?(\])[ ‌]*', ur' \1‌\2‌\3 ', self.text)
+        self.text = re.sub(ur'[ ‌]*(\{)\s*([^)]+?)\s*?(\})[ ‌]*', ur' \1‌\2‌\3 ', self.text)
+        self.text = re.sub(ur'[ ‌]*(“)\s*([^)]+?)\s*?(”)[ ‌]*', ur' \1‌\2‌\3 ', self.text)
+        self.text = re.sub(ur'[ ‌]*(«)\s*([^)]+?)\s*?(»)[ ‌]*', ur' \1‌\2‌\3 ', self.text)
+        # : ; , ! ? and their persian equivalents should have one space after and no space before
+        self.text = re.sub(ur'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',ur'‌\1 ', self.text)
+        self.text = re.sub(ur'([۰-۹]+):\s+([۰-۹]+)', ur'\1:\2', self.text)
+        # should fix inside spacing for () [] {} "" «»
+        self.text = re.sub(ur'(\()\s*([^)]+?)\s*?(\))', ur'\1\2\3', self.text)
+        self.text = re.sub(ur'(\[)\s*([^)]+?)\s*?(\])', ur'\1\2\3', self.text)
+        self.text = re.sub(ur'(\{)\s*([^)]+?)\s*?(\})', ur'\1\2\3', self.text)
+        self.text = re.sub(ur'(“)\s*([^)]+?)\s*?(”)', ur'\1\2\3', self.text)
+        self.text = re.sub(ur'(«)\s*([^)]+?)\s*?(»)', ur'\1\2\3', self.text)
+            
+    def cleanup_spacing_func(self):
+        self.text = re.sub(ur'[ ]+', ur' ', self.text)
+        self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
+    def char_translator(self, fromchar, tochar):
+        self.text = re.sub(fromchar, tochar, self.text)
+        
+        
 def helpMessage():
     print """Hi, I'm negars virastar!
-    you can use me with a command like this:
-    ./Virastar.py [FILE-NAME]/[Argumant]
-    My Argumants are:
-    \t\t--help : show this message
-    \n\n\n
-    you can use me more effectively with a command like this:
-    \t\t$./Virastar.py FILE-NAME > OutPut\n"""
+you can use me with a command like this:
+./Virastar.py [FILE-NAME]/[Argumant]
+My Argumants are:
+\t\t--help : show this message
+\n\n\n
+you can use me more effectively with a command like this:
+\t\t$./Virastar.py FILE-NAME > OutPut\n"""
         
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -173,7 +218,7 @@ if __name__ == "__main__":
     else:
         try:
             fileName = sys.argv[1]
-            file     = open(fileName)
+            file = open(fileName)
             while True:
                 line = unicode( file.readline(), encoding='utf-8')
                 if len(line) == 0:
