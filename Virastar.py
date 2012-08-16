@@ -120,8 +120,7 @@ class PersianEditor():
         """
         bad_chars  = u",;%يةك"
         good_chars = u"،؛٪یهک"
-        for i in range(len(bad_chars)):
-            self.char_translator(bad_chars[i], good_chars[i])
+        self.text = self.char_translator(bad_chars, good_chars, self.text)
 
     def fix_arabic_numbers_func(self):
         """
@@ -131,8 +130,7 @@ class PersianEditor():
         """
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         arabic_numbers = u"١٢٣٤٥٦٧٨٩٠"
-        for i in range(10):
-            self.char_translator(arabic_numbers[i], persian_numbers[i])
+        self.text = self.char_translator(arabic_numbers, persian_numbers, self.text)
 
     def fix_english_numbers_func(self):
         """
@@ -143,9 +141,14 @@ class PersianEditor():
         """
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         english_numbers = u"1234567890"
-        for i in range(10):
-            self.char_translator(english_numbers[i], persian_numbers[i])
+        self.text = self.char_translator(english_numbers, persian_numbers, self.text)
 
+#        self.text = re.sub(ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
+#                           lambda m:
+#                           self.char_translator(persian_numbers, english_numbers,  m.group()),
+#                           self.text)
+            
+            
     def fix_perfix_spacing_func(self):
         """
         Put zwnj between word and prefix (mi* nemi*)
@@ -169,7 +172,7 @@ class PersianEditor():
         # should remove all kashida
         if self.cleanup_kashidas:
             self.text = re.sub(ur'ـ+', "", self.text)
-
+        
     def fix_spacing_for_braces_and_quotes_func(self):
         """
         This function will fix the braces and quotes spacing problems.
@@ -193,8 +196,26 @@ class PersianEditor():
     def cleanup_spacing_func(self):
         self.text = re.sub(ur'[ ]+', ur' ', self.text)
         self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
-    def char_translator(self, fromchar, tochar):
-        self.text = re.sub(fromchar, tochar, self.text)
+
+
+    def char_translator(self, fromchar, tochar, whichstring):
+        """
+        This function will translate the 'whichstring' character by character from
+
+        'fromchar' to 'tochar'. My old function is writed after this. in this new
+        function I can return the newstring, but I can't check the length of fromchar
+        and tochar! Why? I don't know!
+        """
+        newstring = self.text
+        for i in range(len(fromchar)):
+            newstring = re.sub(fromchar[i], tochar[i], newstring)
+        return newstring
+#    def char_translator(self, fromchar, tochar):
+#        if len(fromchar) == len(tochar):
+#            for i in range(len(fromchar)):
+#                self.text = re.sub(fromchar[i], tochar[i], self.text)
+#        else:
+#            raise "in function char_translator fromchar and to char doesn't have same length'"
         
         
 def helpMessage():
