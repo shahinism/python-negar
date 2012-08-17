@@ -21,6 +21,7 @@ class PersianEditor():
         self.hamzeh_with_yeh = True
         self.cleanup_zwnj = False
         self.fix_spacing_for_braces_and_quotes = True
+        self.fix_LTRM_RTLM = True
         self.fix_arabic_numbers = True
         self.fix_english_numbers = True
         self.fix_misc_non_persian_chars = True
@@ -72,10 +73,13 @@ class PersianEditor():
         if self.fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes_func()
 
+        if self.fix_LTRM_RTLM:
+            self.fix_LTRM_RTLM_func()
+            
         if self.cleanup_spacing:
             self.cleanup_spacing_func()
 
-        print self.text.encode('utf-8'),
+        return self.text
         
     def fix_dashes_func(self):
         """
@@ -143,6 +147,8 @@ class PersianEditor():
         english_numbers = u"1234567890"
         self.text = self.char_translator(english_numbers, persian_numbers, self.text)
 
+        #Followilng commands will help Negar to avoid chang english numbers in strings
+        #like 'Text12', 'Text_12' & other string like this
         self.text = re.sub(ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
                            lambda m:
                            self.char_translator(persian_numbers, english_numbers,  m.group()),
@@ -192,7 +198,16 @@ class PersianEditor():
         self.text = re.sub(ur'(\{)\s*([^)]+?)\s*?(\})', ur'\1\2\3', self.text)
         self.text = re.sub(ur'(“)\s*([^)]+?)\s*?(”)', ur'\1\2\3', self.text)
         self.text = re.sub(ur'(«)\s*([^)]+?)\s*?(»)', ur'\1\2\3', self.text)
-            
+
+    def fix_LTRM_RTLM_func(self):
+        """
+        This function will fix 'ltr mark/rtl mark' problem in the text
+        """
+        test = re.search(ur'([\(\)\)\(])[a-z]', self.text)
+        if test:
+            print 'yes'
+        self.text = re.sub(ur'(\()([a-z])(\))', ur'\1‎\2\3‎', self.text)
+        
     def cleanup_spacing_func(self):
         self.text = re.sub(ur'[ ]+', ur' ', self.text)
         self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
@@ -246,5 +261,6 @@ if __name__ == "__main__":
                     break
                     #print line
                 run2 = PersianEditor(line)
+                print run2.cleanup().encode('utf-8'),
         finally:
             file.close()
