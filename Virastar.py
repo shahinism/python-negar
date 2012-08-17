@@ -143,10 +143,10 @@ class PersianEditor():
         english_numbers = u"1234567890"
         self.text = self.char_translator(english_numbers, persian_numbers, self.text)
 
-#        self.text = re.sub(ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
-#                           lambda m:
-#                           self.char_translator(persian_numbers, english_numbers,  m.group()),
-#                           self.text)
+        self.text = re.sub(ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
+                           lambda m:
+                           self.char_translator(persian_numbers, english_numbers,  m.group()),
+                           self.text)
             
             
     def fix_perfix_spacing_func(self):
@@ -206,7 +206,7 @@ class PersianEditor():
         function I can return the newstring, but I can't check the length of fromchar
         and tochar! Why? I don't know!
         """
-        newstring = self.text
+        newstring = whichstring
         for i in range(len(fromchar)):
             newstring = re.sub(fromchar[i], tochar[i], newstring)
         return newstring
