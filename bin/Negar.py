@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 import getopt
-from   Virastar import PersianEditor
+from   lib.Virastar import PersianEditor
 
 # app data
 __author__ 	= "Shahin Azad 'Shahinism' (http://Shahinism.com)"
