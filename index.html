@@ -39,14 +39,27 @@
 
 <p><img src="https://raw.github.com/shahinism/Negar/master/Negar-State.png" alt="NegarsScreenshot"></p>
 
-<h3>how to use it:</h3>
+<h3>How to install:</h3>
 
 <pre><code>$ git clone https://github.com/shahinism/Negar.git
-$ cp Negar/Virastar.py /usr/bin
-$ Virastar.py FILENAME &gt; output
+$ cd Negar
+$ sudo python setup.py install
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>how to use it:</h3>
+
+<pre><code>$ Negar.py [ARGUMENTS] -f [INPUT_FILENAME] -o [OUTPUT_FILENAME]
+</code></pre>
+
+<p>Arguments are:</p>
+
+<pre><code>-h, --help                       Display this help and exit
+-V, --Version                    Print version number and exit
+-f, --file[=INPUT_FILE_NAME]     Specify [INPUT_FILE]. The file who you want to edit
+-o, --output[=OUTPUT_FILE_NAME]  Specify [OUT_PUT_FILE]. The file who you want the programs
+                                 output writes into it. If you don't specify this option
+                                 Negar will generate an auto file to save the result.
+</code></pre>
 
 <h3>Programmers</h3>
 
