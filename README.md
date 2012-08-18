@@ -13,6 +13,7 @@ How to install
 =====
 
 Execute commands:
+
     $ git clone https://github.com/shahinism/Negar.git
     $ cd Negar
     $ sudo python setup.py install
@@ -28,7 +29,6 @@ you can use me with a command like this:
 
 My arguments are:
 
-Options:
     -h, --help                       Display this help and exit
     -V, --Version                    Print version number and exit
     -f, --file[=INPUT_FILE_NAME]     Specify [INPUT_FILE]. The file who you want to edit
