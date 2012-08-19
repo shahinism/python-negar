@@ -220,17 +220,19 @@ class PersianEditor():
         'fromchar' to 'tochar'. My old function is writed after this. in this new
         function I can return the newstring, but I can't check the length of fromchar
         and tochar! Why? I don't know!
+	It's Work Now! :D
         """
         newstring = whichstring
-        for i in range(len(fromchar)):
-            newstring = re.sub(fromchar[i], tochar[i], newstring)
-        return newstring
 #    def char_translator(self, fromchar, tochar):
-#        if len(fromchar) == len(tochar):
+        if len(fromchar) == len(tochar):
+	        for i in range(len(fromchar)):
+	            newstring = re.sub(fromchar[i], tochar[i], newstring)
+	        return newstring
 #            for i in range(len(fromchar)):
 #                self.text = re.sub(fromchar[i], tochar[i], self.text)
-#        else:
-#            raise "in function char_translator fromchar and to char doesn't have same length'"
+        else:
+            	print >>sys.stderr, "in function char_translator fromchar and to char doesn't have same length"
+		sys.exit(2)
         
         
 def helpMessage():

@@ -18,5 +18,5 @@ setup(
     url = "http://shahinism.github.com/Negar",
     #packages = find_packages('', 'lib'),
     long_description=read
-    ('README.txt'),    
+    ('README.md'),    
 )
