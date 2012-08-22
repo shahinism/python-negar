@@ -5,5 +5,5 @@ python:
 # command to install dependencies
 install: "python setup.py install"
 # # command to run tests
-script: negar -f some_persian_text_file -o output_file
+script: negar -f tests/input_file -o tests/output_file
 

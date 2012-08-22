@@ -170,12 +170,12 @@ class PersianEditor():
         # If you cant read it: '\s+ha(ye)?|(tar(ye)?(noon)?)\s+'
         self.text = re.sub(ur'\s+(تر(ی(ن)?)?|ها(ی)?)\s+', ur'‌\1 ', self.text) 
 
-        list = [ur'بهتر',ur'اشتها']
-        regex = re.compile(ur'(\S)+(ها)', re.U)
-        find_regex = regex.search(self.text)
-        if find_regex:
-            if not find_regex.group() in list: # if word is not in list :D
-                self.text = regex.sub(ur'\1‌\2 ', self.text)
+#        list = [ur'بهتر',ur'اشتها']
+#        regex = re.compile(ur'(\S)+(ها)', re.U)
+#        find_regex = regex.search(self.text)
+#        if find_regex:
+#            if not find_regex.group() in list: # if word is not in list :D
+#                self.text = regex.sub(ur'\1‌\2 ', self.text)
         
     def aggresive_func(self):
         """
