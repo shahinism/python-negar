@@ -12,7 +12,10 @@ It doesn't work completely now.
 How to install
 =====
 
-Execute commands:
+First of all depend on you Distribution/Operation System install Pythons ‘setuptools’. 
+In some Linux distribution its name is something like ‘pysetuptools’. 
+
+After that execute commands:
 
     $ git clone https://github.com/shahinism/Negar.git
     $ cd Negar
