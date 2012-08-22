@@ -1,5 +1,9 @@
 import os
-from setuptools import setup, find_packages
+
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from distutils.core import setup
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
