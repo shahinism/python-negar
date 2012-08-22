@@ -28,7 +28,7 @@ How to use
 
 you can use me with a command like this:
 
-    $ Negar.py [ARGUMENTS] -f [INPUT_FILENAME] -o [OUTPUT_FILENAME]
+    $ negar [ARGUMENTS] -f [INPUT_FILENAME] -o [OUTPUT_FILENAME]
 
 My arguments are:
 

@@ -27,10 +27,10 @@ Exit status:
 To get more information visit the website: http://shahinism.github.com/Negar
 """
 
-def main(argv):
+def main():
     output_file = "Negar_Output"
     try:
-        opts, args = getopt.getopt(argv, "hVf:o:", ["help", "file", "output", "Version"])
+        opts, args = getopt.getopt(sys.argv[1:], "hVf:o:", ["help", "file", "output", "Version"])
     except getopt.GetoptError:
         helpMessage()
         sys.exit(1)
@@ -60,4 +60,4 @@ def main(argv):
         input_file.close()
     
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
