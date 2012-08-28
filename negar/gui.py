@@ -15,22 +15,48 @@ class NegarGui(QtGui.QMainWindow):
 
     def initUi(self):
         self.setLocale(QtCore.QLocale(QtCore.QLocale.Persian, QtCore.QLocale.Iran))
-        self.setLayoutDirection(QtCore.Qt.RightToLeft)
-        open_action = QtGui.QAction('Open File', self)
-        open_action.setShortcut('Ctrl+O')
-        open_action.setStatusTip('Open a file and edit it')
-        open_action.triggered.connect(self.file_dialog)
+        lang = 'English' # This will be user interfaces language. User have to be capable
+                         # to choose it.
 
+        # Change GUIs text direction if user interfaces language is persian
+        if lang == 'Persian': 
+            self.setLayoutDirection(QtCore.Qt.RightToLeft)
+
+
+        
+        # File menu actions:
+        # This is open action wich help user to open a file
+        open_action = QtGui.QAction(self)
+        open_action.setText(open_action.tr('&Open'))
+        open_action.setShortcut('Ctrl+O')
+        open_action.setStatusTip(open_action.tr('Open a file and edit it'))
+        open_action.triggered.connect(self.file_dialog)
+        exit_action = QtGui.QAction(self)
+        exit_action.setText(open_action.tr('&Close'))
+        exit_action.setStatusTip(open_action.tr('Close the program'))
+        exit_action.triggered.connect(QtGui.qApp.quit)
+        
+        # Turn main windows status bar on
         self.statusBar()
-        
+
+
+        # Make a menubar and adding objects to it
         menubar   = self.menuBar()
-        file_menu = menubar.addMenu('&File')
+        # adding file menu actions
+        file_menu = menubar.addMenu(menubar.tr('&File'))
         file_menu.addAction(open_action)
+        file_menu.addAction(exit_action)
         
+        # Make a widget with QtGui.QWidget and giving it a grid layout
+        # it will capable me to add a grid layout in main windows central
+        # widge.
         main_widget  = QtGui.QWidget(self)
-        input_label  = QtGui.QLabel(u'متن‌تان را این‌جا وارد کنید:')
-        output_label = QtGui.QLabel('Output Box:')
-        close_button = QtGui.QPushButton(self.tr('Close'))
+        input_label  = QtGui.QLabel()
+        input_label.setText(input_label.tr('Input Box'))
+        output_label = QtGui.QLabel()
+        output_label.setText(output_label.tr('Output Box'))
+        close_button = QtGui.QPushButton()
+        close_button.setText(close_button.tr('Close'))
         self.input_box  = QtGui.QTextEdit()
         self.Output_box = QtGui.QTextEdit()
         self.input_box.zoomIn(2)
@@ -53,10 +79,9 @@ class NegarGui(QtGui.QMainWindow):
         main_widget.setLayout(grid)
 
         self.setCentralWidget(main_widget)
-
         
         self.resize(600, 500)
-        self.setWindowTitle('Negar')
+        self.setWindowTitle(self.tr('Negar'))
         self.show()
 
     def file_dialog(self):
@@ -76,11 +101,7 @@ class NegarGui(QtGui.QMainWindow):
 
         
 def main():
-    translator = QtCore.QTranslator()
-    translator.load('fa_ir','i18n/fa_ir')
     app = QtGui.QApplication(sys.argv)
-    app.installTranslator(translator)
-    
     run = NegarGui()
     sys.exit(app.exec_())
 
