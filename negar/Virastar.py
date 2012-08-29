@@ -27,6 +27,7 @@ class PersianEditor():
         self.fix_misc_non_persian_chars = True
         self.fix_perfix_spacing = True
         self.fix_suffix_spacing = True
+        self.fix_suffix_separate = True
         self.aggresive = True
         self.cleanup_kashidas = True
         self.cleanup_extra_marks = True
@@ -67,6 +68,9 @@ class PersianEditor():
         if self.fix_suffix_spacing:
             self.fix_suffix_spacing_func()
 
+        if self.fix_suffix_separate:
+            self.fix_suffix_separate_func()
+            
         if self.aggresive:
             self.aggresive_func()
 
@@ -161,7 +165,20 @@ class PersianEditor():
 
         there's a possible bug here: می and نمی could separate nouns and not prefix
         """
-        self.text = re.sub(ur"\s+(ن?می)\s+",ur' \1‌', self.text)
+        # I added some persian punctioation characters to prevent a bug: «می شود» 
+        self.text = re.sub(ur"([\s«\(\{])(ن?می)\s+",ur'\1\2‌', self.text)
+
+        # I removed punctioations here but I dont know why its work :D
+        regex = re.compile(ur"(ن?می)(\S+)")
+        
+        # This is a little parser that split whole string from spaces and put it to list
+        # all lists words will be test one by one and space if need
+        list = self.text.split(" ")
+        for word in list:
+            p = regex.search(word)
+            if p:
+                if not p.group() in [ur'تنها ', ur'کاراکتر ']:
+                    self.text = re.sub(p.group(), p.group(1) + ur"‌" + p.group(2) , self.text)
 
     def fix_suffix_spacing_func(self):
         """
@@ -169,24 +186,36 @@ class PersianEditor():
         """
         regex = re.compile(ur"""
                            \s+(تر(ی(ن)?)?       # To find matches with 'Tar', 'Tari', 'Tarin'
-                           |ها(ی(ی)?)?
-                           |(تان)
-                       )\s+      # To find matches with 'Ha', 'Haye', 'Hayie'
+                           |ها(ی(ی)?)?          # To find matches with 'Ha', 'Haye', 'Hayie'
+                           |[تمش]ان             # To find matches with 'man', 'shan', 'tan'
+                       )\s+    
                            """, re.VERBOSE)
         
         self.text = re.sub(regex, ur'‌\1 ', self.text)
         
-        regex2 = re.compile(ur"""
+    def fix_suffix_separate_func(self):
+        """
+        to add virtual space in words with suffix (haye, ...)
+
+        that are not spaced correctly ;-)
+        """
+        regex = re.compile(ur"""
                            (\S+)
-                           (تر(ی(ن)?)?       # To find matches with 'Tar', 'Tari', 'Tarin'
-                           |ها(ی(ی)?)?
-                           |(تان)
-                        )\s+    # To find matches with 'Ha', 'Haye', 'Hayie'
+                           (تر(ی(ن)?)?       # *To find matches with 'Tar', 'Tari', 'Tarin'
+                           |ها(ی(ی)?)?       # *To find matches with 'Ha', 'Haye', 'Hayie'
+                           |[تمش]ان          # *To find matches with 'man', 'shan', 'tan'
+                        )                    # *I remove \s+ here because I will split the string
+                                             # from spaces
                            """, re.VERBOSE)
-        p = regex2.search(self.text)
-        if p:
-            if not p.group() in [ur'تنها ', ur'کاراکتر ']:
-                self.text = re.sub(p.group(), p.group(1) + ur"‌" + p.group(2) + ur" ", self.text)
+
+        # This is a little parser that split whole string from spaces and put it to list
+        # all lists words will be test one by one and space if need
+        list = self.text.split(" ")
+        for word in list:
+            p = regex.search(word)
+            if p:
+                if not p.group() in [ur'تنها ', ur'کاراکتر ']:
+                    self.text = re.sub(p.group(), p.group(1) + ur"‌" + p.group(2) , self.text)
         
     def aggresive_func(self):
         """
