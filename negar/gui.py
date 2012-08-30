@@ -14,26 +14,17 @@ class NegarGui(QtGui.QMainWindow):
         self.initUi()
 
     def initUi(self):
-        self.setLocale(QtCore.QLocale(QtCore.QLocale.Persian, QtCore.QLocale.Iran))
-        lang = 'English' # This will be user interfaces language. User have to be capable
-                         # to choose it.
-
-        # Change GUIs text direction if user interfaces language is persian
-        if lang == 'Persian': 
-            self.setLayoutDirection(QtCore.Qt.RightToLeft)
-
-
         
         # File menu actions:
         # This is open action wich help user to open a file
         open_action = QtGui.QAction(self)
-        open_action.setText(open_action.tr('&Open'))
+        open_action.setText(self.tr('&Open'))
         open_action.setShortcut('Ctrl+O')
-        open_action.setStatusTip(open_action.tr('Open a file and edit it'))
+        open_action.setStatusTip(self.tr('Open a file and edit it'))
         open_action.triggered.connect(self.file_dialog)
         exit_action = QtGui.QAction(self)
-        exit_action.setText(open_action.tr('&Close'))
-        exit_action.setStatusTip(open_action.tr('Close the program'))
+        exit_action.setText(self.tr('&Close'))
+        exit_action.setStatusTip(self.tr('Close the program'))
         exit_action.triggered.connect(QtGui.qApp.quit)
         
         # Turn main windows status bar on
@@ -43,7 +34,7 @@ class NegarGui(QtGui.QMainWindow):
         # Make a menubar and adding objects to it
         menubar   = self.menuBar()
         # adding file menu actions
-        file_menu = menubar.addMenu(menubar.tr('&File'))
+        file_menu = menubar.addMenu(self.tr('&File'))
         file_menu.addAction(open_action)
         file_menu.addAction(exit_action)
         
@@ -52,11 +43,11 @@ class NegarGui(QtGui.QMainWindow):
         # widge.
         main_widget  = QtGui.QWidget(self)
         input_label  = QtGui.QLabel()
-        input_label.setText(input_label.tr('Input Box'))
+        input_label.setText(self.tr('Input Box'))
         output_label = QtGui.QLabel()
-        output_label.setText(output_label.tr('Output Box'))
+        output_label.setText(self.tr('Output Box'))
         close_button = QtGui.QPushButton()
-        close_button.setText(close_button.tr('Close'))
+        close_button.setText(self.tr('Close'))
         self.input_box  = QtGui.QTextEdit()
         self.Output_box = QtGui.QTextEdit()
         self.input_box.zoomIn(2)
@@ -102,6 +93,11 @@ class NegarGui(QtGui.QMainWindow):
         
 def main():
     app = QtGui.QApplication(sys.argv)
+    local = u"fa_IR"
+    qtTranslator = QtCore.QTranslator()
+    if qtTranslator.load(local, "i18n/"):
+        print 'yes'
+        app.installTranslator(qtTranslator)
     run = NegarGui()
     sys.exit(app.exec_())
 

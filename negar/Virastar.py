@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import re
-import sys
+import codecs
 
 class PersianEditor():
     """
     This class includes some functions to standard edit a Persian text
-    """
-    
+    """    
     def __init__(self, text):
         """
         This is the base part of the class
@@ -21,11 +20,11 @@ class PersianEditor():
         self.hamzeh_with_yeh = True
         self.cleanup_zwnj = False
         self.fix_spacing_for_braces_and_quotes = True
-        self.fix_LTRM_RTLM = True
         self.fix_arabic_numbers = True
         self.fix_english_numbers = True
         self.fix_misc_non_persian_chars = True
         self.fix_perfix_spacing = True
+        self.fix_perfix_separate = True
         self.fix_suffix_spacing = True
         self.fix_suffix_separate = True
         self.aggresive = True
@@ -38,6 +37,7 @@ class PersianEditor():
         """
         This is the main function who call other functions if need!
         """
+        
         if self.fix_dashes:
             self.fix_dashes_func()
 
@@ -64,6 +64,9 @@ class PersianEditor():
 
         if self.fix_perfix_spacing:
             self.fix_perfix_spacing_func()
+
+        if self.fix_perfix_separate:
+            self.fix_perfix_separate_func()
             
         if self.fix_suffix_spacing:
             self.fix_suffix_spacing_func()
@@ -76,9 +79,6 @@ class PersianEditor():
 
         if self.fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes_func()
-
-        if self.fix_LTRM_RTLM:
-            self.fix_LTRM_RTLM_func()
             
         if self.cleanup_spacing:
             self.cleanup_spacing_func()
@@ -151,7 +151,7 @@ class PersianEditor():
         english_numbers = u"1234567890"
         self.text = self.char_translator(english_numbers, persian_numbers, self.text)
 
-        #Followilng commands will help Negar to avoid chang english numbers in strings
+        #Followilng commands will help Negar to avoid change english numbers in strings
         #like 'Text12', 'Text_12' & other string like this
         self.text = re.sub(ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
                            lambda m:
@@ -168,6 +168,7 @@ class PersianEditor():
         # I added some persian punctioation characters to prevent a bug: «می شود» 
         self.text = re.sub(ur"([\s«\(\{])(ن?می)\s+",ur'\1\2‌', self.text)
 
+    def fix_perfix_separate_func(self):
         # I removed punctioations here but I dont know why its work :D
         regex = re.compile(ur"(ن?می)(\S+)")
         
@@ -177,7 +178,9 @@ class PersianEditor():
         for word in list:
             p = regex.search(word)
             if p:
-                if not p.group() in [ur'تنها ', ur'کاراکتر ']:
+                # Here I'll check the word wasn't something like میلاد
+                if not p.group() in self.dont_touch_list_gen():
+                    # This little one was really tricky! regex grouping is really awesome ;-)
                     self.text = re.sub(p.group(), p.group(1) + ur"‌" + p.group(2) , self.text)
 
     def fix_suffix_spacing_func(self):
@@ -214,7 +217,8 @@ class PersianEditor():
         for word in list:
             p = regex.search(word)
             if p:
-                if not p.group() in [ur'تنها ', ur'کاراکتر ']:
+                # Here I'll check the word wasn't something like بهتر
+                if not p.group() in self.dont_touch_list_gen():
                     self.text = re.sub(p.group(), p.group(1) + ur"‌" + p.group(2) , self.text)
         
     def aggresive_func(self):
@@ -250,68 +254,39 @@ class PersianEditor():
         self.text = re.sub(ur'(“)\s*([^)]+?)\s*?(”)', ur'\1\2\3', self.text)
         self.text = re.sub(ur'(«)\s*([^)]+?)\s*?(»)', ur'\1\2\3', self.text)
 
-    def fix_LTRM_RTLM_func(self):
-        """
-        This function will fix 'ltr mark/rtl mark' problem in the text
-        """
-        test = re.search(ur'([\(\)\)\(])[a-z]', self.text)
-        if test:
-            print 'yes'
-        self.text = re.sub(ur'(\()([a-z])(\))', ur'\1‎\2\3‎', self.text)
-        
     def cleanup_spacing_func(self):
         self.text = re.sub(ur'[ ]+', ur' ', self.text)
         self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
 
+    def dont_touch_list_gen(self):
+        """
+        This function will generate a unicode list from 'data/uniq.txt'
+
+        the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
+        dont have to touch theme
+        """
+        f = codecs.open('data/uniq.txt', encoding="utf-8")
+        self.dont_touch = [] # This is that empty list I used to append words :D
+        while True:
+            # I had to strip the f.readline() to prevent white spaces
+            line = f.readline().strip()
+            if len(line) == 0:
+                break
+            self.dont_touch.append(line)
+        return self.dont_touch
 
     def char_translator(self, fromchar, tochar, whichstring):
         """
         This function will translate the 'whichstring' character by character from
 
-        'fromchar' to 'tochar'. My old function is writed after this. in this new
-        function I can return the newstring, but I can't check the length of fromchar
-        and tochar! Why? I don't know!
+        'fromchar' to 'tochar'. in this new function I can return the newstring,
+        but I can't check the length of fromchar and tochar! Why? I don't know!
         """
         newstring = whichstring
         for i in range(len(fromchar)):
             newstring = re.sub(fromchar[i], tochar[i], newstring)
         return newstring
-#    def char_translator(self, fromchar, tochar):
-#        if len(fromchar) == len(tochar):
-#            for i in range(len(fromchar)):
-#                self.text = re.sub(fromchar[i], tochar[i], self.text)
-#        else:
-#            raise "in function char_translator fromchar and to char doesn't have same length'"
         
-        
-def helpMessage():
-    print """Hi, I'm negars virastar!
-you can use me with a command like this:
-./Virastar.py [FILE-NAME]/[Argumant]
-My Argumants are:
-\t\t--help : show this message
-\n\n\n
-you can use me more effectively with a command like this:
-\t\t$./Virastar.py FILE-NAME > OutPut\n"""
         
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        helpMessage()
-        sys.exit()
-    if sys.argv[1].startswith('--'):
-        option = sys.argv[1][2:]
-        if option == 'help':
-            helpMessage()
-    else:
-        try:
-            fileName = sys.argv[1]
-            file = open(fileName)
-            while True:
-                line = unicode( file.readline(), encoding='utf-8')
-                if len(line) == 0:
-                    break
-                    #print line
-                run2 = PersianEditor(line)
-                print run2.cleanup().encode('utf-8'),
-        finally:
-            file.close()
+    print "I'm a module. You can't use me directly!\nfor that you can call negar;-)"

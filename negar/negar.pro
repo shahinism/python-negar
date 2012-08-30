@@ -1,2 +1,2 @@
 SOURCES = gui.py
-TRANSLATIONS = i18n/fa_ir.ts
+TRANSLATIONS = i18n/fa_IR.ts

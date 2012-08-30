@@ -3,10 +3,10 @@ import sys
 import getopt
 from   Virastar import PersianEditor
 
-# app data
 __author__ 	= "Shahin Azad 'Shahinism' (http://Shahinism.com)"
-__version__	= "0.2"
+__version__     = "0.6"
 __date__	= "Fri Aug 17 18:40:48 IRDT 2012"
+
 
 def helpMessage():
     print """
@@ -40,7 +40,7 @@ def main():
             helpMessage()
             sys.exit()
         elif opt in ('-V', '--Version'):
-            print "You are using Negar version:"+__version__
+            print "You are using Negar version: "+__version__
             sys.exit()
         elif opt in ('-f', '--file'):
             fileName = arg
