@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 from   PySide   import QtGui, QtCore
 from   Virastar import PersianEditor
@@ -92,10 +93,12 @@ class NegarGui(QtGui.QMainWindow):
 
         
 def main():
+    this_dir, this_filename = os.path.split(__file__)
+    DATA_PATH = os.path.join(this_dir, "i18n")
     app = QtGui.QApplication(sys.argv)
     local = u"fa_IR"
     qtTranslator = QtCore.QTranslator()
-    if qtTranslator.load(local, "i18n/"):
+    if qtTranslator.load(local, DATA_PATH):
         app.installTranslator(qtTranslator)
     run = NegarGui()
     sys.exit(app.exec_())
