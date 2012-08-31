@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import pkgutil
 import codecs
 
 class PersianEditor():
@@ -265,7 +266,13 @@ class PersianEditor():
         the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
         dont have to touch theme
         """
-        f = codecs.open('data/uniq.txt', encoding="utf-8")
+#        f = pkgutil.get_data('negar', 'data/untochable.dat')
+        import os
+        this_dir, this_filename = os.path.split(__file__)
+        DATA_PATH = os.path.join(this_dir, "data", "untochable.dat")
+#        print open(DATA_PATH).read()
+
+        f = codecs.open(DATA_PATH, encoding="utf-8")
         self.dont_touch = [] # This is that empty list I used to append words :D
         while True:
             # I had to strip the f.readline() to prevent white spaces

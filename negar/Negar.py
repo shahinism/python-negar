@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import getopt
+import gui
 from   Virastar import PersianEditor
 
 __author__ 	= "Shahin Azad 'Shahinism' (http://Shahinism.com)"
@@ -30,21 +31,26 @@ To get more information visit the website: http://shahinism.github.com/Negar
 def main():
     output_file = "Negar_Output"
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hVf:o:", ["help", "file", "output", "Version"])
+        opts, args = getopt.getopt(sys.argv[1:], "hVgf:o:", ["help", "file", "output", "Version", "gui"])
     except getopt.GetoptError:
         helpMessage()
         sys.exit(1)
 
     for opt, arg in opts:
-        if opt in ('-h', '--help'):
-            helpMessage()
-            sys.exit()
-        elif opt in ('-V', '--Version'):
-            print "You are using Negar version: "+__version__
-            sys.exit()
-        elif opt in ('-f', '--file'):
-            fileName = arg
-        elif opt in ('-o', '--output'):
+        if opt in ('-g', '--gui'):
+            print "Gui is running ..."
+            gui.main()
+            exit(0)
+        else:
+            if opt in ('-h', '--help'):
+                helpMessage()
+                sys.exit()
+            elif opt in ('-V', '--Version'):
+                print "You are using Negar version: "+__version__
+                sys.exit()
+            elif opt in ('-f', '--file'):
+                fileName = arg
+            elif opt in ('-o', '--output'):
                 output_file = arg
     
     try:

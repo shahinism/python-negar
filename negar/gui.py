@@ -96,7 +96,6 @@ def main():
     local = u"fa_IR"
     qtTranslator = QtCore.QTranslator()
     if qtTranslator.load(local, "i18n/"):
-        print 'yes'
         app.installTranslator(qtTranslator)
     run = NegarGui()
     sys.exit(app.exec_())
