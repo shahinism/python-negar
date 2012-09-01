@@ -1,2 +1,7 @@
+v0.6, Sat Sep  1 11:15:34 IRDT 2012 -- First official release.
+-- First version of GUI added.
+-- Word separator added.
+-- Some command line improvements.
+
 v0.2, Sat Aug 18 09:17:22 IRDT 2012 -- Initial release.
 

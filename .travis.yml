@@ -3,8 +3,7 @@ python:
   - "2.6"
   - "2.7"
 before_install:
- - deb http://ppa.launchpad.net/pyside/ppa/ubuntu oneiric main 
- - deb-src http://ppa.launchpad.net/pyside/ppa/ubuntu oneiric main 
+ - sudo add-apt-repository ppa:pyside/ppa 
  - sudo apt-get update -qq
  - sudo apt-get install -qq pyside
 # command to install dependencies
