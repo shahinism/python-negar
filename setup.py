@@ -5,8 +5,17 @@ try:
 except ImportError:
     from distutils.core import setup
 
+dependecy = [] # list of dependencies That negar needs to install
+
+# Here we check if PySide is not installed then install it with pypi ;-)
+try:
+    import PySide
+except ImportError:
+    dependecy.append("PySide")
+    
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    
 setup(
     name = "Negar",
     version = "0.2",
@@ -20,7 +29,7 @@ setup(
     license = "GPL",
     keywords = "spellcheck Persian editor",
     url = "http://shahinism.github.com/Negar",
-    #packages = find_packages('', 'lib'),
+    install_requires = dependecy,
     entry_points={
         'console_scripts': [
             'negar = negar.Negar:main',

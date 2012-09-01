@@ -9,7 +9,7 @@ class PersianEditor():
     """
     This class includes some functions to standard edit a Persian text
     """    
-    def __init__(self, text):
+    def __init__(self, text, *args):
         """
         This is the base part of the class
         """
