@@ -11,7 +11,9 @@ dependecy = [] # list of dependencies That negar needs to install
 try:
     import PySide
 except ImportError:
-    dependecy.append("PySide")
+    #dependecy.append("PySide")
+    print "Negar needs PySide to run gui\nplease install it and try again."
+    exit(1)
     
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
