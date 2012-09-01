@@ -5,7 +5,7 @@ python:
 before_install:
  - sudo add-apt-repository ppa:pyside/ppa -y
  - sudo apt-get update -qq
- - sudo apt-get install -qq pyside
+ - sudo apt-get install -qq python-pyside
 # command to install dependencies
 install: "python setup.py install"
 # # command to run tests
