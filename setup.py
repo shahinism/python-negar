@@ -18,7 +18,7 @@ def read(fname):
     
 setup(
     name = "Negar",
-    version = "0.2",
+    version = "0.6",
     author = "Shahin Azad",
     author_email = "ishahinism@gmail.com",
     include_package_data=True,
