@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import pkgutil
 import codecs
 
 class PersianEditor():
@@ -14,31 +13,31 @@ class PersianEditor():
         This is the base part of the class
         """
         self.text = text
-        self.fix_dashes = True
-        self.fix_three_dots = True
-        self.fix_english_quotes = True
-        self.fix_hamzeh = True
-        self.hamzeh_with_yeh = True
+        self.fix_dashes = False if 'fix-dashes' in args else True
+        self.fix_three_dots = False if 'fix-three-dots' in args else True
+        self.fix_english_quotes = False if 'fix-english-quotes' in args else True
+        self.fix_hamzeh = False if 'fix-hamzeh' in args else True
+        self.hamzeh_with_yeh = False if 'hamzeh-with-yeh' in args else True
         self.cleanup_zwnj = False
-        self.fix_spacing_for_braces_and_quotes = True
-        self.fix_arabic_numbers = True
-        self.fix_english_numbers = True
-        self.fix_misc_non_persian_chars = True
-        self.fix_perfix_spacing = True
-        self.fix_perfix_separate = True
-        self.fix_suffix_spacing = True
-        self.fix_suffix_separate = True
-        self.aggresive = True
-        self.cleanup_kashidas = True
-        self.cleanup_extra_marks = True
-        self.cleanup_spacing = True
+        self.fix_spacing_for_braces_and_quotes = False if 'fix-spacing-bq' in args else True
+        self.fix_arabic_numbers = False if 'fix-arabic-num' in args else True
+        self.fix_english_numbers = False if 'fix-english-num' in args else True
+        self.fix_misc_non_persian_chars = False if 'fix-non-persian-chars' in args else True
+        self.fix_perfix_spacing = False if 'fix-p-spacing' in args else True
+        self.fix_perfix_separate = False if 'fix-p-separate' in args else True
+        self.fix_suffix_spacing = False if 'fix-s-spacing' in args else True
+        self.fix_suffix_separate = False if 'fix-s-separate' in args else True
+        self.aggresive = False if 'aggresive' in args else True
+        self.cleanup_kashidas = False if 'cleanup-kashidas' in args else True
+        self.cleanup_extra_marks = False if 'cleanup-ex-marks' in args else True
+        self.cleanup_spacing = False if 'cleanup-spacing' in args else True
         self.cleanup()
-
+        
     def cleanup(self):
         """
         This is the main function who call other functions if need!
         """
-        
+
         if self.fix_dashes:
             self.fix_dashes_func()
 
