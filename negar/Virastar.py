@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import re
 import codecs
 
@@ -265,10 +266,9 @@ class PersianEditor():
         the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
         dont have to touch theme
         """
-#        f = pkgutil.get_data('negar', 'data/untochable.dat')
-        import os
+#        f = pkgutil.get_data('negar', 'data/untouchable.dat')
         this_dir, this_filename = os.path.split(__file__)
-        DATA_PATH = os.path.join(this_dir, "data", "untochable.dat")
+        DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
 #        print open(DATA_PATH).read()
 
         f = codecs.open(DATA_PATH, encoding="utf-8")
@@ -280,7 +280,7 @@ class PersianEditor():
                 break
             self.dont_touch.append(line)
         return self.dont_touch
-
+        
     def char_translator(self, fromchar, tochar, whichstring):
         """
         This function will translate the 'whichstring' character by character from
@@ -293,6 +293,14 @@ class PersianEditor():
             newstring = re.sub(fromchar[i], tochar[i], newstring)
         return newstring
         
-        
+
+def add_to_untouchable(word_list):
+    this_dir, this_file = os.path.split(__file__)
+    DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
+    f = codecs.open(DATA_PATH, "a", encoding="utf-8")
+    for word in word_list:
+        f.write(word+"\n")
+       # self.dont_touch.append(word)
+            
 if __name__ == "__main__":
     print "I'm a module. You can't use me directly!\nfor that you can call negar;-)"
