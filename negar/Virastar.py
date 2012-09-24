@@ -261,10 +261,10 @@ class PersianEditor():
 
     def dont_touch_list_gen(self):
         """
-        This function will generate a unicode list from 'data/uniq.txt'
+        This function will generate a unicode list from 'data/untouchable.dat'
 
         the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
-        dont have to touch theme
+        dont have to touch them
         """
 #        f = pkgutil.get_data('negar', 'data/untouchable.dat')
         this_dir, this_filename = os.path.split(__file__)

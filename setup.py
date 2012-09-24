@@ -9,10 +9,10 @@ dependecy = [] # list of dependencies That negar needs to install
 
 # Here we check if PySide is not installed then install it with pypi ;-)
 try:
-    import PySide
+    import PyQt4
 except ImportError:
-    #dependecy.append("PySide")
-    print "Negar needs PySide to run gui\nplease install it and try again."
+    #dependecy.append("PyQt4")
+    print "Negar needs PyQt4 to run gui\nplease install it and try again."
     exit(1)
     
 def read(fname):
