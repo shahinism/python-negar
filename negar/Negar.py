@@ -54,6 +54,10 @@ To get more information visit the website: http://shahinism.github.com/Negar
 
 def main():
     output_file = "Negar_Output"
+    # Check if user typed command without any argument, show him how to use negar!
+    if len(sys.argv) < 2:
+        helpMessage()
+        exit(0)
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hVgf:o:", ["help", "file=", "output=", "Version", "gui", "fix-dashes",
                                                              "fix-three-dots", "fix-english-quotes", "fix-hamzeh",
@@ -146,3 +150,4 @@ def main():
     
 if __name__ == "__main__":
     main()
+    
