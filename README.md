@@ -1,6 +1,5 @@
 ﻿Negar
 =====
-__status:__ [![Build Status](https://secure.travis-ci.org/shahinism/Negar.png?branch=master)](http://travis-ci.org/shahinism/Negar)
 
 Negar trying to be a spell corrector for Persian language. I'm working on new algorithm that I found from here:
 
