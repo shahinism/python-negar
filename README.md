@@ -9,6 +9,9 @@ Thank you Aziz.
 
 It doesn't work completely now. 
 
+Screenshot && Features
+=====
+![NegarsScreenshot](https://raw.github.com/shahinism/Negar/master/Screenshot/window1.png)
 
 How to install
 =====
