@@ -7,13 +7,13 @@ https://github.com/aziz/virastar/blob/master/lib/virastar.rb
 
 Thank you Aziz.
 
-It doesn't work completely now. 
+It doesn't work completely now.
 
 Screenshot & Features
-=====
+=====================
 You can run gui version like this:
-    
-    negar --gui 
+
+    negar --gui
 
 ![NegarsScreenshot](https://raw.github.com/shahinism/Negar/master/Screenshot/window1.png)
 
@@ -38,7 +38,7 @@ you can use me with a command like this:
 
     $ negar [ARGUMENTS] -f [INPUT_FILENAME] -o [OUTPUT_FILENAME]
 
-My arguments are:
+Arguments are:
 
     -h, --help                       Display this help and exit
     -V, --Version                    Print version number and exit
