@@ -1,3 +1,4 @@
+include README.md
 include *.txt
 include negar/data/*.dat
 include negar/i18n/*.qm

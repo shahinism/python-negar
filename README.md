@@ -1,5 +1,5 @@
 ﻿Negar
-=====
+======
 
 Negar trying to be a spell corrector for Persian language. I'm working on new algorithm that I found from here:
 
@@ -7,18 +7,18 @@ https://github.com/aziz/virastar/blob/master/lib/virastar.rb
 
 Thank you Aziz.
 
-It doesn't work completely now. 
+It doesn't work completely now.
 
-Screenshot && Features
-=====
+Screenshot & Features
+=====================
 You can run gui version like this:
-    
-    negar --gui 
+
+    negar --gui
 
 ![NegarsScreenshot](https://raw.github.com/shahinism/Negar/master/Screenshot/window1.png)
 
 How to install
-=====
+==============
 
 First of all depend on you Distribution/Operation System install Pythons ‘setuptools’. 
 In some Linux distribution its name is something like ‘pysetuptools’. 
@@ -32,13 +32,13 @@ After that execute commands:
 For now there is no requirements except Pythons standard library.
 
 How to use
-=====
+==========
 
 you can use me with a command like this:
 
     $ negar [ARGUMENTS] -f [INPUT_FILENAME] -o [OUTPUT_FILENAME]
 
-My arguments are:
+Arguments are:
 
     -h, --help                       Display this help and exit
     -V, --Version                    Print version number and exit
