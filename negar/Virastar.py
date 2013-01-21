@@ -7,13 +7,26 @@ import codecs
 
 class PersianEditor():
     """
+    =============
+    PersianEditor()
+    ===============
+
     This class includes some functions to standard edit a Persian text
     """
     def __init__(self, text, *args):
         """
         This is the base part of the class
         """
-        # TODO: Cut the lenge of the below lines to maximum 79
+
+        def is_in_args(arg):
+            """
+            is_in_args(arg)
+            ===============
+
+            Check to see if `arg` exist in `args`
+            """
+            return False if arg in args else True
+
         self.text = text
         self.fix_dashes = False if 'fix-dashes' in args else True
         self.fix_three_dots = False if 'fix-three-dots' in args else True
@@ -37,6 +50,8 @@ class PersianEditor():
 
     def cleanup(self):
         """
+        cleanup()
+        ==========
         This is the main function who call other functions if need!
         """
 
@@ -89,6 +104,9 @@ class PersianEditor():
 
     def fix_dashes_func(self):
         """
+        fix_dashes_func()
+        =================
+
         This function will replace double dash to `ndash` and triple dash
         to `mdash`.
         """
@@ -97,12 +115,18 @@ class PersianEditor():
 
     def fix_three_dots_func(self):
         """
+        fix_three_dots_func()
+        =====================
+
         This function will replace three dots with ellipsis
         """
         self.text = re.sub(ur'\s*\.{3,}', ur'…', self.text)
 
     def fix_english_quotes_func(self):
         """
+        fix_english_quotes_func()
+        =========================
+
         This function will replace English quotes with their
         persian equivalent
         """
@@ -110,8 +134,11 @@ class PersianEditor():
 
     def fix_hamzeh_func(self):
         """
-        This function will replace end of any word which finished with 'ه ی' with
-        'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
+        fix_hamzeh_func()
+        =================
+
+        This function will replace end of any word which finished with
+        'ه ی' with 'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
         """
         if self.hamzeh_with_yeh:
             self.text = re.sub(ur'(\S)(ه[\s]+[یي])(\s)',ur'\1ه‌ی\3',self.text)
@@ -120,6 +147,9 @@ class PersianEditor():
 
     def cleanup_zwnj_func(self):
         '''
+        cleanup_zwnj_func()
+        ===================
+
         This function will remove unnecessary zwnj that are
         succeeded/preceded by a space
         '''
@@ -127,6 +157,9 @@ class PersianEditor():
 
     def char_validator(self):
         """
+        char_validator()
+        ================
+
         This function will change invalid characters to validate ones.
 
         it uses char_translator function to do it.
@@ -137,6 +170,8 @@ class PersianEditor():
 
     def fix_arabic_numbers_func(self):
         """
+        fix_arabic_numbers_func()
+        ==========================
         This function will translate Arabic numbers to their
         Persian equivalents.
 
@@ -152,6 +187,9 @@ class PersianEditor():
 
     def fix_english_numbers_func(self):
         """
+        fix_english_numbers_func()
+        ===========================
+
         This function will translate English numbers to their
         Persian equivalents.
 
@@ -178,14 +216,24 @@ class PersianEditor():
 
     def fix_perfix_spacing_func(self):
         """
+        fix_perfix_spacing_func()
+        =========================
+
         Put zwnj between word and prefix (mi* nemi*)
 
-        there's a possible bug here: می and نمی could separate nouns and not prefix
+         there's a possible bug here: می and نمی could separate nouns and
+        not prefix
         """
-        # I added some persian punctioation characters to prevent a bug: «می شود» 
+        # I added some persian punctioation characters
+        # to prevent a bug: «می شود»
         self.text = re.sub(ur"([\s«\(\{])(ن?می)\s+",ur'\1\2‌', self.text)
 
     def fix_perfix_separate_func(self):
+        """
+        fix_perfix_separate_func()
+        ===========================
+
+        """
         # I removed punctioations here but I dont know why its work :D
         regex = re.compile(ur"(ن?می)(\S+)")
 
@@ -208,6 +256,8 @@ class PersianEditor():
 
     def fix_suffix_spacing_func(self):
         """
+        fix_suffix_spacing_func()
+        =========================
         put zwnj between word and suffix (*ha[ye] *tar[in])
         """
         regex = re.compile(ur"""
@@ -221,6 +271,9 @@ class PersianEditor():
 
     def fix_suffix_separate_func(self):
         """
+        fix_suffix_separate_func()
+        ==========================
+
         to add virtual space in words with suffix (haye, ...)
 
         that are not spaced correctly ;-)
@@ -236,6 +289,9 @@ class PersianEditor():
 
         # This is a little parser that split whole string from spaces and put it to list
         # all lists words will be test one by one and space if need
+        # This is a little parser that split whole string from spaces
+        # and put it to list all lists words will be test
+        # one by one and space if need
         list = self.text.split(" ")
         for word in list:
             p = regex.search(word)
@@ -250,6 +306,9 @@ class PersianEditor():
 
     def aggresive_func(self):
         """
+        aggresive_func()
+        ================
+
         Aggressive Editing
         """
         # replace more than one ! or ? mark with just one
@@ -263,6 +322,9 @@ class PersianEditor():
 
     def fix_spacing_for_braces_and_quotes_func(self):
         """
+        fix_spacing_for_braces_and_quotes_func()
+        ========================================
+
         This function will fix the braces and quotes spacing problems.
         """
         # ()[]{}""«» should have one space before and one virtual
@@ -332,15 +394,22 @@ class PersianEditor():
         )
 
     def cleanup_spacing_func(self):
+        """
+        cleanup_spacing_func()
+        ======================
+
+        """
         self.text = re.sub(ur'[ ]+', ur' ', self.text)
         self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
 
     def dont_touch_list_gen(self):
         """
+        dont_touch_list_gen()
+        =====================
         This function will generate a unicode list from 'data/untouchable.dat'
 
         the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
-        dont have to touch them
+        don't have to touch them
         """
         #        f = pkgutil.get_data('negar', 'data/untouchable.dat')
         this_dir, this_filename = os.path.split(__file__)
@@ -359,6 +428,9 @@ class PersianEditor():
 
     def char_translator(self, fromchar, tochar, whichstring):
         """
+        char_translator()
+        =================
+
         This function will translate the 'whichstring' character by character
         from 'fromchar' to 'tochar'. in this new function I can return
         the newstring, but I can't check the length of fromchar and tochar!
