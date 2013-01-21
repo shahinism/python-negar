@@ -1,3 +1,7 @@
+v0.0
+-- Cleanup on README.md
+-- Fixed #2, Indentation and re-styling on virastar.py.
+
 v0.6, Sat Sep  1 11:15:34 IRDT 2012 -- First official release.
 -- First version of GUI added.
 -- Word separator added.
