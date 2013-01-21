@@ -232,13 +232,10 @@ class PersianEditor():
         =========================
         put zwnj between word and suffix (*ha[ye] *tar[in])
         """
-        regex = re.compile(ur"""
-                           \s+(تر(ی(ن)?)?       # To find matches with 'تر', 'تری', 'ترین'
-                           |ها(ی(ی)?)?          # To find matches with 'ها', 'های', 'هایی'
-                           |[تمش]ان             # To find matches with 'man', 'shan', 'tan'
-                       )\s+    
-                           """, re.VERBOSE)
-
+        regex = re.compile(
+            ur"\s+(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)\s+",
+            re.VERBOSE
+        )
         self.text = re.sub(regex, ur'‌\1 ', self.text)
 
     def fix_suffix_separate_func(self):
@@ -250,17 +247,10 @@ class PersianEditor():
 
         that are not spaced correctly ;-)
         """
-        regex = re.compile(ur"""
-                           (\S+)
-                           (تر(ی(ن)?)?       # *To find matches with 'Tar', 'Tari', 'Tarin'
-                           |ها(ی(ی)?)?       # *To find matches with 'Ha', 'Haye', 'Hayie'
-                           |[تمش]ان          # *To find matches with 'man', 'shan', 'tan'
-                        )                    # *I remove \s+ here because I will split the string
-                                             # from spaces
-                           """, re.VERBOSE)
-
-        # This is a little parser that split whole string from spaces and put it to list
-        # all lists words will be test one by one and space if need
+        regex = re.compile(
+            ur"(\S+)(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)",
+            re.VERBOSE
+        )
         # This is a little parser that split whole string from spaces
         # and put it to list all lists words will be test
         # one by one and space if need
