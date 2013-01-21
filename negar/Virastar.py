@@ -182,7 +182,7 @@ class PersianEditor():
         self.text = re.sub(
             ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
             lambda m:
-            self.char_translator(persian_numbers, english_numbers,  m.group()),
+            self.char_translator(persian_numbers, english_numbers, m.group()),
             self.text
         )
 
