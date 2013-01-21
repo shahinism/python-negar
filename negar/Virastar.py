@@ -28,24 +28,25 @@ class PersianEditor():
             return False if arg in args else True
 
         self.text = text
-        self.fix_dashes = False if 'fix-dashes' in args else True
-        self.fix_three_dots = False if 'fix-three-dots' in args else True
-        self.fix_english_quotes = False if 'fix-english-quotes' in args else True
-        self.fix_hamzeh = False if 'fix-hamzeh' in args else True
-        self.hamzeh_with_yeh = False if 'hamzeh-with-yeh' in args else True
         self.cleanup_zwnj = False
-        self.fix_spacing_for_braces_and_quotes = False if 'fix-spacing-bq' in args else True
-        self.fix_arabic_numbers = False if 'fix-arabic-num' in args else True
-        self.fix_english_numbers = False if 'fix-english-num' in args else True
-        self.fix_misc_non_persian_chars = False if 'fix-non-persian-chars' in args else True
-        self.fix_perfix_spacing = False if 'fix-p-spacing' in args else True
-        self.fix_perfix_separate = False if 'fix-p-separate' in args else True
-        self.fix_suffix_spacing = False if 'fix-s-spacing' in args else True
-        self.fix_suffix_separate = False if 'fix-s-separate' in args else True
-        self.aggresive = False if 'aggresive' in args else True
-        self.cleanup_kashidas = False if 'cleanup-kashidas' in args else True
-        self.cleanup_extra_marks = False if 'cleanup-ex-marks' in args else True
-        self.cleanup_spacing = False if 'cleanup-spacing' in args else True
+        self.fix_dashes = is_in_args('fix-dashes')
+        self.fix_three_dots = is_in_args('fix-three-dots')
+        self.fix_hamzeh = is_in_args('fix-hamzeh')
+        self.hamzeh_with_yeh = is_in_args('hamzeh-with-yeh')
+        self.fix_perfix_spacing = is_in_args('fix-p-spacing')
+        self.fix_perfix_separate = is_in_args('fix-p-separate')
+        self.fix_suffix_spacing = is_in_args('fix-s-spacing')
+        self.fix_suffix_separate = is_in_args('fix-s-separate')
+        self.aggresive = is_in_args('aggresive')
+        self.cleanup_kashidas = is_in_args('cleanup-kashidas')
+        self.fix_english_quotes = is_in_args('fix-english-quotes')
+        self.cleanup_extra_marks = is_in_args('cleanup-ex-marks')
+        self.cleanup_spacing = is_in_args('cleanup-spacing')
+        self.fix_spacing_for_braces_and_quotes = is_in_args('fix-spacing-bq')
+        self.fix_arabic_numbers = is_in_args('fix-arabic-num')
+        self.fix_english_numbers = is_in_args('fix-english-num')
+        self.fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
+
         self.cleanup()
 
     def cleanup(self):
