@@ -52,53 +52,25 @@ class PersianEditor():
         """
         cleanup()
         ==========
+
         This is the main function who call other functions if need!
         """
-
-        if self.fix_dashes:
-            self.fix_dashes_func()
-
-        if self.fix_three_dots:
-            self.fix_three_dots_func()
-
-        if self.fix_english_quotes:
-            self.fix_english_quotes_func()
-
-        if self.fix_hamzeh:
-            self.fix_hamzeh_func()
-
-        if self.cleanup_zwnj:
-            self.cleanup_zwnj_func()
-
-        if self.fix_misc_non_persian_chars:
-            self.char_validator()
-
-        if self.fix_arabic_numbers:
-            self.fix_arabic_numbers_func()
-
-        if self.fix_english_numbers:
-            self.fix_english_numbers_func()
-
-        if self.fix_perfix_spacing:
-            self.fix_perfix_spacing_func()
-
-        if self.fix_perfix_separate:
-            self.fix_perfix_separate_func()
-
-        if self.fix_suffix_spacing:
-            self.fix_suffix_spacing_func()
-
-        if self.fix_suffix_separate:
-            self.fix_suffix_separate_func()
-
-        if self.aggresive:
-            self.aggresive_func()
-
+        if self.fix_dashes: self.fix_dashes_func()
+        if self.fix_three_dots: self.fix_three_dots_func()
+        if self.fix_english_quotes: self.fix_english_quotes_func()
+        if self.fix_hamzeh: self.fix_hamzeh_func()
+        if self.cleanup_zwnj: self.cleanup_zwnj_func()
+        if self.fix_misc_non_persian_chars: self.char_validator()
+        if self.fix_arabic_numbers: self.fix_arabic_numbers_func()
+        if self.fix_english_numbers: self.fix_english_numbers_func()
+        if self.fix_perfix_spacing: self.fix_perfix_spacing_func()
+        if self.fix_perfix_separate: self.fix_perfix_separate_func()
+        if self.fix_suffix_spacing: self.fix_suffix_spacing_func()
+        if self.fix_suffix_separate: self.fix_suffix_separate_func()
+        if self.aggresive: self.aggresive_func()
+        if self.cleanup_spacing: self.cleanup_spacing_func()
         if self.fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes_func()
-
-        if self.cleanup_spacing:
-            self.cleanup_spacing_func()
 
         return self.text
 
