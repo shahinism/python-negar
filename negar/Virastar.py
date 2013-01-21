@@ -372,6 +372,8 @@ class PersianEditor():
 
 
 def add_to_untouchable(word_list):
+    # TODO: What da fuck? No write access to file-system
+    # Should be changed to another way
     this_dir, this_file = os.path.split(__file__)
     DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
     f = codecs.open(DATA_PATH, "a", encoding="utf-8")
