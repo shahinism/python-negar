@@ -15,7 +15,7 @@ You can run gui version like this:
 
     negar --gui
 
-![NegarsScreenshot](https://raw.github.com/shahinism/Negar/master/Screenshot/window1.png)
+![NegarsScreenshot](https://github.com/shahinism/python-negar/raw/master/docs/screenshot/window1.png)
 
 How to install
 ==============

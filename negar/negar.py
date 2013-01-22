@@ -4,7 +4,7 @@ import os
 import sys
 import getopt
 import gui
-import Virastar
+import virastar
 import codecs
 
 __author__ 	= "Shahin Azad 'Shahinism' (http://Shahinism.com)"
@@ -97,7 +97,7 @@ def main():
                                 if len(line) == 0:
                                     break
                                 word = line.split()
-                                Virastar.add_to_untouchable(word)
+                                virastar.add_to_untouchable(word)
                     except IOError:
                         print "I can't open the file!"
                 else:
@@ -143,7 +143,7 @@ def main():
             line = unicode(input_file.readline(), encoding='utf-8')
             if len(line) == 0:
                 break
-            run_PE = Virastar.PersianEditor(line, *args)
+            run_PE = virastar.PersianEditor(line, *args)
             output_file.write(run_PE.cleanup().encode('utf-8'))
     finally:
         input_file.close()
