@@ -34,7 +34,7 @@ setup(
     install_requires = dependecy,
     entry_points={
         'console_scripts': [
-            'negar = negar.Negar:main',
+            'negar = negar.negar:main',
         ],
     },
     long_description=read

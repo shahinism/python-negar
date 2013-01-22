@@ -4,7 +4,7 @@
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from Virastar import PersianEditor, add_to_untouchable
+from virastar import PersianEditor, add_to_untouchable
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
