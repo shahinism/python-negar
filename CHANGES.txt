@@ -1,6 +1,7 @@
 0.0.0 - 0000-00-00
 -- Fixed #8: Removed CLI part.
     -- Removed negar/negar.py.
+    -- Added installation, usage section to README.md.
 
 0.6.1 - 2012-02-23 Negar beginning
 -- Cleanup on README.md
