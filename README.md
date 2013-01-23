@@ -64,8 +64,25 @@ Decompress it, and run the following command in root directory of python-negar
 
 For now there is no requirements except Python's standard library.
 
-How to use
-==========
+Usage
+======
+
+Usage without extra args:
+::
+
+    from negar.virastar import PersianEditor
+
+    text = unicode("مانند 'همه ی ' که با 'ی' پسوند همراه هستند", encoding='utf-8')
+    print(PersianEditor(text)) # Done ;)
+
+Enabling extra features/args:
+::
+
+    ##
+    args.append('fix-english-quotes')
+    args.append('cleanup-spacing')
+    print(PersianEditor(text, *args))
+
 
 Full list of args with description:
 ::
