@@ -16,17 +16,53 @@ You can run gui version like this:
 ![NegarsScreenshot](https://github.com/shahinism/python-negar/raw/master/docs/screenshot/window1.png)
 
 
-How to install
+Installation
 ==============
 
+## PyPi
 
-After that execute commands:
+**python-negar** is available on PyPi:
 
-    $ git clone https://github.com/shahinism/Negar.git
-    $ cd Negar
-    $ sudo python setup.py install
+http://pypi.python.org/pypi/python-negar
+::
 
-For now there is no requirements except Pythons standard library.
+    $ pip install python-negar
+
+## Git
+
+You can get latest stable changes from github server:
+::
+
+    $ git clone ttps://github.com/shahinism/python-negar.git
+    $ cd python-negar
+    $ python setup.py install
+
+## Zip, Tarball
+
+You can grab the latest tarball.
+
+### *unix
+
+Get the latest tarball & install
+::
+
+    $ wget https://github.com/shahinism/python-negar/archive/master.tar.gz
+    $ tar xvzf python-negar-master.tar.gz && cd python-negar-master
+    $ python setup.py install
+
+### Windows
+
+Download latest zip archive.
+
+https://github.com/shahinism/python-negar/archive/master.zip
+
+Decompress it, and run the following command in root directory of python-negar
+::
+
+    $ python setup.py install
+
+
+For now there is no requirements except Python's standard library.
 
 How to use
 ==========
