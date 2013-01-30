@@ -33,7 +33,7 @@ http://pypi.python.org/pypi/python-negar
 You can get latest stable changes from github server:
 ::
 
-    $ git clone ttps://github.com/shahinism/python-negar.git
+    $ git clone https://github.com/shahinism/python-negar.git
     $ cd python-negar
     $ python setup.py install
 
