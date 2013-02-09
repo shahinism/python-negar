@@ -1,4 +1,12 @@
 0.0.0 - 0000-00-00
+-- Fixed unpaired parentheses problem.
+   -- added remove_parentheses function to virastar
+      to control unwanted parentheses in list items.
+
+-- Fixed #8: Removed GUI part.
+   -- Removed negar/gui.py
+   -- Removed i18n directory.
+
 -- Fixed #8: Removed CLI part.
     -- Removed negar/negar.py.
     -- Added installation, usage section to README.md.
