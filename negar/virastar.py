@@ -201,6 +201,16 @@ class PersianEditor():
         # to prevent a bug: «می شود»
         self.text = re.sub(ur"([\s«\(\{])(ن?می)\s+",ur'\1\2‌', self.text)
 
+    def remove_parentheses(self, list):
+        """
+        remove all parentheses from the list. there is some issues
+        when we separate lists items that contains parentheses in
+        case we want to use regular expressions.
+        """
+        list = [s.replace(')', '') for s in list]
+        list = [s.replace('(', '') for s in list]
+        return list
+        
     def fix_perfix_separate_func(self):
         """
         fix_perfix_separate_func()
@@ -214,6 +224,7 @@ class PersianEditor():
         # and put it to list
         # all lists words will be test one by one and space if need
         list = self.text.split(" ")
+        list = self.remove_parentheses(list)
         for word in list:
             p = regex.search(word)
             if p:
@@ -256,6 +267,7 @@ class PersianEditor():
         # and put it to list all lists words will be test
         # one by one and space if need
         list = self.text.split(" ")
+        list = self.remove_parentheses(list)
         for word in list:
             p = regex.search(word)
             if p:
