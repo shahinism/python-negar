@@ -3,29 +3,23 @@
 
 import os
 import re
-import codecs
 
 class PersianEditor():
     """
-    =============
+    ===============
     PersianEditor()
     ===============
 
-    This class includes some functions to standard edit a Persian text
+    A class for Persian Text Sanitization
     """
     def __init__(self, text, *args):
         """
         This is the base part of the class
         """
 
-        def is_in_args(arg):
-            """
-            is_in_args(arg)
-            ===============
-
-            Check to see if `arg` exist in `args`
-            """
-            return False if arg in args else True
+        # Check to see if `arg` exist in `args`
+        # return False if arg in args else True
+        is_in_args = lambda arg: False if arg in args else True
 
         self.text = text
         self.cleanup_zwnj = False
@@ -47,6 +41,7 @@ class PersianEditor():
         self.fix_english_numbers = is_in_args('fix-english-num')
         self.fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
 
+        self.dont_touch_list_gen()
         self.cleanup()
 
     def cleanup(self):
@@ -138,9 +133,7 @@ class PersianEditor():
         char_validator()
         ================
 
-        This function will change invalid characters to validate ones.
-
-        it uses char_translator function to do it.
+        This function will change invalid characters to valid ones.
         """
         bad_chars  = ",;%يةك"
         good_chars = "،؛٪یهک"
@@ -151,9 +144,7 @@ class PersianEditor():
         fix_arabic_numbers_func()
         ==========================
         This function will translate Arabic numbers to their
-        Persian equivalents.
-
-        It uses char_translator function to do it.
+        Persian counterparts.
         """
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         arabic_numbers = u"١٢٣٤٥٦٧٨٩٠"
@@ -169,10 +160,9 @@ class PersianEditor():
         ===========================
 
         This function will translate English numbers to their
-        Persian equivalents.
+        Persian counterparts.
 
-        it will avoid to do this translation at a English string!
-        it uses char_translator function to do it.
+        It will avoid to do this translation at a English string!
         """
         persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
         english_numbers = u"1234567890"
@@ -182,9 +172,8 @@ class PersianEditor():
             self.text
         )
 
-        #Followilng commands will help Negar to avoid change english
-        # numbers in strings
-        #like 'Text12', 'Text_12' & other string like this
+        # Followilng commands will help Negar to avoid change english numbers in strings
+        # like 'Text12', 'Text_12' & other string like this
         self.text = re.sub(
             r'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
             lambda m:
@@ -212,7 +201,7 @@ class PersianEditor():
 
         """
         # I removed punctioations here but I dont know why its work :D
-        regex = re.compile(r"(ن?می)(\S+)")
+        regex = re.compile(r"(^\S*ن?می)(\S+)") #  ^\S+ for words like سهمیه
 
         # This is a little parser that split whole string from spaces
         # and put it to list
@@ -222,7 +211,7 @@ class PersianEditor():
             p = regex.search(word)
             if p:
                 # Here I'll check the word wasn't something like میلاد
-                if not p.group() in self.dont_touch_list_gen():
+                if not p.group() in self.dont_touch:
                     # This little one was really tricky!
                     # regex grouping is really awesome ;-)
                     self.text = re.sub(
@@ -264,7 +253,7 @@ class PersianEditor():
             p = regex.search(word)
             if p:
                 # Here I'll check the word wasn't something like بهتر
-                if not p.group() in self.dont_touch_list_gen():
+                if not p.group() in self.dont_touch:
                     self.text = re.sub(
                         p.group(),
                         p.group(1) + r"‌" + p.group(2) ,
@@ -383,14 +372,11 @@ class PersianEditor():
         DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
         #        print open(DATA_PATH).read()
 
-        f = codecs.open(DATA_PATH, encoding="utf-8")
-        self.dont_touch = [] # This is that empty list I used to append words
-        while True:
-            # I had to strip the f.readline() to prevent white spaces
-            line = f.readline().strip()
-            if len(line) == 0:
-                break
-            self.dont_touch.append(line)
+        with open(DATA_PATH) as f:
+            self.dont_touch = [] # This is that empty list I used to append words
+            for line in f:
+                # I had to strip the f.readline() to prevent white spaces
+                self.dont_touch.append(line.strip())
         return self.dont_touch
 
     def char_translator(self, fromchar, tochar, whichstring):
@@ -415,10 +401,10 @@ def add_to_untouchable(word_list):
     # Should be changed to another way
     this_dir, this_file = os.path.split(__file__)
     DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
-    f = codecs.open(DATA_PATH, "a", encoding="utf-8")
-    for word in word_list:
-        f.write(word+"\n")
-        # self.dont_touch.append(word)
+    with open(DATA_PATH, "a") as f:
+        for word in word_list:
+            f.write(word+"\n")
+            self.dont_touch.append(word)
 
 if __name__ == "__main__":
     print( "I'm a module. You can't use me directly!\n"\

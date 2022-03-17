@@ -1,7 +1,7 @@
-0.0.0 - 0000-00-00
--- Fixed #8: Removed CLI part.
-    -- Removed negar/negar.py.
-    -- Added installation, usage section to README.md.
+0.6.3 - 2022-03-18
+-- Fixed issue with some words like سهمیه
+-- untouchable list update
+-- Fixed issue with relative import in Python3
 
 0.6.2 - 2022-03-17
 -- Fixed 17: Some addition to Untouchable words
@@ -12,6 +12,11 @@
 -- Cleanup on README.md
 -- Fixed #2: Indentation and re-styling on virastar.py.
 -- Fixed #10: Packaged to pypi.
+
+0.0.0 - 0000-00-00
+-- Fixed #8: Removed CLI part.
+-- Removed negar/negar.py.
+-- Added installation, usage section to README.md.
 
 0.6 - 2012-01-09 -- First official release.
 -- First version of GUI added.

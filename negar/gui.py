@@ -5,7 +5,9 @@ import sys
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
-from .virastar import PersianEditor, add_to_untouchable
+from negar.virastar import PersianEditor, add_to_untouchable
+
+__version__ = "0.6.3"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -131,7 +133,7 @@ class Form(QMainWindow):
         # Main window configs:
         self.setCentralWidget(tab_widget)
         self.resize(800, 600)
-        self.setWindowTitle(self.tr("Negar"))
+        self.setWindowTitle(self.tr(f"Negar {__version__}"))
 
         # Signal control:
         # first of all negar have to check the default state of automatic edit feature.
