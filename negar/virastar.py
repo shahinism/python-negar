@@ -201,7 +201,7 @@ class PersianEditor():
 
         """
         # I removed punctioations here but I dont know why its work :D
-        regex = re.compile(r"(^\S*ن?می)(\S+)") #  ^\S+ for words like سهمیه
+        regex = re.compile(r"(^\S*ن?می)(\S+)") #  ^\S* for words like سهمیه
 
         # This is a little parser that split whole string from spaces
         # and put it to list

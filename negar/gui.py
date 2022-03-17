@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
+# from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from negar.virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.3"
+__version__ = "0.6.4"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -36,6 +37,17 @@ class Form(QMainWindow):
         self.output_editor = QTextEdit()
         output_editor_label = QLabel(self.tr("&Output Box"))
         output_editor_label.setBuddy(self.output_editor)
+        self.font_slider = QSlider(orientation=Qt.Orientation.Horizontal,
+            minimum=10, maximum=40, value=14)
+        font_slider_label = QLabel(self.tr("&Font Size"))
+        font_slider_label.setBuddy(self.font_slider)
+        self.__valueChanged()
+
+        first_row = QHBoxLayout()
+        first_row.addWidget(input_editor_label)
+        first_row.addStretch()
+        first_row.addWidget(font_slider_label)
+        first_row.addWidget(self.font_slider)
 
         # Options:
         self.f_dashes = QCheckBox(self.tr("&Fix Dashes"))
@@ -120,7 +132,8 @@ class Form(QMainWindow):
         ct_layout.addStretch()
         # Main Tab widgets layouts:
         mt_layout = QGridLayout(main_tab)
-        mt_layout.addWidget(input_editor_label, 0, 0)
+
+        mt_layout.addLayout(first_row, 0, 0)
         mt_layout.addWidget(self.input_editor, 1, 0)
         mt_layout.addWidget(output_editor_label, 2, 0)
         mt_layout.addWidget(self.output_editor, 3, 0)
@@ -144,6 +157,7 @@ class Form(QMainWindow):
         # if autoedit_chkboxs state's changed, then autoedit_handler have to call again.
         self.autoedit_chkbox.stateChanged.connect(self.autoedit_handler)
 
+        self.font_slider.valueChanged.connect(self.__valueChanged)
         self.untouch_word.textChanged.connect(self.untouch_add_enabler)
         self.untouch_button.clicked.connect(self.untouch_add)
 
@@ -166,6 +180,15 @@ class Form(QMainWindow):
         self.clnup_ex_marks.stateChanged.connect(self.option_control)
         self.clnup_spacing.stateChanged.connect(self.option_control)
 
+    def __valueChanged(self,):
+        size = self.font_slider.value()
+        self.input_editor.setFontPointSize(size)
+        self.output_editor.setFontPointSize(size)
+        lines = self.input_editor.toPlainText()
+        self.input_editor.clear()
+        self.input_editor.append(lines)
+        self.edit_text()
+
     def untouch_add_enabler(self):
         """
         This function will check if just one word is in the untouch word, then enable the untouch button.
@@ -176,6 +199,7 @@ class Form(QMainWindow):
             self.untouch_button.setEnabled(True)
         else:
             self.untouch_button.setEnabled(False)
+
     def untouch_add(self):
         """
         This function will make a unicode string from the word in untouch_word and add it to the
@@ -184,6 +208,7 @@ class Form(QMainWindow):
         word = [self.untouch_word.text()]
         add_to_untouchable(word)
         self.untouch_word.clear()
+
     def autoedit_handler(self):
         """
         if autoedit checkbox is checked then negar have to edit input text automatically. otherwise
