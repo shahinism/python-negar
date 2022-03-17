@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import os
@@ -74,6 +74,11 @@ class PersianEditor():
             self.fix_spacing_for_braces_and_quotes_func()
 
         return self.text
+
+    def __str__(self):
+        return self.text
+
+    __repr__ = __str__
 
     def fix_dashes_func(self):
         """
@@ -194,8 +199,7 @@ class PersianEditor():
 
         Put zwnj between word and prefix (mi* nemi*)
 
-         there's a possible bug here: می and نمی could separate nouns and
-        not prefix
+        there's a possible bug here: می and نمی could separate nouns and not prefix
         """
         # I added some persian punctioation characters
         # to prevent a bug: «می شود»

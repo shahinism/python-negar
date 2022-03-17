@@ -72,7 +72,7 @@ Usage without extra args:
 
     from negar.virastar import PersianEditor
 
-    text = unicode("مانند 'همه ی ' که با 'ی' پسوند همراه هستند", encoding='utf-8')
+    text = "مانند 'همه ی ' که با 'ی' پسوند همراه هستند"
     print(PersianEditor(text)) # Done ;)
 
 Enabling extra features/args:
