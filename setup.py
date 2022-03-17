@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name="python-negar",
-    version="0.6.1",
+    version="0.6.2",
     author="Shahin Azad",
     author_email="ishahinism@gmail.com",
     maintainer="Alireza Savand",
@@ -20,7 +20,7 @@ setup(
     url="http://shahinism.github.com/python-negar",
     entry_points={
         'console_scripts': [
-            'negar = negar.negar:main',
+            'negar = negar.gui:main',
         ],
     },
     long_description=open("README.md").read(),

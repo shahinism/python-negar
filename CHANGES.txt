@@ -3,6 +3,11 @@
     -- Removed negar/negar.py.
     -- Added installation, usage section to README.md.
 
+0.6.2 - 2022-03-17
+-- Fixed 17: Some addition to Untouchable words
+-- Revision in compliance with Python3.10 and PyQt6
+-- Fixed issue with setup
+
 0.6.1 - 2012-02-23 Negar beginning
 -- Cleanup on README.md
 -- Fixed #2: Indentation and re-styling on virastar.py.

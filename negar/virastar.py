@@ -83,8 +83,8 @@ class PersianEditor():
         This function will replace double dash to `ndash` and triple dash
         to `mdash`.
         """
-        self.text = re.sub(ur'-{3}', ur'—', self.text)
-        self.text = re.sub(ur'-{2}', ur'–', self.text)
+        self.text = re.sub(r'-{3}', r'—', self.text)
+        self.text = re.sub(r'-{2}', r'–', self.text)
 
     def fix_three_dots_func(self):
         """
@@ -93,7 +93,7 @@ class PersianEditor():
 
         This function will replace three dots with ellipsis
         """
-        self.text = re.sub(ur'\s*\.{3,}', ur'…', self.text)
+        self.text = re.sub(r'\s*\.{3,}', r'…', self.text)
 
     def fix_english_quotes_func(self):
         """
@@ -103,7 +103,7 @@ class PersianEditor():
         This function will replace English quotes with their
         persian equivalent
         """
-        self.text = re.sub(ur"([\"'`]+)(.+?)(\1)", ur'«\2»', self.text)
+        self.text = re.sub(r"([\"'`]+)(.+?)(\1)", r'«\2»', self.text)
 
     def fix_hamzeh_func(self):
         """
@@ -114,9 +114,9 @@ class PersianEditor():
         'ه ی' with 'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
         """
         if self.hamzeh_with_yeh:
-            self.text = re.sub(ur'(\S)(ه[\s]+[یي])(\s)',ur'\1ه‌ی\3',self.text)
+            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\s)',r'\1ه‌ی\3',self.text)
         else:
-            self.text = re.sub(ur'(\S)(ه[\s]+[یي])(\s)',ur'\1هٔ\3', self.text)
+            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\s)',r'\1هٔ\3', self.text)
 
     def cleanup_zwnj_func(self):
         '''
@@ -126,7 +126,7 @@ class PersianEditor():
         This function will remove unnecessary zwnj that are
         succeeded/preceded by a space
         '''
-        self.text = re.sub(ur'\s+|\s+', ur' ', self.text)
+        self.text = re.sub(r'\s+|\s+', r' ', self.text)
 
     def char_validator(self):
         """
@@ -137,8 +137,8 @@ class PersianEditor():
 
         it uses char_translator function to do it.
         """
-        bad_chars  = u",;%يةك"
-        good_chars = u"،؛٪یهک"
+        bad_chars  = ",;%يةك"
+        good_chars = "،؛٪یهک"
         self.text = self.char_translator(bad_chars, good_chars, self.text)
 
     def fix_arabic_numbers_func(self):
@@ -181,7 +181,7 @@ class PersianEditor():
         # numbers in strings
         #like 'Text12', 'Text_12' & other string like this
         self.text = re.sub(
-            ur'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
+            r'[a-z\-_]{2,}[۰-۹]+|[۰-۹]+[a-z\-_]{2,}',
             lambda m:
             self.char_translator(persian_numbers, english_numbers, m.group()),
             self.text
@@ -199,7 +199,7 @@ class PersianEditor():
         """
         # I added some persian punctioation characters
         # to prevent a bug: «می شود»
-        self.text = re.sub(ur"([\s«\(\{])(ن?می)\s+",ur'\1\2‌', self.text)
+        self.text = re.sub(r"([\s«\(\{])(ن?می)\s+",r'\1\2‌', self.text)
 
     def fix_perfix_separate_func(self):
         """
@@ -208,7 +208,7 @@ class PersianEditor():
 
         """
         # I removed punctioations here but I dont know why its work :D
-        regex = re.compile(ur"(ن?می)(\S+)")
+        regex = re.compile(r"(ن?می)(\S+)")
 
         # This is a little parser that split whole string from spaces
         # and put it to list
@@ -223,7 +223,7 @@ class PersianEditor():
                     # regex grouping is really awesome ;-)
                     self.text = re.sub(
                         p.group(),
-                        p.group(1) + ur"‌" + p.group(2) ,
+                        p.group(1) + r"‌" + p.group(2) ,
                         self.text
                     )
 
@@ -234,10 +234,10 @@ class PersianEditor():
         put zwnj between word and suffix (*ha[ye] *tar[in])
         """
         regex = re.compile(
-            ur"\s+(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)\s+",
+            r"\s+(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)\s+",
             re.VERBOSE
         )
-        self.text = re.sub(regex, ur'‌\1 ', self.text)
+        self.text = re.sub(regex, r'‌\1 ', self.text)
 
     def fix_suffix_separate_func(self):
         """
@@ -249,7 +249,7 @@ class PersianEditor():
         that are not spaced correctly ;-)
         """
         regex = re.compile(
-            ur"(\S+)(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)",
+            r"(\S+)(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)",
             re.VERBOSE
         )
         # This is a little parser that split whole string from spaces
@@ -263,7 +263,7 @@ class PersianEditor():
                 if not p.group() in self.dont_touch_list_gen():
                     self.text = re.sub(
                         p.group(),
-                        p.group(1) + ur"‌" + p.group(2) ,
+                        p.group(1) + r"‌" + p.group(2) ,
                         self.text
                     )
 
@@ -276,12 +276,12 @@ class PersianEditor():
         """
         # replace more than one ! or ? mark with just one
         if self.cleanup_extra_marks:
-            self.text = re.sub(ur'(!){2,}', ur'\1', self.text)
-            self.text = re.sub(ur'(؟){2,}', ur'\1', self.text)
+            self.text = re.sub(r'(!){2,}', r'\1', self.text)
+            self.text = re.sub(r'(؟){2,}', r'\1', self.text)
 
         # should remove all kashida
         if self.cleanup_kashidas:
-            self.text = re.sub(ur'ـ+', "", self.text)
+            self.text = re.sub(r'ـ+', "", self.text)
 
     def fix_spacing_for_braces_and_quotes_func(self):
         """
@@ -293,66 +293,66 @@ class PersianEditor():
         # ()[]{}""«» should have one space before and one virtual
         # space after (inside)
         self.text = re.sub(
-            ur'[ ‌]*(\()\s*([^)]+?)\s*?(\))[ ‌]*',
-            ur' \1‌\2‌\3 ',
+            r'[ ‌]*(\()\s*([^)]+?)\s*?(\))[ ‌]*',
+            r' \1‌\2‌\3 ',
             self.text
         )
         self.text = re.sub(
-            ur'[ ‌]*(\[)\s*([^)]+?)\s*?(\])[ ‌]*',
-            ur' \1‌\2‌\3 ',
+            r'[ ‌]*(\[)\s*([^)]+?)\s*?(\])[ ‌]*',
+            r' \1‌\2‌\3 ',
             self.text
         )
         self.text = re.sub(
-            ur'[ ‌]*(\{)\s*([^)]+?)\s*?(\})[ ‌]*',
-            ur' \1‌\2‌\3 ',
+            r'[ ‌]*(\{)\s*([^)]+?)\s*?(\})[ ‌]*',
+            r' \1‌\2‌\3 ',
             self.text
         )
         self.text = re.sub(
-            ur'[ ‌]*(“)\s*([^)]+?)\s*?(”)[ ‌]*',
-            ur' \1‌\2‌\3 ',
+            r'[ ‌]*(“)\s*([^)]+?)\s*?(”)[ ‌]*',
+            r' \1‌\2‌\3 ',
             self.text
         )
         self.text = re.sub(
-            ur'[ ‌]*(«)\s*([^)]+?)\s*?(»)[ ‌]*',
-            ur' \1‌\2‌\3 ',
+            r'[ ‌]*(«)\s*([^)]+?)\s*?(»)[ ‌]*',
+            r' \1‌\2‌\3 ',
             self.text
         )
         # : ; , ! ? and their persian equivalents should have one space after
         # and no space before
         self.text = re.sub(
-            ur'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
-            ur'‌\1 ',
+            r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
+            r'‌\1 ',
             self.text
         )
         self.text = re.sub(
-            ur'([۰-۹]+):\s+([۰-۹]+)',
-            ur'\1:\2',
+            r'([۰-۹]+):\s+([۰-۹]+)',
+            r'\1:\2',
             self.text
         )
         # should fix inside spacing for () [] {} "" «»
         self.text = re.sub(
-            ur'(\()\s*([^)]+?)\s*?(\))',
-            ur'\1\2\3',
+            r'(\()\s*([^)]+?)\s*?(\))',
+            r'\1\2\3',
             self.text
         )
         self.text = re.sub(
-            ur'(\[)\s*([^)]+?)\s*?(\])',
-            ur'\1\2\3',
+            r'(\[)\s*([^)]+?)\s*?(\])',
+            r'\1\2\3',
             self.text
         )
         self.text = re.sub(
-            ur'(\{)\s*([^)]+?)\s*?(\})',
-            ur'\1\2\3',
+            r'(\{)\s*([^)]+?)\s*?(\})',
+            r'\1\2\3',
             self.text
         )
         self.text = re.sub(
-            ur'(“)\s*([^)]+?)\s*?(”)',
-            ur'\1\2\3',
+            r'(“)\s*([^)]+?)\s*?(”)',
+            r'\1\2\3',
             self.text
         )
         self.text = re.sub(
-            ur'(«)\s*([^)]+?)\s*?(»)',
-            ur'\1\2\3',
+            r'(«)\s*([^)]+?)\s*?(»)',
+            r'\1\2\3',
             self.text
         )
 
@@ -362,8 +362,8 @@ class PersianEditor():
         ======================
 
         """
-        self.text = re.sub(ur'[ ]+', ur' ', self.text)
-        self.text = re.sub(ur'([\n]+)[ ‌]', ur'\1', self.text)
+        self.text = re.sub(r'[ ]+', r' ', self.text)
+        self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
 
     def dont_touch_list_gen(self):
         """
@@ -417,5 +417,5 @@ def add_to_untouchable(word_list):
         # self.dont_touch.append(word)
 
 if __name__ == "__main__":
-    print "I'm a module. You can't use me directly!\n"\
-          "for that you can call negar;-)"
+    print( "I'm a module. You can't use me directly!\n"\
+            "for that you can call negar;-)")

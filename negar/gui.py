@@ -1,10 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from virastar import PersianEditor, add_to_untouchable
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
+from .virastar import PersianEditor, add_to_untouchable
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -19,14 +20,14 @@ class Form(QMainWindow):
         Quit_btn = QPushButton(self.tr("&Quit"))
         self.autoedit_chkbox = QCheckBox(self.tr("&Automatic edit"))
         self.autoedit_chkbox.setChecked(True)
-        
+
         btn_layout = QHBoxLayout()
         btn_layout.addWidget(self.autoedit_chkbox)
         btn_layout.addStretch()
         btn_layout.addWidget(self.edit_btn)
         btn_layout.addWidget(reset_btn)
         btn_layout.addWidget(Quit_btn)
-        
+
         self.input_editor = QTextEdit()
         input_editor_label = QLabel(self.tr("&Input Box"))
         input_editor_label.setBuddy(self.input_editor)
@@ -82,7 +83,7 @@ class Form(QMainWindow):
         untouch_layout.addWidget(self.untouch_word, 1, 0)
         untouch_layout.addWidget(self.untouch_button, 1, 1)
         untouch_box.setLayout(untouch_layout)
-        
+
         # Options Box:
         config_box = QGroupBox(self.tr("Options"))
         config_layout = QGridLayout()
@@ -104,7 +105,7 @@ class Form(QMainWindow):
         config_layout.addWidget(self.clnup_ex_marks, 2, 3)
         config_layout.addWidget(self.clnup_spacing, 2, 4)
         config_box.setLayout(config_layout)
-        
+
         # Tab widgets initializing:
         tab_widget = QTabWidget()
         main_tab = QWidget()
@@ -126,16 +127,16 @@ class Form(QMainWindow):
         # Main tab widget control:
         tab_widget.addTab(main_tab, self.tr("&Main"))
         tab_widget.addTab(config_tab, self.tr("&Config"))
-        
+
         # Main window configs:
         self.setCentralWidget(tab_widget)
         self.resize(800, 600)
         self.setWindowTitle(self.tr("Negar"))
-        
+
         # Signal control:
         # first of all negar have to check the default state of automatic edit feature.
         self.autoedit_handler()
-        Quit_btn.clicked.connect(qApp.quit)
+        Quit_btn.clicked.connect(QApplication.instance().quit)
         reset_btn.clicked.connect(self.text_box_reset)
         self.edit_btn.clicked.connect(self.edit_text)
         # if autoedit_chkboxs state's changed, then autoedit_handler have to call again.
@@ -143,7 +144,7 @@ class Form(QMainWindow):
 
         self.untouch_word.textChanged.connect(self.untouch_add_enabler)
         self.untouch_button.clicked.connect(self.untouch_add)
-        
+
         # Option checkbox lists signal control
         self.f_dashes.stateChanged.connect(self.option_control)
         self.f_three_dots.stateChanged.connect(self.option_control)
@@ -166,10 +167,9 @@ class Form(QMainWindow):
     def untouch_add_enabler(self):
         """
         This function will check if just one word is in the untouch word, then enable the untouch button.
-        other wise it will be disabled.
+        otherwise it will be disabled.
         """
         word_list = self.untouch_word.text().split(" ")
-        print len(word_list)
         if len(word_list) == 1:
             self.untouch_button.setEnabled(True)
         else:
@@ -179,14 +179,14 @@ class Form(QMainWindow):
         This function will make a unicode string from the word in untouch_word and add it to the
         untouchabl data file.
         """
-        word = [unicode(self.untouch_word.text().toUtf8(), encoding="utf-8")]
+        word = [self.untouch_word.text()]
         add_to_untouchable(word)
         self.untouch_word.clear()
     def autoedit_handler(self):
         """
         if autoedit checkbox is checked then negar have to edit input text automatically. otherwise
         user have to click on edit button. this buttons signal is configed to do same behavior after
-        click. 
+        click.
         """
         if self.autoedit_chkbox.isChecked():
             self.edit_btn.setEnabled(False)
@@ -243,17 +243,17 @@ class Form(QMainWindow):
             self.option_list.append("cleanup-ex-marks")
         if not self.clnup_spacing.isChecked():
             self.option_list.append("cleanup-spacing")
-        
+
     def file_dialog(self):
         fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open a plain text file')
         data  = open(fname, 'r')
         with data:
-            text = unicode(data.read(), encoding="utf-8")
+            text = data.read()
             self.input_box.setText(text)
 
     def edit_text(self):
         self.output_editor.clear()
-        lines = unicode(self.input_editor.toPlainText()).split('\n')
+        lines = self.input_editor.toPlainText().split('\n')
         for line in lines:
             run_PE = PersianEditor(line, *self.option_list)
             self.output_editor.append(run_PE.cleanup())
@@ -262,7 +262,7 @@ def main():
     app = QApplication(sys.argv)
     run = Form()
     run.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
