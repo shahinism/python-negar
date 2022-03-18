@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
@@ -10,7 +11,7 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.5"
+__version__ = "0.6.6"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -26,7 +27,7 @@ class Form(QMainWindow):
         self.autoedit_chkbox = QCheckBox(self.tr("&Automatic edit"))
         self.autoedit_chkbox.setChecked(True)
         self.font_slider = QSlider(orientation=Qt.Orientation.Horizontal,
-            minimum=10, maximum=40, value=16)
+            minimum=10, maximum=40, value=22)
         font_slider_label = QLabel(self.tr("&Font Size"))
         font_slider_label.setBuddy(self.font_slider)
 
@@ -137,7 +138,7 @@ class Form(QMainWindow):
         mt_layout.addWidget(self.output_editor, 3, 0)
         mt_layout.addLayout(btn_layout, 4, 0)
 
-        self.__valueChanged()
+        # self.__valueChanged()
 
         # Main tab widget control:
         tab_widget.addTab(main_tab, self.tr("&Main"))
@@ -146,6 +147,9 @@ class Form(QMainWindow):
         # Main window configs:
         self.setCentralWidget(tab_widget)
         self.resize(800, 600)
+        this_dir, _ = os.path.split(__file__)
+        logo = os.path.join(this_dir, "logo.png")
+        self.setWindowIcon(QIcon(logo))
         self.setWindowTitle(self.tr(f"Negar {__version__}"))
 
         # Signal control:
@@ -223,6 +227,7 @@ class Form(QMainWindow):
             self.edit_btn.setEnabled(True)
             # This line will disconnect autoedit signal and will disable autoamtic edit option
             self.input_editor.textChanged.disconnect(self.edit_text)
+        self.__valueChanged()
 
     def text_box_reset(self):
         """

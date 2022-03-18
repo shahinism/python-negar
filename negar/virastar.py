@@ -68,6 +68,7 @@ class PersianEditor:
         if self.cleanup_spacing: self.cleanup_spacing_func()
         if self.fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes_func()
+        self.cleanup_redundant_zwnj()
 
         return self.text
 
@@ -128,6 +129,13 @@ class PersianEditor:
         succeeded/preceded by a space
         '''
         self.text = re.sub(r'\s+|\s+', r' ', self.text)
+
+    def cleanup_redundant_zwnj(self):
+        """
+        Some sanitization tasks add some unwanted zwmj which are cleaned by this method
+        """
+        self.text = re.sub(r'([ادرزژو])‌+', r'\1', self.text)
+        self.text = re.sub(r'(‌)+', r'\1', self.text)
 
     def char_validator(self):
         """
@@ -228,10 +236,14 @@ class PersianEditor:
         put zwnj between word and suffix (*ha[ye] *tar[in])
         """
         regex = re.compile(
-            r"\s+(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)\s+",
+            r"""\s+
+            (تر(ی(ن)?)?
+            |ها(ی(ی)?)?
+            |[تمش]ان)
+            \b""",
             re.VERBOSE
         )
-        self.text = re.sub(regex, r'‌\1 ', self.text)
+        self.text = re.sub(regex, r'‌\1', self.text)
 
     def fix_suffix_separate_func(self):
         """
@@ -243,7 +255,10 @@ class PersianEditor:
         that are not spaced correctly ;-)
         """
         regex = re.compile(
-            r"(\S+)(تر(ی(ن)?)?|ها(ی(ی)?)?|[تمش]ان)",
+            r"""(\S+)
+            (تر(ی(ن)?)?
+            |ها(ی(ی)?)?|
+            [تمش]ان)\b""",
             re.VERBOSE
         )
         # This is a little parser that split whole string from spaces

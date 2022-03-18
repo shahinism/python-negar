@@ -1,3 +1,9 @@
+0.6.6 - 2022-03-19
+-- Fixed issue with words that contain 'ها' in the middle or at the end, like 'مهاباد' and 'دانشکده ها'
+-- Untouchable words list update as well as redundancy removed
+-- Removing unwanted extra zwmjs
+-- Negar logo for better desktop switching
+
 0.6.5 - 2022-03-18
 -- Font Size Slider relocate to the bottom
 -- Fixed issue with words that contain 'می' in the middle like 'سهمیه'
