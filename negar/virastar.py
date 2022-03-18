@@ -1,10 +1,11 @@
+# pylint: disable=too-many-instance-attributes
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import os
 import re
 
-class PersianEditor():
+class PersianEditor:
     """
     ===============
     PersianEditor()
@@ -19,7 +20,7 @@ class PersianEditor():
 
         # Check to see if `arg` exist in `args`
         # return False if arg in args else True
-        is_in_args = lambda arg: False if arg in args else True
+        is_in_args = lambda arg: arg not in args
 
         self.text = text
         self.cleanup_zwnj = False
@@ -146,8 +147,8 @@ class PersianEditor():
         This function will translate Arabic numbers to their
         Persian counterparts.
         """
-        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
-        arabic_numbers = u"١٢٣٤٥٦٧٨٩٠"
+        persian_numbers = "۱۲۳۴۵۶۷۸۹۰"
+        arabic_numbers = "١٢٣٤٥٦٧٨٩٠"
         self.text = self.char_translator(
             arabic_numbers,
             persian_numbers,
@@ -164,8 +165,8 @@ class PersianEditor():
 
         It will avoid to do this translation at a English string!
         """
-        persian_numbers = u"۱۲۳۴۵۶۷۸۹۰"
-        english_numbers = u"1234567890"
+        persian_numbers = "۱۲۳۴۵۶۷۸۹۰"
+        english_numbers = "1234567890"
         self.text = self.char_translator(
             english_numbers,
             persian_numbers,
@@ -201,19 +202,22 @@ class PersianEditor():
 
         """
         # I removed punctioations here but I dont know why its work :D
-        regex = re.compile(r"(^\S*ن?می)(\S+)") #  ^\S* for words like سهمیه
+        regex = re.compile(r"^\S*(ن?می)(\s+)") #  ^\S* for words like سهمیه
 
         # This is a little parser that split whole string from spaces
         # and put it to list
         # all lists words will be test one by one and space if need
-        list = self.text.split(" ")
-        for word in list:
+        wlist = self.text.split(" ")
+        print("TEXT", self.text)
+        for word in wlist:
             p = regex.search(word)
             if p:
+                print('WORD', word, p.group())
                 # Here I'll check the word wasn't something like میلاد
-                if not p.group() in self.dont_touch:
+                if p.group() not in self.dont_touch:
                     # This little one was really tricky!
                     # regex grouping is really awesome ;-)
+                    print(p.group())
                     self.text = re.sub(
                         p.group(),
                         p.group(1) + r"‌" + p.group(2) ,
@@ -248,12 +252,12 @@ class PersianEditor():
         # This is a little parser that split whole string from spaces
         # and put it to list all lists words will be test
         # one by one and space if need
-        list = self.text.split(" ")
-        for word in list:
+        wlist = self.text.split(" ")
+        for word in wlist:
             p = regex.search(word)
             if p:
                 # Here I'll check the word wasn't something like بهتر
-                if not p.group() in self.dont_touch:
+                if p.group() not in self.dont_touch:
                     self.text = re.sub(
                         p.group(),
                         p.group(1) + r"‌" + p.group(2) ,
@@ -368,18 +372,19 @@ class PersianEditor():
         don't have to touch them
         """
         #        f = pkgutil.get_data('negar', 'data/untouchable.dat')
-        this_dir, this_filename = os.path.split(__file__)
+        this_dir, _ = os.path.split(__file__)
         DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
         #        print open(DATA_PATH).read()
 
-        with open(DATA_PATH) as f:
+        with open(DATA_PATH, encoding='utf8') as f:
             self.dont_touch = [] # This is that empty list I used to append words
             for line in f:
                 # I had to strip the f.readline() to prevent white spaces
                 self.dont_touch.append(line.strip())
         return self.dont_touch
 
-    def char_translator(self, fromchar, tochar, whichstring):
+    @classmethod
+    def char_translator(cls, fromchar, tochar, whichstring):
         """
         char_translator()
         =================
@@ -399,13 +404,11 @@ class PersianEditor():
 def add_to_untouchable(word_list):
     # TODO: What da fuck? No write access to file-system
     # Should be changed to another way
-    this_dir, this_file = os.path.split(__file__)
+    this_dir, _ = os.path.split(__file__)
     DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
-    with open(DATA_PATH, "a") as f:
+    with open(DATA_PATH, "a", encoding="utf8") as f:
         for word in word_list:
             f.write(word+"\n")
-            self.dont_touch.append(word)
 
 if __name__ == "__main__":
-    print( "I'm a module. You can't use me directly!\n"\
-            "for that you can call negar;-)")
+    print( "I'm a module, use ``negar'' instead. ;-)")
