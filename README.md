@@ -11,7 +11,7 @@ Screenshot & Features
 =====================
 You can run gui version like this:
 
-    negar --gui
+    negar
 
 ![NegarsScreenshot](https://github.com/shahinism/python-negar/raw/master/docs/screenshot/window1.png)
 
