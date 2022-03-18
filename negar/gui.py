@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import sys
-# from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
-from virastar import PersianEditor, add_to_untouchable
+try:
+    from virastar import PersianEditor, add_to_untouchable
+except:
+    from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.4"
+__version__ = "0.6.5"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -30,6 +32,7 @@ class Form(QMainWindow):
 
         btn_layout = QHBoxLayout()
         btn_layout.addWidget(self.autoedit_chkbox)
+        btn_layout.addStretch()
         btn_layout.addWidget(font_slider_label)
         btn_layout.addWidget(self.font_slider)
         btn_layout.addStretch()

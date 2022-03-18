@@ -202,22 +202,19 @@ class PersianEditor:
 
         """
         # I removed punctioations here but I dont know why its work :D
-        regex = re.compile(r"^\S*(ن?می)(\s+)") #  ^\S* for words like سهمیه
+        regex = re.compile(r"\A(ن?می)(\S+)") #  \A for words like سهمیه
 
         # This is a little parser that split whole string from spaces
         # and put it to list
         # all lists words will be test one by one and space if need
         wlist = self.text.split(" ")
-        print("TEXT", self.text)
         for word in wlist:
             p = regex.search(word)
             if p:
-                print('WORD', word, p.group())
                 # Here I'll check the word wasn't something like میلاد
                 if p.group() not in self.dont_touch:
                     # This little one was really tricky!
                     # regex grouping is really awesome ;-)
-                    print(p.group())
                     self.text = re.sub(
                         p.group(),
                         p.group(1) + r"‌" + p.group(2) ,
