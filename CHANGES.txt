@@ -1,3 +1,6 @@
+0.6.7 - 2022-03-19
+-- auto focus on input field
+
 0.6.6 - 2022-03-19
 -- Fixed issue with words that contain 'ها' in the middle or at the end, like 'مهاباد' and 'دانشکده ها'
 -- Untouchable words list update as well as redundancy removed

@@ -1,6 +1,5 @@
 # pylint: disable=too-many-instance-attributes
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 
 import os
 import re

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -11,7 +11,7 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.6"
+__version__ = "0.6.7"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -295,6 +295,7 @@ def main():
     app = QApplication(sys.argv)
     run = Form()
     run.show()
+    run.input_editor.setFocus() # set focus on input box
     sys.exit(app.exec())
 
 if __name__ == "__main__":
