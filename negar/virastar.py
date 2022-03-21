@@ -1,15 +1,11 @@
 # pylint: disable=too-many-instance-attributes
 #!/usr/bin/env python
 
-import os
 import re
+from pathlib import Path
 
 class PersianEditor:
     """
-    ===============
-    PersianEditor()
-    ===============
-
     A class for Persian Text Sanitization
     """
     def __init__(self, text, *args):
@@ -17,7 +13,7 @@ class PersianEditor:
         This is the base part of the class
         """
 
-        # Check to see if `arg` exist in `args`
+        # Check to see if `arg` exists in `args` or not
         # return False if arg in args else True
         is_in_args = lambda arg: arg not in args
 
@@ -27,8 +23,8 @@ class PersianEditor:
         self.fix_three_dots = is_in_args('fix-three-dots')
         self.fix_hamzeh = is_in_args('fix-hamzeh')
         self.hamzeh_with_yeh = is_in_args('hamzeh-with-yeh')
-        self.fix_perfix_spacing = is_in_args('fix-p-spacing')
-        self.fix_perfix_separate = is_in_args('fix-p-separate')
+        self.fix_prefix_spacing = is_in_args('fix-p-spacing')
+        self.fix_prefix_separate = is_in_args('fix-p-separate')
         self.fix_suffix_spacing = is_in_args('fix-s-spacing')
         self.fix_suffix_separate = is_in_args('fix-s-separate')
         self.aggresive = is_in_args('aggresive')
@@ -46,9 +42,6 @@ class PersianEditor:
 
     def cleanup(self):
         """
-        cleanup()
-        ==========
-
         This is the main function who call other functions if need!
         """
         if self.fix_dashes: self.fix_dashes_func()
@@ -59,8 +52,8 @@ class PersianEditor:
         if self.fix_misc_non_persian_chars: self.char_validator()
         if self.fix_arabic_numbers: self.fix_arabic_numbers_func()
         if self.fix_english_numbers: self.fix_english_numbers_func()
-        if self.fix_perfix_spacing: self.fix_perfix_spacing_func()
-        if self.fix_perfix_separate: self.fix_perfix_separate_func()
+        if self.fix_prefix_spacing: self.fix_prefix_spacing_func()
+        if self.fix_prefix_separate: self.fix_prefix_separate_func()
         if self.fix_suffix_spacing: self.fix_suffix_spacing_func()
         if self.fix_suffix_separate: self.fix_suffix_separate_func()
         if self.aggresive: self.aggresive_func()
@@ -78,9 +71,6 @@ class PersianEditor:
 
     def fix_dashes_func(self):
         """
-        fix_dashes_func()
-        =================
-
         This function will replace double dash to `ndash` and triple dash
         to `mdash`.
         """
@@ -89,18 +79,12 @@ class PersianEditor:
 
     def fix_three_dots_func(self):
         """
-        fix_three_dots_func()
-        =====================
-
         This function will replace three dots with ellipsis
         """
         self.text = re.sub(r'\s*\.{3,}', r'…', self.text)
 
     def fix_english_quotes_func(self):
         """
-        fix_english_quotes_func()
-        =========================
-
         This function will replace English quotes with their
         persian equivalent
         """
@@ -108,9 +92,6 @@ class PersianEditor:
 
     def fix_hamzeh_func(self):
         """
-        fix_hamzeh_func()
-        =================
-
         This function will replace end of any word which finished with
         'ه ی' with 'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
         """
@@ -121,9 +102,6 @@ class PersianEditor:
 
     def cleanup_zwnj_func(self):
         '''
-        cleanup_zwnj_func()
-        ===================
-
         This function will remove unnecessary zwnj that are
         succeeded/preceded by a space
         '''
@@ -138,9 +116,6 @@ class PersianEditor:
 
     def char_validator(self):
         """
-        char_validator()
-        ================
-
         This function will change invalid characters to valid ones.
         """
         bad_chars  = ",;%يةك"
@@ -149,8 +124,6 @@ class PersianEditor:
 
     def fix_arabic_numbers_func(self):
         """
-        fix_arabic_numbers_func()
-        ==========================
         This function will translate Arabic numbers to their
         Persian counterparts.
         """
@@ -164,9 +137,6 @@ class PersianEditor:
 
     def fix_english_numbers_func(self):
         """
-        fix_english_numbers_func()
-        ===========================
-
         This function will translate English numbers to their
         Persian counterparts.
 
@@ -189,24 +159,18 @@ class PersianEditor:
             self.text
         )
 
-    def fix_perfix_spacing_func(self):
+    def fix_prefix_spacing_func(self):
         """
-        fix_perfix_spacing_func()
-        =========================
-
         Put zwnj between word and prefix (mi* nemi*)
 
         there's a possible bug here: می and نمی could separate nouns and not prefix
         """
         # I added some persian punctioation characters
         # to prevent a bug: «می شود»
-        self.text = re.sub(r"([\s«\(\{])(ن?می)\s+",r'\1\2‌', self.text)
+        self.text = re.sub(r"\b([\s«\(\{]*)(ن?می)\s+",r'\1\2‌', self.text)
 
-    def fix_perfix_separate_func(self):
+    def fix_prefix_separate_func(self):
         """
-        fix_perfix_separate_func()
-        ===========================
-
         """
         # I removed punctioations here but I dont know why its work :D
         regex = re.compile(r"\A(ن?می)(\S+)") #  \A for words like سهمیه
@@ -230,8 +194,6 @@ class PersianEditor:
 
     def fix_suffix_spacing_func(self):
         """
-        fix_suffix_spacing_func()
-        =========================
         put zwnj between word and suffix (*ha[ye] *tar[in])
         """
         regex = re.compile(
@@ -246,9 +208,6 @@ class PersianEditor:
 
     def fix_suffix_separate_func(self):
         """
-        fix_suffix_separate_func()
-        ==========================
-
         to add virtual space in words with suffix (haye, ...)
 
         that are not spaced correctly ;-)
@@ -277,9 +236,6 @@ class PersianEditor:
 
     def aggresive_func(self):
         """
-        aggresive_func()
-        ================
-
         Aggressive Editing
         """
         # replace more than one ! or ? mark with just one
@@ -293,9 +249,6 @@ class PersianEditor:
 
     def fix_spacing_for_braces_and_quotes_func(self):
         """
-        fix_spacing_for_braces_and_quotes_func()
-        ========================================
-
         This function will fix the braces and quotes spacing problems.
         """
         # ()[]{}""«» should have one space before and one virtual
@@ -366,28 +319,19 @@ class PersianEditor:
 
     def cleanup_spacing_func(self):
         """
-        cleanup_spacing_func()
-        ======================
-
         """
         self.text = re.sub(r'[ ]+', r' ', self.text)
         self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
 
     def dont_touch_list_gen(self):
         """
-        dont_touch_list_gen()
-        =====================
-        This function will generate a unicode list from 'data/untouchable.dat'
-
-        the file with words like 'بهتر' or 'میلاد' that suffix/perfix function
-        don't have to touch them
+        This function generates a Unicode list from 'data/untouchable.dat'
+        containing such words like 'بهتر' or 'میلاد' which suffixes/prefixes functions
+        should not have to touch them
         """
-        #        f = pkgutil.get_data('negar', 'data/untouchable.dat')
-        this_dir, _ = os.path.split(__file__)
-        DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
-        #        print open(DATA_PATH).read()
 
-        with open(DATA_PATH, encoding='utf8') as f:
+        DATA = Path(__file__).parent.absolute()/"data/untouchable.dat"
+        with open(DATA, encoding='utf8') as f:
             self.dont_touch = [] # This is that empty list I used to append words
             for line in f:
                 # I had to strip the f.readline() to prevent white spaces
@@ -397,9 +341,6 @@ class PersianEditor:
     @classmethod
     def char_translator(cls, fromchar, tochar, whichstring):
         """
-        char_translator()
-        =================
-
         This function will translate the 'whichstring' character by character
         from 'fromchar' to 'tochar'. in this new function I can return
         the newstring, but I can't check the length of fromchar and tochar!
@@ -415,9 +356,8 @@ class PersianEditor:
 def add_to_untouchable(word_list):
     # TODO: What da fuck? No write access to file-system
     # Should be changed to another way
-    this_dir, _ = os.path.split(__file__)
-    DATA_PATH = os.path.join(this_dir, "data", "untouchable.dat")
-    with open(DATA_PATH, "a", encoding="utf8") as f:
+    DATA = Path(__file__).parent.absolute()/"data/untouchable.dat"
+    with open(DATA, "a", encoding="utf8") as f:
         for word in word_list:
             f.write(word+"\n")
 

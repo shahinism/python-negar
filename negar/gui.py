@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
+from pathlib import Path
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
@@ -11,12 +11,13 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.7"
+__version__ = "0.6.8"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
         super(Form, self).__init__(parent)
         self.option_list = []
+        self.logo = (Path(__file__).parent.absolute()/"logo.png").as_posix()
         self.setupUi()
 
     def setupUi(self):
@@ -49,44 +50,44 @@ class Form(QMainWindow):
         output_editor_label.setBuddy(self.output_editor)
 
         # Options:
-        self.f_dashes = QCheckBox(self.tr("&Fix Dashes"))
+        self.f_dashes = QCheckBox(self.tr("Fix &Dashes"))
         self.f_dashes.setChecked(True)
-        self.f_three_dots = QCheckBox(self.tr("&Fix three dots"))
+        self.f_three_dots = QCheckBox(self.tr("Fix &three dots"))
         self.f_three_dots.setChecked(True)
-        self.f_english_quotes = QCheckBox(self.tr("&Fix English quotes"))
+        self.f_english_quotes = QCheckBox(self.tr("Fix English &quotes"))
         self.f_english_quotes.setChecked(True)
-        self.f_hamzeh = QCheckBox(self.tr("&Fix hamzeh"))
+        self.f_hamzeh = QCheckBox(self.tr("Fix &hamzeh"))
         self.f_hamzeh.setChecked(True)
-        self.hamzeh_yeh = QCheckBox(self.tr("&Use 'Persian yeh' to show hamzeh"))
+        self.hamzeh_yeh = QCheckBox(self.tr("Use 'Persian &yeh' to show hamzeh"))
         self.hamzeh_yeh.setChecked(True)
-        self.f_spacing_bq = QCheckBox(self.tr("&Fix spacing braces and qoutes"))
+        self.f_spacing_bq = QCheckBox(self.tr("Fix &spacing braces and qoutes"))
         self.f_spacing_bq.setChecked(True)
-        self.f_arab_num = QCheckBox(self.tr("&Fix Arabic numbers"))
+        self.f_arab_num = QCheckBox(self.tr("Fix Arabic &numbers"))
         self.f_arab_num.setChecked(True)
-        self.f_eng_num = QCheckBox(self.tr("&Fix English numbers"))
+        self.f_eng_num = QCheckBox(self.tr("Fix &English numbers"))
         self.f_eng_num.setChecked(True)
-        self.f_non_persian_ch = QCheckBox(self.tr("&Fix non Persian chars"))
+        self.f_non_persian_ch = QCheckBox(self.tr("Fix non Persian &chars"))
         self.f_non_persian_ch.setChecked(True)
-        self.f_p_spacing = QCheckBox(self.tr("&Fix perfix spacing"))
+        self.f_p_spacing = QCheckBox(self.tr("Fix &prefix spacing"))
         self.f_p_spacing.setChecked(True)
-        self.f_p_separate = QCheckBox(self.tr("&Fix perfix separating"))
+        self.f_p_separate = QCheckBox(self.tr("Fix p&refix separating"))
         self.f_p_separate.setChecked(True)
-        self.f_s_spacing = QCheckBox(self.tr("&Fix suffix spacing"))
+        self.f_s_spacing = QCheckBox(self.tr("Fix su&ffix spacing"))
         self.f_s_spacing.setChecked(True)
-        self.f_s_separate = QCheckBox(self.tr("&Fix suffix separating"))
+        self.f_s_separate = QCheckBox(self.tr("Fix s&uffix separating"))
         self.f_s_separate.setChecked(True)
-        self.aggresive = QCheckBox(self.tr("&Aggresive"))
+        self.aggresive = QCheckBox(self.tr("A&ggresive"))
         self.aggresive.setChecked(True)
-        self.clnup_kashidas = QCheckBox(self.tr("&Cleanup kashidas"))
+        self.clnup_kashidas = QCheckBox(self.tr("Cleanup &kashidas"))
         self.clnup_kashidas.setChecked(True)
-        self.clnup_ex_marks = QCheckBox(self.tr("&Cleanup extra marks"))
+        self.clnup_ex_marks = QCheckBox(self.tr("Cleanup e&xtra marks"))
         self.clnup_ex_marks.setChecked(True)
-        self.clnup_spacing = QCheckBox(self.tr("&Cleanup spacing"))
+        self.clnup_spacing = QCheckBox(self.tr("C&leanup spacing"))
         self.clnup_spacing.setChecked(True)
 
         # Add to untouchable list:
         self.untouch_word = QLineEdit()
-        untouch_label = QLabel(self.tr("&Add a word to untouchable list"))
+        untouch_label = QLabel(self.tr("Add a &word to untouchable list"))
         untouch_label.setBuddy(self.untouch_word)
         self.untouch_button = QPushButton(self.tr("&Add"))
         self.untouch_button.setEnabled(False)
@@ -147,9 +148,7 @@ class Form(QMainWindow):
         # Main window configs:
         self.setCentralWidget(tab_widget)
         self.resize(800, 600)
-        this_dir, _ = os.path.split(__file__)
-        logo = os.path.join(this_dir, "logo.png")
-        self.setWindowIcon(QIcon(logo))
+        self.setWindowIcon(QIcon(self.logo))
         self.setWindowTitle(self.tr(f"Negar {__version__}"))
 
         # Signal control:

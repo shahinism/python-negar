@@ -1,3 +1,8 @@
+0.6.8 - 2022-03-21
+-- os replaced by Pathlib
+-- Fixed some hot-keys in `Config` tab
+-- fixed the issue with 'می' at the begaining of the line
+
 0.6.7 - 2022-03-20
 -- auto focus on input field
 
