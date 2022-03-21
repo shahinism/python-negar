@@ -13,7 +13,7 @@ You can run gui version like this:
 
     negar
 
-![NegarsScreenshot](https://github.com/shahinism/python-negar/raw/master/docs/screenshot/window1.png)
+![NegarsScreenshot](./docs/screenshot/window1.png)
 
 
 Installation
@@ -96,8 +96,8 @@ Full list of args with description:
     --fix-arabic-num             Disable fix arabic num feature
     --fix-english-num            Disable fix english num feature
     --fix-non-persian-chars      Disable fix misc non persian chars feature
-    --fix-p-spacing              Disable fix perfix spacing feature
-    --fix-p-separate             Disable fix perfix separating feature
+    --fix-p-spacing              Disable fix prefix spacing feature
+    --fix-p-separate             Disable fix prefix separating feature
     --fix-s-spacing              Disable fix suffix spacing feature
     --fix-s-separate             Disable fix suffix separating feature
     --aggresive                  Disable aggresive feature
