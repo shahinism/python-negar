@@ -11,7 +11,7 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.6.8"
+__version__ = "0.6.9"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -182,6 +182,12 @@ class Form(QMainWindow):
         self.clnup_kashidas.stateChanged.connect(self.option_control)
         self.clnup_ex_marks.stateChanged.connect(self.option_control)
         self.clnup_spacing.stateChanged.connect(self.option_control)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.close()
+        else:
+            super().keyPressEvent(event)
 
     def __valueChanged(self,):
         size = self.font_slider.value()

@@ -1,3 +1,6 @@
+0.6.9 - 2022-03-22
+-- Esc key to close the window
+
 0.6.8 - 2022-03-21
 -- os replaced by Pathlib
 -- Fixed some hot-keys in `Config` tab
