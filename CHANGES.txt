@@ -1,3 +1,6 @@
+0.7.1 - 2022-03-23
+-- Fixed issue with `*yeh$`
+
 0.7.0 - 2022-03-23
 -- F1-key shows a description about negar abilities
 

@@ -96,9 +96,9 @@ class PersianEditor:
         'ه ی' with 'هٔ' or 'ه‌ی'(if self.hamzeh_with_yeh == True)
         """
         if self.hamzeh_with_yeh:
-            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\s)',r'\1ه‌ی\3',self.text)
+            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\b)',r'\1ه‌ی\3',self.text)
         else:
-            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\s)',r'\1هٔ\3', self.text)
+            self.text = re.sub(r'(\S)(ه[\s]+[یي])(\b)',r'\1هٔ\3', self.text)
 
     def cleanup_zwnj_func(self):
         '''

@@ -5,7 +5,7 @@ except ImportError:
 
 setup(
     name="python-negar",
-    version="0.7.0",
+    version="0.7.1",
     author="Shahin Azad",
     author_email="ishahinism@gmail.com",
     maintainer="Alireza Savand",
