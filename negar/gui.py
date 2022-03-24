@@ -3,6 +3,7 @@
 
 import sys
 from pathlib import Path
+from pyperclip import copy
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
@@ -11,7 +12,7 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.7.1"
+__version__ = "0.7.2"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
@@ -25,6 +26,7 @@ class Form(QMainWindow):
         self.edit_btn.setEnabled(False)
         reset_btn = QPushButton(self.tr("&Reset"))
         Quit_btn = QPushButton(self.tr("&Quit"))
+        copy_btn = QPushButton(QIcon(), '\u2398',)
         self.autoedit_chkbox = QCheckBox(self.tr("&Automatic edit"))
         self.autoedit_chkbox.setChecked(True)
         self.font_slider = QSlider(orientation=Qt.Orientation.Horizontal,
@@ -130,12 +132,19 @@ class Form(QMainWindow):
         ct_layout.addWidget(config_box)
         ct_layout.addWidget(untouch_box)
         ct_layout.addStretch()
+
+        # layout for output_label + copy button
+        output_layout = QHBoxLayout()
+        output_layout.addWidget(output_editor_label)
+        output_layout.addStretch()
+        output_layout.addWidget(copy_btn)
+
         # Main Tab widgets layouts:
         mt_layout = QGridLayout(main_tab)
-
         mt_layout.addWidget(input_editor_label, 0, 0)
         mt_layout.addWidget(self.input_editor, 1, 0)
-        mt_layout.addWidget(output_editor_label, 2, 0)
+        # mt_layout.addWidget(output_editor_label, 2, 0)
+        mt_layout.addLayout(output_layout, 2,0)
         mt_layout.addWidget(self.output_editor, 3, 0)
         mt_layout.addLayout(btn_layout, 4, 0)
 
@@ -157,6 +166,8 @@ class Form(QMainWindow):
         Quit_btn.clicked.connect(QApplication.instance().quit)
         reset_btn.clicked.connect(self.text_box_reset)
         self.edit_btn.clicked.connect(self.edit_text)
+
+        copy_btn.clicked.connect(self.save_to_clipboard)
         # if autoedit_chkboxs state's changed, then autoedit_handler have to call again.
         self.autoedit_chkbox.stateChanged.connect(self.autoedit_handler)
 
@@ -185,6 +196,7 @@ class Form(QMainWindow):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
+            self.save_to_clipboard()
             self.close()
         elif event.key() == Qt.Key.Key_F1:
             info="""نگار قابلیت های زیر را داراست:
@@ -312,6 +324,11 @@ class Form(QMainWindow):
         for line in lines:
             run_PE = PersianEditor(line, *self.option_list)
             self.output_editor.append(run_PE.cleanup())
+
+    def save_to_clipboard(self):
+        sanitizedText = self.output_editor.toPlainText().strip()
+        if sanitizedText:
+            copy(sanitizedText)
 
 def main():
     app = QApplication(sys.argv)

@@ -5,13 +5,16 @@ except ImportError:
 
 setup(
     name="python-negar",
-    version="0.7.1",
+    version="0.7.2",
     author="Shahin Azad",
     author_email="ishahinism@gmail.com",
     maintainer="Alireza Savand",
     maintainer_email="alireza.savand@gmail.com",
     include_package_data=True,
     packages=find_packages() + ['negar'],
+    install_requires=[
+        'pyperclip',
+    ],
     package_dir={'negar': 'negar'},
     package_data={'negar/data': ['data/*.dat']},
     description="Negar is a spell corrector and Persian text editor",
