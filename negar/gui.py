@@ -7,10 +7,7 @@ from pyperclip import copy
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
-try:
-    from virastar import PersianEditor, add_to_untouchable
-except:
-    from .virastar import PersianEditor, add_to_untouchable
+from negar.virastar import PersianEditor, add_to_untouchable
 
 __version__ = "0.7.3"
 
