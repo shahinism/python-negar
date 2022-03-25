@@ -12,7 +12,7 @@ try:
 except:
     from .virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.7.2"
+__version__ = "0.7.3"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
