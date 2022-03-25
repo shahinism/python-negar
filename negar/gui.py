@@ -7,9 +7,10 @@ from pyperclip import copy
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
-from negar.virastar import PersianEditor, add_to_untouchable
+sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
+from virastar import PersianEditor, add_to_untouchable
 
-__version__ = "0.7.3"
+__version__ = "0.7.4"
 
 class Form(QMainWindow):
     def __init__(self, parent = None):

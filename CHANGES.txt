@@ -1,6 +1,10 @@
+0.7.4 - 2022-03-25
+-- Fixed special case with شان like و شان خود
+-- Fixed issue with relative import (https://stackoverflow.com/questions/16981921)
+
 0.7.3 - 2022-03-25
 -- Untouchable words update
--- fixed issue with import
+-- Fixed issue with import
 
 0.7.2 - 2022-03-24
 -- A new button to save the output into clipboard,

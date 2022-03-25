@@ -206,6 +206,10 @@ class PersianEditor:
         )
         self.text = re.sub(regex, r'‌\1', self.text)
 
+        # for some cases like و شان خود 
+        regex = re.compile(r"\b(\w)‌([تمش]ان)\b", re.VERBOSE)
+        self.text = re.sub(regex, r'\1 \2', self.text)
+
     def fix_suffix_separate_func(self):
         """
         to add virtual space in words with suffix (haye, ...)
