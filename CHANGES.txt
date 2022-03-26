@@ -2,6 +2,7 @@
 -- Extra Class for untouchable words
 -- Shows untouchable words in config tab via QTableView
 -- Untouchable words update
+-- Right alignment for data in QTableView
 
 0.7.4 - 2022-03-25
 -- Fixed special case with شان like و شان خود

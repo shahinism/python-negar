@@ -20,7 +20,8 @@ class TableModel(QAbstractTableModel):
 
     def data(self, index, role):
         if role == Qt.ItemDataRole.TextAlignmentRole:
-            return Qt.AlignmentFlag.AlignVCenter + Qt.AlignmentFlag.AlignRight
+            # because of right-to-left layout, it sould be set to AlignLeft!
+            return Qt.AlignmentFlag.AlignVCenter + Qt.AlignmentFlag.AlignLeft
         if role == Qt.ItemDataRole.BackgroundRole:
             if index.row()%2:
                 return QColor('gray')
