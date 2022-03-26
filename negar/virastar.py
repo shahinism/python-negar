@@ -37,7 +37,8 @@ class PersianEditor:
         self.fix_english_numbers = is_in_args('fix-english-num')
         self.fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
 
-        self.dont_touch_list_gen()
+        UnTouchable() # to generate the untouchable words
+        # self.dont_touch_list_gen()
         self.cleanup()
 
     def cleanup(self):
@@ -183,7 +184,7 @@ class PersianEditor:
             p = regex.search(word)
             if p:
                 # Here I'll check the word wasn't something like میلاد
-                if p.group() not in self.dont_touch:
+                if p.group() not in UnTouchable.words:
                     # This little one was really tricky!
                     # regex grouping is really awesome ;-)
                     self.text = re.sub(
@@ -231,7 +232,7 @@ class PersianEditor:
             p = regex.search(word)
             if p:
                 # Here I'll check the word wasn't something like بهتر
-                if p.group() not in self.dont_touch:
+                if p.group() not in UnTouchable.words:
                     self.text = re.sub(
                         p.group(),
                         p.group(1) + r"‌" + p.group(2) ,
@@ -327,21 +328,6 @@ class PersianEditor:
         self.text = re.sub(r'[ ]+', r' ', self.text)
         self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
 
-    def dont_touch_list_gen(self):
-        """
-        This function generates a Unicode list from 'data/untouchable.dat'
-        containing such words like 'بهتر' or 'میلاد' which suffixes/prefixes functions
-        should not have to touch them
-        """
-
-        DATA = Path(__file__).parent.absolute()/"data/untouchable.dat"
-        with open(DATA, encoding='utf8') as f:
-            self.dont_touch = [] # This is that empty list I used to append words
-            for line in f:
-                # I had to strip the f.readline() to prevent white spaces
-                self.dont_touch.append(line.strip())
-        return self.dont_touch
-
     @classmethod
     def char_translator(cls, fromchar, tochar, whichstring):
         """
@@ -357,13 +343,40 @@ class PersianEditor:
         return newstring
 
 
-def add_to_untouchable(word_list):
-    # TODO: What da fuck? No write access to file-system
-    # Should be changed to another way
-    DATA = Path(__file__).parent.absolute()/"data/untouchable.dat"
-    with open(DATA, "a", encoding="utf8") as f:
-        for word in word_list:
-            f.write(word+"\n")
+
+class UnTouchable:
+    DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
+    words = set() # a set storing all untouchable words
+
+    @classmethod
+    def __init__(cls):
+        cls.generate()
+
+    @classmethod
+    def get(cls):
+        return cls.words
+
+    @classmethod
+    def add(cls, word_list):
+        # TODO: What da fuck? No write access to file-system
+        # Should be changed to another way
+        with open(cls.DATAFILE, "a", encoding="utf8") as f:
+            for word in word_list:
+                if word not in cls.words:
+                    f.write(word+"\n")
+                    cls.words.add(word)
+
+    @classmethod
+    def generate(cls):
+        """
+        This method generates a Unicode list from 'data/untouchable.dat'
+        containing such words like 'بهتر' or 'میلاد' which suffixes/prefixes functions
+        should not have to touch them
+        """
+        with open(cls.DATAFILE, encoding='utf8') as f:
+            for line in f:
+                # I had to strip the f.readline() to prevent white spaces
+                cls.words.add(line.strip())
 
 if __name__ == "__main__":
     print( "I'm a module, use ``negar'' instead. ;-)")

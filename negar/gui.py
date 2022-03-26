@@ -8,15 +8,49 @@ from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
-from virastar import PersianEditor, add_to_untouchable
+from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.7.4"
+__version__ = "0.8.0"
+
+
+class TableModel(QAbstractTableModel):
+    def __init__(self, data):
+        super(TableModel, self).__init__()
+        self._data = data
+
+    def data(self, index, role):
+        if role == Qt.ItemDataRole.TextAlignmentRole:
+            return Qt.AlignmentFlag.AlignVCenter + Qt.AlignmentFlag.AlignRight
+        if role == Qt.ItemDataRole.BackgroundRole:
+            if index.row()%2:
+                return QColor('gray')
+        if role == Qt.ItemDataRole.DisplayRole:
+            try:
+                return self._data[index.row()][index.column()]
+            except:
+                return ''
+
+    def rowCount(self, index):
+        # The length of the outer list.
+        return len(self._data)
+
+    def columnCount(self, index):
+        # The following takes the first sub-list, and returns
+        # the length (only works if all rows are an equal length)
+        return len(self._data[0])
 
 class Form(QMainWindow):
     def __init__(self, parent = None):
         super(Form, self).__init__(parent)
         self.option_list = []
         self.logo = (Path(__file__).parent.absolute()/"logo.png").as_posix()
+
+        self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft)
+        data, col = sorted(list(UnTouchable().get())), 10
+        data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
+        model = TableModel(data)
+        self.table.setModel(model)
+
         self.setupUi()
 
     def setupUi(self):
@@ -96,6 +130,7 @@ class Form(QMainWindow):
         untouch_layout.addWidget(untouch_label, 0, 0)
         untouch_layout.addWidget(self.untouch_word, 1, 0)
         untouch_layout.addWidget(self.untouch_button, 1, 1)
+        untouch_layout.addWidget(self.table, 2,0,1,2)
         untouch_box.setLayout(untouch_layout)
 
         # Options Box:
@@ -129,7 +164,7 @@ class Form(QMainWindow):
         ct_layout = QVBoxLayout(config_tab)
         ct_layout.addWidget(config_box)
         ct_layout.addWidget(untouch_box)
-        ct_layout.addStretch()
+        # ct_layout.addStretch()
 
         # layout for output_label + copy button
         output_layout = QHBoxLayout()
@@ -242,7 +277,7 @@ class Form(QMainWindow):
         untouchabl data file.
         """
         word = [self.untouch_word.text()]
-        add_to_untouchable(word)
+        UnTouchable.add(word)
         self.untouch_word.clear()
         self.edit_text() # in order to update untouchable list
 
