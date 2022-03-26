@@ -79,6 +79,7 @@ Enabling extra features/args:
 ::
 
     ##
+    args = []
     args.append('fix-english-quotes')
     args.append('cleanup-spacing')
     print(PersianEditor(text, *args))
