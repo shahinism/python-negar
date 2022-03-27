@@ -13,7 +13,8 @@ You can run gui version like this:
 
     negar
 
-![NegarsScreenshot](./docs/screenshot/window1.png)
+![Negar's Main Tab](./docs/screenshot/maintab.png)
+![Negar's Config Tab](./docs/screenshot/configtab.png)
 
 
 Installation
