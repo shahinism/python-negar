@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 
 
 class TableModel(QAbstractTableModel):
@@ -58,7 +58,7 @@ class Form(QMainWindow):
 
         self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft,)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        data, col = sorted(list(UnTouchable().get())), 10
+        data, col = sorted(list(UnTouchable().get())), 8
         data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
         model = TableModel(data)
         self.table.setModel(model)
@@ -77,7 +77,7 @@ class Form(QMainWindow):
         self.autoedit_chkbox = QCheckBox(self.tr("&Automatic edit"))
         self.autoedit_chkbox.setChecked(True)
         self.font_slider = QSlider(orientation=Qt.Orientation.Horizontal,
-            minimum=10, maximum=40, value=22)
+            minimum=10, maximum=40, value=18)
         font_slider_label = QLabel(self.tr("&Font Size"))
         font_slider_label.setBuddy(self.font_slider)
 
@@ -155,19 +155,19 @@ class Form(QMainWindow):
         config_layout.addWidget(self.f_three_dots, 0, 1)
         config_layout.addWidget(self.f_english_quotes, 0, 2)
         config_layout.addWidget(self.f_hamzeh, 0, 3)
-        config_layout.addWidget(self.hamzeh_yeh, 0, 4)
-        config_layout.addWidget(self.f_spacing_bq, 0, 5)
+        config_layout.addWidget(self.f_s_spacing, 0, 4)
         config_layout.addWidget(self.f_arab_num, 1, 0)
         config_layout.addWidget(self.f_eng_num, 1, 1)
         config_layout.addWidget(self.f_non_persian_ch, 1, 2)
         config_layout.addWidget(self.f_p_spacing, 1, 3)
         config_layout.addWidget(self.f_p_separate, 1, 4)
-        config_layout.addWidget(self.f_s_spacing, 1, 5)
         config_layout.addWidget(self.f_s_separate, 2, 0)
         config_layout.addWidget(self.aggresive, 2, 1)
         config_layout.addWidget(self.clnup_kashidas, 2, 2)
         config_layout.addWidget(self.clnup_ex_marks, 2, 3)
         config_layout.addWidget(self.clnup_spacing, 2, 4)
+        config_layout.addWidget(self.f_spacing_bq, 3, 0, 1, 2)
+        config_layout.addWidget(self.hamzeh_yeh, 3, 2, 1, 2)
         config_box.setLayout(config_layout)
 
         # Tab widgets initializing:
