@@ -1,3 +1,7 @@
+0.8.2 - 2022-03-27
+-- copy button redesign
+-- Untouchable words revision
+
 0.8.1 - 2022-03-27
 -- Auto Stretch of headers in QTableView
 -- No header name for QTableView

@@ -112,7 +112,7 @@ class PersianEditor:
         """
         Some sanitization tasks add some unwanted zwmj which are cleaned by this method
         """
-        self.text = re.sub(r'([ادرزژو])‌+', r'\1', self.text)
+        self.text = re.sub(r'([ءاأدذرزژوؤ])‌+', r'\1', self.text)
         self.text = re.sub(r'(‌)+', r'\1', self.text)
 
     def char_validator(self):

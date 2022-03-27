@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 
 
 class TableModel(QAbstractTableModel):
@@ -69,8 +69,11 @@ class Form(QMainWindow):
         self.edit_btn = QPushButton(self.tr("&Edit"))
         self.edit_btn.setEnabled(False)
         reset_btn = QPushButton(self.tr("&Reset"))
-        Quit_btn = QPushButton(self.tr("&Quit"))
-        copy_btn = QPushButton(QIcon(), '\u2398',)
+        quit_btn = QPushButton(self.tr("&Quit"))
+        copy_btn = QPushButton(QIcon(self.logo), '',)
+        copy_btn.setIconSize(QSize(24,24))
+        copy_btn.setToolTip(self.tr("Click to Copy Sanitized Output"))
+        copy_btn.setStyleSheet("QPushButton {border-style: outset; border-width: 0px;}")
         self.autoedit_chkbox = QCheckBox(self.tr("&Automatic edit"))
         self.autoedit_chkbox.setChecked(True)
         self.font_slider = QSlider(orientation=Qt.Orientation.Horizontal,
@@ -86,7 +89,7 @@ class Form(QMainWindow):
         btn_layout.addStretch()
         btn_layout.addWidget(self.edit_btn)
         btn_layout.addWidget(reset_btn)
-        btn_layout.addWidget(Quit_btn)
+        btn_layout.addWidget(quit_btn)
 
         self.input_editor = QTextEdit()
         input_editor_label = QLabel(self.tr("&Input Box"))
@@ -193,8 +196,6 @@ class Form(QMainWindow):
         mt_layout.addWidget(self.output_editor, 3, 0)
         mt_layout.addLayout(btn_layout, 4, 0)
 
-        # self.__valueChanged()
-
         # Main tab widget control:
         tab_widget.addTab(main_tab, self.tr("&Main"))
         tab_widget.addTab(config_tab, self.tr("&Config"))
@@ -208,7 +209,7 @@ class Form(QMainWindow):
         # Signal control:
         # first of all negar have to check the default state of automatic edit feature.
         self.autoedit_handler()
-        Quit_btn.clicked.connect(QApplication.instance().quit)
+        quit_btn.clicked.connect(QApplication.instance().quit)
         reset_btn.clicked.connect(self.text_box_reset)
         self.edit_btn.clicked.connect(self.edit_text)
 
