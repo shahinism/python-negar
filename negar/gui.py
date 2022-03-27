@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.0"
+__version__ = "0.8.1"
 
 
 class TableModel(QAbstractTableModel):
@@ -20,11 +20,13 @@ class TableModel(QAbstractTableModel):
 
     def data(self, index, role):
         if role == Qt.ItemDataRole.TextAlignmentRole:
-            # because of right-to-left layout, it sould be set to AlignLeft!
-            return Qt.AlignmentFlag.AlignVCenter + Qt.AlignmentFlag.AlignLeft
+            return Qt.AlignmentFlag.AlignVCenter
         if role == Qt.ItemDataRole.BackgroundRole:
             if index.row()%2:
                 return QColor('gray')
+        if role == Qt.ItemDataRole.ForegroundRole:
+            if index.row()%2:
+                return QColor('white')
         if role == Qt.ItemDataRole.DisplayRole:
             try:
                 return self._data[index.row()][index.column()]
@@ -40,13 +42,22 @@ class TableModel(QAbstractTableModel):
         # the length (only works if all rows are an equal length)
         return len(self._data[0])
 
+    def headerData(self, section, orientation, role):
+        # section is the index of the column/row.
+        if role == Qt.ItemDataRole.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
+                return ''
+            if orientation == Qt.Orientation.Vertical:
+                return str(section+1)
+
 class Form(QMainWindow):
     def __init__(self, parent = None):
         super(Form, self).__init__(parent)
         self.option_list = []
         self.logo = (Path(__file__).parent.absolute()/"logo.png").as_posix()
 
-        self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft)
+        self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft,)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         data, col = sorted(list(UnTouchable().get())), 10
         data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
         model = TableModel(data)

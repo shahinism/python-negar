@@ -1,3 +1,7 @@
+0.8.1 - 2022-03-27
+-- Auto Stretch of headers in QTableView
+-- No header name for QTableView
+
 0.8.0 - 2022-03-26
 -- Extra Class for untouchable words
 -- Shows untouchable words in config tab via QTableView
