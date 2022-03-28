@@ -5,13 +5,16 @@ except ImportError:
 
 setup(
     name="python-negar",
-    version="0.6.1",
+    version="0.8.3",
     author="Shahin Azad",
     author_email="ishahinism@gmail.com",
     maintainer="Alireza Savand",
     maintainer_email="alireza.savand@gmail.com",
     include_package_data=True,
     packages=find_packages() + ['negar'],
+    install_requires=[
+        'pyperclip',
+    ],
     package_dir={'negar': 'negar'},
     package_data={'negar/data': ['data/*.dat']},
     description="Negar is a spell corrector and Persian text editor",
@@ -20,7 +23,7 @@ setup(
     url="http://shahinism.github.com/python-negar",
     entry_points={
         'console_scripts': [
-            'negar = negar.negar:main',
+            'negar = negar.gui:main',
         ],
     },
     long_description=open("README.md").read(),

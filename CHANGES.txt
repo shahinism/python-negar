@@ -1,12 +1,82 @@
-0.0.0 - 0000-00-00
--- Fixed #8: Removed CLI part.
-    -- Removed negar/negar.py.
-    -- Added installation, usage section to README.md.
+0.8.3 - 2022-03-28
+-- Config Tab redesign
+
+0.8.2 - 2022-03-27
+-- copy button redesign
+-- Untouchable words revision
+
+0.8.1 - 2022-03-27
+-- Auto Stretch of headers in QTableView
+-- No header name for QTableView
+
+0.8.0 - 2022-03-26
+-- Extra Class for untouchable words
+-- Shows untouchable words in config tab via QTableView
+-- Untouchable words update
+-- Right alignment for data in QTableView
+
+0.7.4 - 2022-03-25
+-- Fixed special case with شان like و شان خود
+-- Fixed issue with relative import (https://stackoverflow.com/questions/16981921)
+
+0.7.3 - 2022-03-25
+-- Untouchable words update
+-- Fixed issue with import
+
+0.7.2 - 2022-03-24
+-- A new button to save the output into clipboard,
+    and it also saves the output into the clipboard automatically when the window is has been closed.
+
+0.7.1 - 2022-03-23
+-- Fixed issue with `*yeh$`
+
+0.7.0 - 2022-03-23
+-- F1-key shows a description about negar abilities
+
+0.6.9 - 2022-03-22
+-- Esc key to close the window
+
+0.6.8 - 2022-03-21
+-- os replaced by Pathlib
+-- Fixed some hot-keys in `Config` tab
+-- fixed the issue with 'می' at the begaining of the line
+
+0.6.7 - 2022-03-20
+-- auto focus on input field
+
+0.6.6 - 2022-03-19
+-- Fixed issue with words that contain 'ها' in the middle or at the end, like 'مهاباد' and 'دانشکده ها'
+-- Untouchable words list update as well as redundancy removed
+-- Removing unwanted extra zwmjs
+-- Negar logo for better desktop switching
+
+0.6.5 - 2022-03-18
+-- Font Size Slider relocate to the bottom
+-- Fixed issue with words that contain 'می' in the middle like 'سهمیه'
+-- Tremendous addition of words start with 'می' into untouchable words
+
+0.6.4 - 2022-03-18
+-- Font Size Slider
+
+0.6.3 - 2022-03-18
+-- Fixed issue with some words like سهمیه
+-- untouchable list update
+-- Fixed issue with relative import in Python3
+
+0.6.2 - 2022-03-17
+-- Fixed 17: Some addition to Untouchable words
+-- Revision in compliance with Python3.10 and PyQt6
+-- Fixed issue with setup
 
 0.6.1 - 2012-02-23 Negar beginning
 -- Cleanup on README.md
 -- Fixed #2: Indentation and re-styling on virastar.py.
 -- Fixed #10: Packaged to pypi.
+
+0.0.0 - 0000-00-00
+-- Fixed #8: Removed CLI part.
+-- Removed negar/negar.py.
+-- Added installation, usage section to README.md.
 
 0.6 - 2012-01-09 -- First official release.
 -- First version of GUI added.

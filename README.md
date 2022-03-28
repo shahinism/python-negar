@@ -11,9 +11,10 @@ Screenshot & Features
 =====================
 You can run gui version like this:
 
-    negar --gui
+    negar
 
-![NegarsScreenshot](https://github.com/shahinism/python-negar/raw/master/docs/screenshot/window1.png)
+![Negar's Main Tab](./docs/screenshot/maintab.png)
+![Negar's Config Tab](./docs/screenshot/configtab.png)
 
 
 Installation
@@ -72,13 +73,14 @@ Usage without extra args:
 
     from negar.virastar import PersianEditor
 
-    text = unicode("مانند 'همه ی ' که با 'ی' پسوند همراه هستند", encoding='utf-8')
+    text = "مانند 'همه ی ' که با 'ی' پسوند همراه هستند"
     print(PersianEditor(text)) # Done ;)
 
 Enabling extra features/args:
 ::
 
     ##
+    args = []
     args.append('fix-english-quotes')
     args.append('cleanup-spacing')
     print(PersianEditor(text, *args))
@@ -96,8 +98,8 @@ Full list of args with description:
     --fix-arabic-num             Disable fix arabic num feature
     --fix-english-num            Disable fix english num feature
     --fix-non-persian-chars      Disable fix misc non persian chars feature
-    --fix-p-spacing              Disable fix perfix spacing feature
-    --fix-p-separate             Disable fix perfix separating feature
+    --fix-p-spacing              Disable fix prefix spacing feature
+    --fix-p-separate             Disable fix prefix separating feature
     --fix-s-spacing              Disable fix suffix spacing feature
     --fix-s-separate             Disable fix suffix separating feature
     --aggresive                  Disable aggresive feature
