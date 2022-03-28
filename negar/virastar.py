@@ -3,6 +3,7 @@
 
 import re
 from pathlib import Path
+from constants import DATAFILE, USERFILE
 
 class PersianEditor:
     """
@@ -335,13 +336,11 @@ class PersianEditor:
 
 
 class UnTouchable:
-    DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
-    USERFILE = Path.home()/".python-negar"
     words = set() # a set storing all untouchable words
 
     @classmethod
     def __init__(cls):
-        cls.USERFILE.mkdir(parents=True, exist_ok=True)
+        USERFILE.mkdir(parents=True, exist_ok=True)
         cls.generate()
 
     @classmethod
@@ -350,7 +349,7 @@ class UnTouchable:
 
     @classmethod
     def add(cls, word_list):
-        with (cls.USERFILE/"untouchable.dat").open('a') as f:
+        with (USERFILE/"untouchable.dat").open('a') as f:
             for word in word_list:
                 if word not in cls.words:
                     f.write(word+"\n")
@@ -362,11 +361,11 @@ class UnTouchable:
         A Unicode list from 'data/untouchable.dat' and '/home/.python-negar/untouchable.dat'
         containing such words like 'بهتر' or 'میلاد' won't receive any modifications.
         """
-        with cls.DATAFILE.open() as f:
+        with DATAFILE.open() as f:
             for line in f:
                 cls.words.add(line.strip())
         try:
-            with (cls.USERFILE/"untouchable.dat").open() as f:
+            with (USERFILE/"untouchable.dat").open() as f:
                 for line in f:
                     cls.words.add(line.strip())
         except:
