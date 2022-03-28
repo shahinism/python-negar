@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import icu
 from pathlib import Path
 from pyperclip import copy
 from PyQt6.QtGui import *
@@ -10,7 +11,8 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.4"
+__version__ = "0.8.5"
+collator = icu.Collator.createInstance(icu.Locale('fa_IR.UTF-8'))
 
 class TableModel(QAbstractTableModel):
     def __init__(self, data):
@@ -57,7 +59,7 @@ class Form(QMainWindow):
 
         self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft,)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        data, col = sorted(list(UnTouchable().get())), 8
+        data, col = sorted(list(UnTouchable().get()), key=collator.getSortKey), 8
         data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
         model = TableModel(data)
         self.table.setModel(model)
