@@ -1,19 +1,28 @@
+import re
+
 try:
     from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
+version = re.search(
+    r'(__version__ = "(\d\.\d\.\d+?)")',
+    open("negar/gui.py").read(),
+    re.M
+).group(2)
+
 setup(
     name="python-negar",
-    version="0.8.3",
+    version=version,
     author="Shahin Azad",
     author_email="ishahinism@gmail.com",
-    maintainer="Alireza Savand",
-    maintainer_email="alireza.savand@gmail.com",
+    maintainer="Javad Razavian, Alireza Savand",
+    maintainer_email="javadr@gmail.com, alireza.savand@gmail.com",
     include_package_data=True,
     packages=find_packages() + ['negar'],
     install_requires=[
         'pyperclip',
+        'PyICU'
     ],
     package_dir={'negar': 'negar'},
     package_data={'negar/data': ['data/*.dat']},

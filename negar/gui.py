@@ -10,8 +10,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.3"
-
+__version__ = "0.8.4"
 
 class TableModel(QAbstractTableModel):
     def __init__(self, data):

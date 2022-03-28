@@ -1,3 +1,6 @@
+0.8.4 - 2022-03-28
+-- setup.py reads version automatically from negar/gui.py
+
 0.8.3 - 2022-03-28
 -- Config Tab redesign
 
