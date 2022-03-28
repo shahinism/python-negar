@@ -6,7 +6,7 @@ except ImportError:
     from distutils.core import setup
 
 version = re.search(
-    r'(__version__ = "(\d\.\d\.\d+?)")',
+    r'(__version__ = "(\d\.\d\.\d+)")',
     open("negar/gui.py").read(),
     re.M
 ).group(2)

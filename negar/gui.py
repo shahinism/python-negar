@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.5"
+__version__ = "0.8.6"
 collator = icu.Collator.createInstance(icu.Locale('fa_IR.UTF-8'))
 
 class TableModel(QAbstractTableModel):
