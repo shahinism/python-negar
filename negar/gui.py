@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import *
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
 
-__version__ = "0.8.6"
+__version__ = "0.8.7"
 collator = icu.Collator.createInstance(icu.Locale('fa_IR.UTF-8'))
 
 class TableModel(QAbstractTableModel):
@@ -58,13 +58,16 @@ class Form(QMainWindow):
         self.logo = (Path(__file__).parent.absolute()/"logo.png").as_posix()
 
         self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft,)
+        self.setup_table()
+
+        self.setupUi()
+
+    def setup_table(self, col=8):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        data, col = sorted(list(UnTouchable().get()), key=collator.getSortKey), 8
+        data = sorted(list(UnTouchable().get()), key=collator.getSortKey)
         data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
         model = TableModel(data)
         self.table.setModel(model)
-
-        self.setupUi()
 
     def setupUi(self):
         self.edit_btn = QPushButton(self.tr("&Edit"))
@@ -294,6 +297,7 @@ class Form(QMainWindow):
         UnTouchable.add(word)
         self.untouch_word.clear()
         self.edit_text() # in order to update untouchable list
+        self.setup_table()
 
     def autoedit_handler(self):
         """

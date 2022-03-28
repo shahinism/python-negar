@@ -9,12 +9,7 @@ class PersianEditor:
     A class for Persian Text Sanitization
     """
     def __init__(self, text, *args):
-        """
-        This is the base part of the class
-        """
-
         # Check to see if `arg` exists in `args` or not
-        # return False if arg in args else True
         is_in_args = lambda arg: arg not in args
 
         self.text = text
@@ -38,13 +33,9 @@ class PersianEditor:
         self.fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
 
         UnTouchable() # to generate the untouchable words
-        # self.dont_touch_list_gen()
         self.cleanup()
 
     def cleanup(self):
-        """
-        This is the main function who call other functions if need!
-        """
         if self.fix_dashes: self.fix_dashes_func()
         if self.fix_three_dots: self.fix_three_dots_func()
         if self.fix_english_quotes: self.fix_english_quotes_func()
@@ -343,13 +334,14 @@ class PersianEditor:
         return newstring
 
 
-
 class UnTouchable:
     DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
+    USERFILE = Path.home()/".python-negar"
     words = set() # a set storing all untouchable words
 
     @classmethod
     def __init__(cls):
+        cls.USERFILE.mkdir(parents=True, exist_ok=True)
         cls.generate()
 
     @classmethod
@@ -358,9 +350,7 @@ class UnTouchable:
 
     @classmethod
     def add(cls, word_list):
-        # TODO: What da fuck? No write access to file-system
-        # Should be changed to another way
-        with open(cls.DATAFILE, "a", encoding="utf8") as f:
+        with (cls.USERFILE/"untouchable.dat").open('a') as f:
             for word in word_list:
                 if word not in cls.words:
                     f.write(word+"\n")
@@ -369,14 +359,18 @@ class UnTouchable:
     @classmethod
     def generate(cls):
         """
-        This method generates a Unicode list from 'data/untouchable.dat'
-        containing such words like 'بهتر' or 'میلاد' which suffixes/prefixes functions
-        should not have to touch them
+        A Unicode list from 'data/untouchable.dat' and '/home/.python-negar/untouchable.dat'
+        containing such words like 'بهتر' or 'میلاد' won't receive any modifications.
         """
-        with open(cls.DATAFILE, encoding='utf8') as f:
+        with cls.DATAFILE.open() as f:
             for line in f:
-                # I had to strip the f.readline() to prevent white spaces
                 cls.words.add(line.strip())
+        try:
+            with (cls.USERFILE/"untouchable.dat").open() as f:
+                for line in f:
+                    cls.words.add(line.strip())
+        except:
+            pass
 
 if __name__ == "__main__":
     print( "I'm a module, use ``negar'' instead. ;-)")
