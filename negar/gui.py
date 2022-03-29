@@ -74,6 +74,7 @@ class Form(QMainWindow):
         self.edit_btn.setEnabled(False)
         reset_btn = QPushButton(self.tr("&Reset"))
         quit_btn = QPushButton(self.tr("&Quit"))
+        import_btn = QPushButton(self.tr('Im&port'),)
         copy_btn = QPushButton(QIcon(self.logo), '',)
         copy_btn.setIconSize(QSize(24,24))
         copy_btn.setToolTip(self.tr("Click to Copy Sanitized Output"))
@@ -185,6 +186,12 @@ class Form(QMainWindow):
         ct_layout.addWidget(untouch_box)
         # ct_layout.addStretch()
 
+        # layout for input_label + import button
+        input_layout = QHBoxLayout()
+        input_layout.addWidget(input_editor_label)
+        input_layout.addStretch()
+        input_layout.addWidget(import_btn)
+
         # layout for output_label + copy button
         output_layout = QHBoxLayout()
         output_layout.addWidget(output_editor_label)
@@ -193,9 +200,8 @@ class Form(QMainWindow):
 
         # Main Tab widgets layouts:
         mt_layout = QGridLayout(main_tab)
-        mt_layout.addWidget(input_editor_label, 0, 0)
+        mt_layout.addLayout(input_layout, 0, 0)
         mt_layout.addWidget(self.input_editor, 1, 0)
-        # mt_layout.addWidget(output_editor_label, 2, 0)
         mt_layout.addLayout(output_layout, 2,0)
         mt_layout.addWidget(self.output_editor, 3, 0)
         mt_layout.addLayout(btn_layout, 4, 0)
@@ -217,6 +223,7 @@ class Form(QMainWindow):
         reset_btn.clicked.connect(self.text_box_reset)
         self.edit_btn.clicked.connect(self.edit_text)
 
+        import_btn.clicked.connect(self.file_dialog)
         copy_btn.clicked.connect(self.save_to_clipboard)
         # if autoedit_chkboxs state's changed, then autoedit_handler have to call again.
         self.autoedit_chkbox.stateChanged.connect(self.autoedit_handler)
@@ -349,11 +356,12 @@ class Form(QMainWindow):
             self.option_list.append("cleanup-spacing")
 
     def file_dialog(self):
-        fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open a plain text file')
-        data  = open(fname, 'r')
-        with data:
-            text = data.read()
-            self.input_box.setText(text)
+        fname, _ = QFileDialog.getOpenFileName(self, 'Open File - A Plain Text')
+        try:
+            with open(fname, 'r') as f:
+                self.input_editor.setText(f.read())
+        except:
+            pass
 
     def edit_text(self):
         self.output_editor.clear()

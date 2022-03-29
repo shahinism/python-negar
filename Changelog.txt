@@ -1,3 +1,6 @@
+0.8.9 - 2022-03-29
+-- Supprot of import button via QFileDialog
+
 0.8.8 - 2022-03-29
 -- constants.py would encompass some constants variables like __version__
 -- Untouchable words update
