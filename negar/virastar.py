@@ -127,11 +127,11 @@ class PersianEditor:
 
     def fix_prefix_spacing(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
-        self.text = re.sub(r"\b(ن?می|بی)\s+",r'\1‌', self.text)
+        self.text = re.sub(r"\b(ن?می|بی)‌*(\s+)",r'\1‌', self.text)
 
     def fix_prefix_separate(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
-        regex = re.compile(r"\b(بی|ن?می)(\S+)") #  \b for words like سهمیه
+        regex = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
 
         wlist = self.text.split(" ")
         for word in wlist:
@@ -193,36 +193,36 @@ class PersianEditor:
 
     def fix_spacing_for_braces_and_quotes(self):
         """Fixes the braces and quotes spacing problems."""
-        # ()[]{}""«» should have one space before and one virtual space after (inside)
+        # ()[]{}""«» should have one space before and no space after (inside)
         self.text = re.sub(
             r'[ ‌]*(\()\s*([^)]+?)\s*?(\))[ ‌]*',
-            r' \1‌\2‌\3 ',
+            r' \1\2\3 ',
             self.text
         )
         self.text = re.sub(
             r'[ ‌]*(\[)\s*([^)]+?)\s*?(\])[ ‌]*',
-            r' \1‌\2‌\3 ',
+            r' \1\2\3 ',
             self.text
         )
         self.text = re.sub(
             r'[ ‌]*(\{)\s*([^)]+?)\s*?(\})[ ‌]*',
-            r' \1‌\2‌\3 ',
+            r' \1\2\3 ',
             self.text
         )
         self.text = re.sub(
             r'[ ‌]*(“)\s*([^)]+?)\s*?(”)[ ‌]*',
-            r' \1‌\2‌\3 ',
+            r' \1\2\3 ',
             self.text
         )
         self.text = re.sub(
             r'[ ‌]*(«)\s*([^)]+?)\s*?(»)[ ‌]*',
-            r' \1‌\2‌\3 ',
+            r' \1\2\3 ',
             self.text
         )
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
         self.text = re.sub(
             r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
-            r'‌\1 ',
+            r'\1 ',
             self.text
         )
         self.text = re.sub(
