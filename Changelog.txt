@@ -1,3 +1,6 @@
+0.9.1 - 2022-03-30
+-- Supports bi*
+
 0.9.0 - 2022-03-30
 -- Revision of functions' names and their docstrings and comments to fix issue #14
 

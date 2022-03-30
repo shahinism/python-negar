@@ -126,23 +126,22 @@ class PersianEditor:
         )
 
     def fix_prefix_spacing(self):
-        """Puts ZWNJ between a word and its prefix (mi* nemi*)"""
-        # I added some persian punctuation characters to prevent a bug: «می شود»
-        self.text = re.sub(r"\b([\s«\(\{]*)(ن?می)\s+",r'\1\2‌', self.text)
+        """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
+        self.text = re.sub(r"\b(ن?می|بی)\s+",r'\1‌', self.text)
 
     def fix_prefix_separate(self):
-        """Puts ZWNJ between a word and its prefix (mi* nemi*)"""
-        regex = re.compile(r"\A(ن?می)(\S+)") #  \A for words like سهمیه
+        """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
+        regex = re.compile(r"\b(بی|ن?می)(\S+)") #  \b for words like سهمیه
 
         wlist = self.text.split(" ")
         for word in wlist:
             p = regex.search(word)
             if p:
-                # Checks that the prefix (mi* nemi*) is part a a word or not, like میلاد.
+                # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
                 if p.group() not in UnTouchable.words:
                     self.text = re.sub(
-                        p.group(),
-                        p.group(1) + r"‌" + p.group(2) ,
+                        re.escape( p.group() ),
+                        p.group(1) + r"‌" + p.group(2),
                         self.text
                     )
 
@@ -178,7 +177,7 @@ class PersianEditor:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
                 if p.group() not in UnTouchable.words:
                     self.text = re.sub(
-                        p.group(),
+                        re.escape( p.group() ),
                         p.group(1) + r"‌" + p.group(2) ,
                         self.text
                     )
