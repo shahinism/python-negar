@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import sys
 import icu
 from pathlib import Path
 from pyperclip import copy
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
-from PyQt6.QtWidgets import *
+from PyQt6.QtGui import QIcon, QColor
+from PyQt6.QtCore import Qt, QAbstractTableModel, QSize
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QTableView, QHeaderView, QCheckBox,
+                            QSlider, QLabel, QTextEdit, QLineEdit, QGroupBox, QGridLayout, QTabWidget,
+                            QWidget, QHBoxLayout, QVBoxLayout, QFileDialog)
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from virastar import PersianEditor, UnTouchable
-from constants import __version__, INFO
+from constants import __version__, INFO, LOGO
 
 collator = icu.Collator.createInstance(icu.Locale('fa_IR.UTF-8'))
 
@@ -54,8 +55,7 @@ class TableModel(QAbstractTableModel):
 class Form(QMainWindow):
     def __init__(self, parent = None):
         super(Form, self).__init__(parent)
-        self.option_list = []
-        self.logo = (Path(__file__).parent.absolute()/"logo.png").as_posix()
+        self.editing_options = []
 
         self.table = QTableView(layoutDirection=Qt.LayoutDirection.RightToLeft,)
         self.setup_table()
@@ -75,7 +75,7 @@ class Form(QMainWindow):
         reset_btn = QPushButton(self.tr("&Reset"))
         quit_btn = QPushButton(self.tr("&Quit"))
         import_btn = QPushButton(self.tr('Im&port'),)
-        copy_btn = QPushButton(QIcon(self.logo), '',)
+        copy_btn = QPushButton(QIcon(LOGO), '',)
         copy_btn.setIconSize(QSize(24,24))
         copy_btn.setToolTip(self.tr("Click to Copy Sanitized Output"))
         copy_btn.setStyleSheet("QPushButton {border-style: outset; border-width: 0px;}")
@@ -104,47 +104,29 @@ class Form(QMainWindow):
         output_editor_label.setBuddy(self.output_editor)
 
         # Options:
-        self.f_dashes = QCheckBox(self.tr("Fix &Dashes"))
-        self.f_dashes.setChecked(True)
-        self.f_three_dots = QCheckBox(self.tr("Fix &three dots"))
-        self.f_three_dots.setChecked(True)
-        self.f_english_quotes = QCheckBox(self.tr("Fix English &quotes"))
-        self.f_english_quotes.setChecked(True)
-        self.f_hamzeh = QCheckBox(self.tr("Fix &hamzeh"))
-        self.f_hamzeh.setChecked(True)
-        self.hamzeh_yeh = QCheckBox(self.tr("Use 'Persian &yeh' to show hamzeh"))
-        self.hamzeh_yeh.setChecked(True)
-        self.f_spacing_bq = QCheckBox(self.tr("Fix &spacing braces and qoutes"))
-        self.f_spacing_bq.setChecked(True)
-        self.f_arab_num = QCheckBox(self.tr("Fix Arabic &numbers"))
-        self.f_arab_num.setChecked(True)
-        self.f_eng_num = QCheckBox(self.tr("Fix &English numbers"))
-        self.f_eng_num.setChecked(True)
-        self.f_non_persian_ch = QCheckBox(self.tr("Fix non Persian &chars"))
-        self.f_non_persian_ch.setChecked(True)
-        self.f_p_spacing = QCheckBox(self.tr("Fix &prefix spacing"))
-        self.f_p_spacing.setChecked(True)
-        self.f_p_separate = QCheckBox(self.tr("Fix p&refix separating"))
-        self.f_p_separate.setChecked(True)
-        self.f_s_spacing = QCheckBox(self.tr("Fix su&ffix spacing"))
-        self.f_s_spacing.setChecked(True)
-        self.f_s_separate = QCheckBox(self.tr("Fix s&uffix separating"))
-        self.f_s_separate.setChecked(True)
-        self.aggresive = QCheckBox(self.tr("A&ggresive"))
-        self.aggresive.setChecked(True)
-        self.clnup_kashidas = QCheckBox(self.tr("Cleanup &kashidas"))
-        self.clnup_kashidas.setChecked(True)
-        self.clnup_ex_marks = QCheckBox(self.tr("Cleanup e&xtra marks"))
-        self.clnup_ex_marks.setChecked(True)
-        self.clnup_spacing = QCheckBox(self.tr("C&leanup spacing"))
-        self.clnup_spacing.setChecked(True)
+        self.f_dashes = QCheckBox(self.tr("Fix &Dashes"), checked=True)
+        self.f_three_dots = QCheckBox(self.tr("Fix &three dots"), checked=True)
+        self.f_english_quotes = QCheckBox(self.tr("Fix English &quotes"), checked=True)
+        self.f_hamzeh = QCheckBox(self.tr("Fix &hamzeh"), checked=True)
+        self.hamzeh_yeh = QCheckBox(self.tr("Use 'Persian &yeh' to show hamzeh"), checked=True)
+        self.f_spacing_bq = QCheckBox(self.tr("Fix &spacing braces and qoutes"), checked=True)
+        self.f_arab_num = QCheckBox(self.tr("Fix Arabic &numbers"), checked=True)
+        self.f_eng_num = QCheckBox(self.tr("Fix &English numbers"), checked=True)
+        self.f_non_persian_ch = QCheckBox(self.tr("Fix non Persian &chars"), checked=True)
+        self.f_p_spacing = QCheckBox(self.tr("Fix &prefix spacing"), checked=True)
+        self.f_p_separate = QCheckBox(self.tr("Fix p&refix separating"), checked=True)
+        self.f_s_spacing = QCheckBox(self.tr("Fix su&ffix spacing"), checked=True)
+        self.f_s_separate = QCheckBox(self.tr("Fix s&uffix separating"), checked=True)
+        self.aggressive = QCheckBox(self.tr("Fix a&ggressive punctuation"), checked=True)
+        self.clnup_kashidas = QCheckBox(self.tr("Cleanup &kashidas"), checked=True)
+        self.clnup_ex_marks = QCheckBox(self.tr("Cleanup e&xtra marks"), checked=True)
+        self.clnup_spacing = QCheckBox(self.tr("C&leanup spacing"), checked=True)
 
         # Add to untouchable list:
         self.untouch_word = QLineEdit()
         untouch_label = QLabel(self.tr("Add a &word to untouchable list"))
         untouch_label.setBuddy(self.untouch_word)
-        self.untouch_button = QPushButton(self.tr("&Add"))
-        self.untouch_button.setEnabled(False)
+        self.untouch_button = QPushButton(self.tr("&Add"), enabled=False)
         untouch_box = QGroupBox(self.tr("Untouchable words"))
         untouch_layout = QGridLayout()
         untouch_layout.addWidget(untouch_label, 0, 0)
@@ -167,8 +149,8 @@ class Form(QMainWindow):
         config_layout.addWidget(self.f_p_spacing, 1, 3)
         config_layout.addWidget(self.f_p_separate, 1, 4)
         config_layout.addWidget(self.f_s_separate, 2, 0)
-        config_layout.addWidget(self.aggresive, 2, 1)
-        config_layout.addWidget(self.clnup_kashidas, 2, 2)
+        config_layout.addWidget(self.clnup_kashidas, 2, 1)
+        config_layout.addWidget(self.aggressive, 2, 2)
         config_layout.addWidget(self.clnup_ex_marks, 2, 3)
         config_layout.addWidget(self.clnup_spacing, 2, 4)
         config_layout.addWidget(self.f_spacing_bq, 3, 0, 1, 2)
@@ -213,7 +195,7 @@ class Form(QMainWindow):
         # Main window configs:
         self.setCentralWidget(tab_widget)
         self.resize(800, 600)
-        self.setWindowIcon(QIcon(self.logo))
+        self.setWindowIcon(QIcon(LOGO))
         self.setWindowTitle(self.tr(f"Negar {__version__}"))
 
         # Signal control:
@@ -228,7 +210,7 @@ class Form(QMainWindow):
         # if autoedit_chkboxs state's changed, then autoedit_handler have to call again.
         self.autoedit_chkbox.stateChanged.connect(self.autoedit_handler)
 
-        self.font_slider.valueChanged.connect(self.__valueChanged)
+        self.font_slider.valueChanged.connect(self._set_font_size)
         self.untouch_word.textChanged.connect(self.untouch_add_enabler)
         self.untouch_button.clicked.connect(self.untouch_add)
 
@@ -246,7 +228,7 @@ class Form(QMainWindow):
         self.f_p_separate.stateChanged.connect(self.option_control)
         self.f_s_spacing.stateChanged.connect(self.option_control)
         self.f_s_separate.stateChanged.connect(self.option_control)
-        self.aggresive.stateChanged.connect(self.option_control)
+        self.aggressive.stateChanged.connect(self.option_control)
         self.clnup_kashidas.stateChanged.connect(self.option_control)
         self.clnup_ex_marks.stateChanged.connect(self.option_control)
         self.clnup_spacing.stateChanged.connect(self.option_control)
@@ -261,7 +243,7 @@ class Form(QMainWindow):
         else:
             super().keyPressEvent(event)
 
-    def __valueChanged(self,):
+    def _set_font_size(self,):
         size = self.font_slider.value()
         self.input_editor.setFontPointSize(size)
         self.output_editor.setFontPointSize(size)
@@ -271,10 +253,7 @@ class Form(QMainWindow):
         self.edit_text()
 
     def untouch_add_enabler(self):
-        """
-        This function will check if just one word is in the untouch word, then enable the untouch button.
-        otherwise it will be disabled.
-        """
+        """Checks untouchable word text input to enable the `Add` button if just one word is typed."""
         word_list = self.untouch_word.text().split(" ")
         if len(word_list) == 1:
             self.untouch_button.setEnabled(True)
@@ -282,22 +261,15 @@ class Form(QMainWindow):
             self.untouch_button.setEnabled(False)
 
     def untouch_add(self):
-        """
-        This function will make a unicode string from the word in untouch_word and add it to the
-        untouchabl data file.
-        """
+        """Adds a new word into untouchable words"""
         word = [self.untouch_word.text()]
         UnTouchable.add(word)
         self.untouch_word.clear()
-        self.edit_text() # in order to update untouchable list
-        self.setup_table()
+        self.edit_text()  # retouches the input text
+        self.setup_table() # updates untouchable list
 
     def autoedit_handler(self):
-        """
-        if autoedit checkbox is checked then negar have to edit input text automatically. otherwise
-        user have to click on edit button. this buttons signal is configed to do same behavior after
-        click.
-        """
+        """Edits the input text automatically if `autoedit` is checked."""
         if self.autoedit_chkbox.isChecked():
             self.edit_btn.setEnabled(False)
             self.input_editor.textChanged.connect(self.edit_text)
@@ -305,55 +277,49 @@ class Form(QMainWindow):
             self.edit_btn.setEnabled(True)
             # This line will disconnect autoedit signal and will disable autoamtic edit option
             self.input_editor.textChanged.disconnect(self.edit_text)
-        self.__valueChanged()
+        self._set_font_size()
 
     def text_box_reset(self):
-        """
-        This function will help to clear input/output editor boxes
-        """
+        """Clears input/output editor boxes"""
         self.input_editor.clear()
         self.output_editor.clear()
 
     def option_control(self):
-        """
-        This function will help to disable Virastar features with checkbox list.
-        """
-        # this line will clean the option list. this will help to do not have duplicated options.
-        self.option_list = []
+        """Enable/Disable Editing features"""
         if not self.f_dashes.isChecked():
-            self.option_list.append("fix-dashes")
+            self.editing_options.append("fix-dashes")
         if not self.f_three_dots.isChecked():
-            self.option_list.append("fix-three-dots")
+            self.editing_options.append("fix-three-dots")
         if not self.f_english_quotes.isChecked():
-            self.option_list.append("fix-english-quotes")
+            self.editing_options.append("fix-english-quotes")
         if not self.f_hamzeh.isChecked():
-            self.option_list.append("fix-hamzeh")
+            self.editing_options.append("fix-hamzeh")
         if not self.hamzeh_yeh.isChecked():
-            self.option_list.append("hamzeh-with-yeh")
+            self.editing_options.append("hamzeh-with-yeh")
         if not self.f_spacing_bq.isChecked():
-            self.option_list.append("fix-spacing-bq")
+            self.editing_options.append("fix-spacing-bq")
         if not self.f_arab_num.isChecked():
-            self.option_list.append("fix-arabic-num")
+            self.editing_options.append("fix-arabic-num")
         if not self.f_eng_num.isChecked():
-            self.option_list.append("fix-english-num")
+            self.editing_options.append("fix-english-num")
         if not self.f_non_persian_ch.isChecked():
-            self.option_list.append("fix-non-persian-chars")
+            self.editing_options.append("fix-non-persian-chars")
         if not self.f_p_spacing.isChecked():
-            self.option_list.append("fix-p-spacing")
+            self.editing_options.append("fix-p-spacing")
         if not self.f_p_separate.isChecked():
-            self.option_list.append("fix-p-separate")
+            self.editing_options.append("fix-p-separate")
         if not self.f_s_spacing.isChecked():
-            self.option_list.append("fix-s-spacing")
+            self.editing_options.append("fix-s-spacing")
         if not self.f_s_separate.isChecked():
-            self.option_list.append("fix-s-separate")
-        if not self.aggresive.isChecked():
-            self.option_list.append("aggresive")
+            self.editing_options.append("fix-s-separate")
+        if not self.aggressive.isChecked():
+            self.editing_options.append("aggressive")
         if not self.clnup_kashidas.isChecked():
-            self.option_list.append("cleanup-kashidas")
+            self.editing_options.append("cleanup-kashidas")
         if not self.clnup_ex_marks.isChecked():
-            self.option_list.append("cleanup-ex-marks")
+            self.editing_options.append("cleanup-ex-marks")
         if not self.clnup_spacing.isChecked():
-            self.option_list.append("cleanup-spacing")
+            self.editing_options.append("cleanup-spacing")
 
     def file_dialog(self):
         fname, _ = QFileDialog.getOpenFileName(self, 'Open File - A Plain Text')
@@ -367,7 +333,7 @@ class Form(QMainWindow):
         self.output_editor.clear()
         lines = self.input_editor.toPlainText().split('\n')
         for line in lines:
-            run_PE = PersianEditor(line, *self.option_list)
+            run_PE = PersianEditor(line, *self.editing_options)
             self.output_editor.append(run_PE.cleanup())
 
     def save_to_clipboard(self):
