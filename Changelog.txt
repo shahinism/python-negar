@@ -1,3 +1,6 @@
+0.9.3 - 2022-03-31
+-- Fixed issue #19; some cases than ended with *hayeshan (کتابهایشان)
+
 0.9.2 - 2022-03-30
 -- Fixed some issues with ^bi*
 -- Fixed the issue of extra ZWNJ beside brackets

@@ -150,8 +150,8 @@ class PersianEditor:
         regex = re.compile(
             r"""\s+
             (تر(ی(ن)?)?
-            |ها(ی(ی)?)?
-            |[تمش]ان)
+            |[تمش]ان
+            |ها(ی(ی|ت|م|ش|تان|شان)?)?)
             \b""",
             re.VERBOSE
         )
@@ -164,10 +164,10 @@ class PersianEditor:
     def fix_suffix_separate(self):
         """Puts ZWNJ between a word with its suffix (haye, ...)"""
         regex = re.compile(
-            r"""(\S+)
+            r"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             (تر(ی(ن)?)?
-            |ها(ی(ی)?)?|
-            [تمش]ان)\b""",
+            |[تمش]ان
+            |ها(ی(ی|ت|م|ش|تان|شان)?)?)\b""",
             re.VERBOSE
         )
         wlist = self.text.split(" ")
