@@ -164,6 +164,10 @@ class PersianEditor:
         regex = re.compile(r"\b(\w)‌([تمش]ان)\b", re.VERBOSE)
         self.text = re.sub(regex, r'\1 \2', self.text)
 
+        # Ash(=اش) at the end of some words like خانه‌اش or پایانی‌اش
+        regex = re.compile(r"\b(\w+)(ه|ی)\s+(اش)\b", re.VERBOSE)
+        self.text = re.sub(regex, r'\1\2‌\3', self.text)
+
     def fix_suffix_separate(self):
         """Puts ZWNJ between a word with its suffix (haye, ...)"""
         regex = re.compile(
