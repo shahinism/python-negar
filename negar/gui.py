@@ -121,6 +121,7 @@ class Form(QMainWindow):
         self.clnup_kashidas = QCheckBox(self.tr("Cleanup &kashidas"), checked=True)
         self.clnup_ex_marks = QCheckBox(self.tr("Cleanup e&xtra marks"), checked=True)
         self.clnup_spacing = QCheckBox(self.tr("C&leanup spacing"), checked=True)
+        self.trim_lt_whitespaces = QCheckBox(self.tr("Tr&im Leading/Trailing Whitespaces"), checked=True)
 
         # Add to untouchable list:
         self.untouch_word = QLineEdit()
@@ -139,22 +140,23 @@ class Form(QMainWindow):
         config_box = QGroupBox(self.tr("Options"))
         config_layout = QGridLayout()
         config_layout.addWidget(self.f_dashes, 0, 0)
-        config_layout.addWidget(self.f_three_dots, 0, 1)
+        config_layout.addWidget(self.f_three_dots, 1, 0)
         config_layout.addWidget(self.f_english_quotes, 0, 2)
-        config_layout.addWidget(self.f_hamzeh, 0, 3)
-        config_layout.addWidget(self.f_s_spacing, 0, 4)
-        config_layout.addWidget(self.f_arab_num, 1, 0)
+        config_layout.addWidget(self.f_arab_num, 0, 1)
         config_layout.addWidget(self.f_eng_num, 1, 1)
         config_layout.addWidget(self.f_non_persian_ch, 1, 2)
-        config_layout.addWidget(self.f_p_spacing, 1, 3)
-        config_layout.addWidget(self.f_p_separate, 1, 4)
-        config_layout.addWidget(self.f_s_separate, 2, 0)
-        config_layout.addWidget(self.clnup_kashidas, 2, 1)
-        config_layout.addWidget(self.aggressive, 2, 2)
-        config_layout.addWidget(self.clnup_ex_marks, 2, 3)
-        config_layout.addWidget(self.clnup_spacing, 2, 4)
-        config_layout.addWidget(self.f_spacing_bq, 3, 0, 1, 2)
-        config_layout.addWidget(self.hamzeh_yeh, 3, 2, 1, 2)
+        config_layout.addWidget(self.f_hamzeh, 2, 0)
+        config_layout.addWidget(self.f_p_separate, 2, 1)
+        config_layout.addWidget(self.f_s_separate, 2, 2)
+        config_layout.addWidget(self.f_s_spacing, 3, 1)
+        config_layout.addWidget(self.f_p_spacing, 3, 2)
+        config_layout.addWidget(self.aggressive, 3, 3)
+        config_layout.addWidget(self.f_spacing_bq, 0, 3, 1, 2)
+        config_layout.addWidget(self.hamzeh_yeh, 1, 3, 1, 2)
+        config_layout.addWidget(self.trim_lt_whitespaces, 2, 3, 1, 2)
+        config_layout.addWidget(self.clnup_spacing, 0, 5)
+        config_layout.addWidget(self.clnup_ex_marks, 1, 5)
+        config_layout.addWidget(self.clnup_kashidas, 2, 5)
         config_box.setLayout(config_layout)
 
         # Tab widgets initializing:
@@ -232,6 +234,7 @@ class Form(QMainWindow):
         self.clnup_kashidas.stateChanged.connect(self.option_control)
         self.clnup_ex_marks.stateChanged.connect(self.option_control)
         self.clnup_spacing.stateChanged.connect(self.option_control)
+        self.trim_lt_whitespaces.stateChanged.connect(self.option_control)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
@@ -320,6 +323,8 @@ class Form(QMainWindow):
             self.editing_options.append("cleanup-ex-marks")
         if not self.clnup_spacing.isChecked():
             self.editing_options.append("cleanup-spacing")
+        if not self.trim_lt_whitespaces.isChecked():
+            self.editing_options.append("trim-leading-trailing-whitespaces")
 
     def file_dialog(self):
         fname, _ = QFileDialog.getOpenFileName(self, 'Open File - A Plain Text')
@@ -337,7 +342,7 @@ class Form(QMainWindow):
             self.output_editor.append(run_PE.cleanup())
 
     def save_to_clipboard(self):
-        sanitizedText = self.output_editor.toPlainText().strip()
+        sanitizedText = self.output_editor.toPlainText()
         if sanitizedText:
             copy(sanitizedText)
 

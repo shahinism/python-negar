@@ -32,6 +32,7 @@ class PersianEditor:
         self._fix_arabic_numbers = is_in_args('fix-arabic-num')
         self._fix_english_numbers = is_in_args('fix-english-num')
         self._fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
+        self._trim_leading_trailing_whitespaces = is_in_args('trim-leading-trailing-whitespaces')
 
         UnTouchable() # to generate the untouchable words
         self.cleanup()
@@ -53,6 +54,8 @@ class PersianEditor:
         if self._cleanup_spacing: self.cleanup_spacing()
         if self._fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes()
+        if self._trim_leading_trailing_whitespaces:
+            self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_redundant_zwnj()
 
         return self.text
