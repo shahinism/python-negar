@@ -185,8 +185,8 @@ class PersianEditor:
     def aggressive(self):
         """Reduces Aggressive Punctuation to one sign."""
         if self._cleanup_extra_marks:
-            self.text = re.sub(r'(!){2,}', r'\1', self.text)
-            self.text = re.sub(r'(؟){2,}', r'\1', self.text)
+            self.text = re.sub(r'(!){2,}[!\s]*', r'\1', self.text)
+            self.text = re.sub(r'(؟){2,}[؟\s]*', r'\1', self.text)
 
         if self._cleanup_kashidas:
             self.text = re.sub(r'ـ+', "", self.text)
@@ -223,6 +223,11 @@ class PersianEditor:
         self.text = re.sub(
             r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
             r'\1 ',
+            self.text
+        )
+        self.text = re.sub(
+            r'[ ‌ ]*((؟\s+!){1})[ ‌ ]*',
+            r'؟!',
             self.text
         )
         self.text = re.sub(
