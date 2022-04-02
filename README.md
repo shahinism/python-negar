@@ -13,8 +13,8 @@ You can run gui version like this:
 
     negar
 
-![Negar's Main Tab](./docs/screenshot/maintab.png)
-![Negar's Config Tab](./docs/screenshot/configtab.png)
+![Negar's Main Tab](https://github.com/shahinism/python-negar/docs/screenshot/maintab.png)
+![Negar's Config Tab](https://github.com/shahinism/python-negar/docs/screenshot/configtab.png)
 
 
 Installation
@@ -63,7 +63,11 @@ Decompress it, and run the following command in root directory of python-negar
     $ python setup.py install
 
 
-For now there is no requirements except Python's standard library.
+#### Requirements 
+The main class for text editing just relies on Python's standard library but the GUI part needs `PyICU`, `pyperclip`, and `pyqt6`.
+::
+
+    $ pip install PyICu pyperclip pyqt6
 
 Usage
 ======
