@@ -13,8 +13,8 @@ You can run gui version like this:
 
     negar
 
-![Negar's Main Tab](https://github.com/shahinism/python-negar/docs/screenshot/maintab.png)
-![Negar's Config Tab](https://github.com/shahinism/python-negar/docs/screenshot/configtab.png)
+![Negar's Main Tab](https://github.com/shahinism/python-negar/tree/master/docs/screenshot/maintab.png)
+![Negar's Config Tab](https://github.com/shahinism/python-negar/tree/master/docs/screenshot/configtab.png)
 
 
 Installation
