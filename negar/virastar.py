@@ -2,7 +2,12 @@
 #!/usr/bin/env python
 
 import re
-from constants import DATAFILE, USERFILE
+import enum
+from constants import DATAFILE, USERFILE, URLREGX
+
+class State(enum.Enum):
+    save = 1
+    restore = 2
 
 class PersianEditor:
     """
@@ -38,6 +43,7 @@ class PersianEditor:
         self.cleanup()
 
     def cleanup(self):
+        self._handle_urls(State.save)
         if self._fix_dashes: self.fix_dashes()
         if self._fix_three_dots: self.fix_three_dots()
         if self._fix_english_quotes: self.fix_english_quotes()
@@ -57,13 +63,24 @@ class PersianEditor:
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_redundant_zwnj()
-
+        self._handle_urls(State.restore)
         return self.text
 
     def __str__(self):
         return self.text
 
     __repr__ = __str__
+
+    def _handle_urls(self, state):
+        """Removing URLs and putting them back at the end of process"""
+        if state == State.save:
+            self.urls = re.findall(URLREGX, self.text, re.M)
+            self.urls.sort(key=lambda x: len(x), reverse=True)
+            for i, url in enumerate(self.urls):
+                self.text = re.sub(rf"\b{re.escape(url)}\b", rf'__URL__#{i}__', self.text)
+        if state == State.restore:
+            for i, url in enumerate(self.urls):
+                self.text = re.sub(f'__URL__#{i}__', url, self.text)
 
     def fix_dashes(self):
         """Replaces double and triple dashes with `ndash` and `mdash`, respectively."""
