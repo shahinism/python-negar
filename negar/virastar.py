@@ -289,7 +289,8 @@ class PersianEditor:
     def cleanup_spacing(self):
         """Reduces multiple consecutive spaces to one."""
         self.text = re.sub(r'[ ]+', r' ', self.text)
-        self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
+        # self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
+        self.text = re.sub(r'\n{2,}', r'\n\n', self.text)
 
     @classmethod
     def char_translator(cls, fromchar, tochar, string):

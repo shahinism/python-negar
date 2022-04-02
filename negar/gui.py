@@ -336,10 +336,8 @@ class Form(QMainWindow):
 
     def edit_text(self):
         self.output_editor.clear()
-        lines = self.input_editor.toPlainText().split('\n')
-        for line in lines:
-            run_PE = PersianEditor(line, *self.editing_options)
-            self.output_editor.append(run_PE.cleanup())
+        run_PE = PersianEditor(self.input_editor.toPlainText(), *self.editing_options)
+        self.output_editor.append(run_PE.cleanup())
 
     def save_to_clipboard(self):
         sanitizedText = self.output_editor.toPlainText()
