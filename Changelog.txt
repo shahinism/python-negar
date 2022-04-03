@@ -1,3 +1,6 @@
+0.9.9 - 2022-04-03
+-- re.search is replaced with re.finditer as the former just finds the first occurrence of the pattern not all of them
+
 0.9.8 - 2022-04-03
 -- Fixed the issue with multiple consecutive newlines
 

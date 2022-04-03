@@ -155,8 +155,8 @@ class PersianEditor:
 
         wlist = self.text.split(" ")
         for word in wlist:
-            p = regex.search(word)
-            if p:
+            regx_iter = regex.finditer(word)
+            for p in regx_iter:
                 # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
                 if p.group() not in UnTouchable.words:
                     self.text = re.sub(
@@ -196,8 +196,8 @@ class PersianEditor:
         )
         wlist = self.text.split(" ")
         for word in wlist:
-            p = regex.search(word)
-            if p:
+            regx_iter = regex.finditer(word)
+            for p in regx_iter:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
                 if p.group() not in UnTouchable.words:
                     self.text = re.sub(
