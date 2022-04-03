@@ -1,6 +1,6 @@
 from pathlib import Path
 
-__version__ = "0.9.9"
+__version__ = "0.9.91"
 
 LOGO = (Path(__file__).parent.absolute()/"logo.png").as_posix()
 DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
