@@ -1,3 +1,16 @@
+1.0.2 - 2022-04-05
+-- In compliance with negar-cli
+
+1.0.1 - 2022-04-04
+-- The option trim-leading-trailing-whitespaces renamed to trim-lt-whitespaces.
+-- Retouching the readme.
+
+1.0.0 - 2022-04-04
+-- Fixed issue with *ei/eim/eid/and.
+
+0.9.91 - 2022-04-04
+-- version regex updated
+
 0.9.9 - 2022-04-03
 -- re.search is replaced with re.finditer as the former just finds the first occurrence of the pattern not all of them
 
