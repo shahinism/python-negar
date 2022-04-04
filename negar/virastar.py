@@ -2,7 +2,10 @@
 #!/usr/bin/env python
 
 import re
+import sys
 import enum
+from pathlib import Path
+sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from constants import DATAFILE, USERFILE, URLREGX
 
 class State(enum.Enum):
