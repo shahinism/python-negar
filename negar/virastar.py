@@ -37,7 +37,7 @@ class PersianEditor:
         self._fix_arabic_numbers = is_in_args('fix-arabic-num')
         self._fix_english_numbers = is_in_args('fix-english-num')
         self._fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
-        self._trim_leading_trailing_whitespaces = is_in_args('trim-leading-trailing-whitespaces')
+        self._trim_leading_trailing_whitespaces = is_in_args('trim-lt-whitespaces')
 
         UnTouchable() # to generate the untouchable words
         self.cleanup()

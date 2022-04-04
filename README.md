@@ -1,11 +1,7 @@
 ﻿Negar
 ======
 
-Negar is a spell corrector for Persian language. I'm working on new algorithm that I found from here:
-
-https://github.com/aziz/virastar/blob/master/lib/virastar.rb
-
-Thank you Aziz.
+Negar is an editor(=virastar in Persian) for Persian text. The project is initially inspired by [virastar](https://github.com/aziz/virastar/blob/master/lib/virastar.rb). Thank you [Aziz](https://github.com/aziz) for your great job.
 
 Screenshot & Features
 =====================
@@ -22,17 +18,13 @@ Installation
 
 ## PyPi
 
-**python-negar** is available on PyPi:
-
-http://pypi.python.org/pypi/python-negar
-::
+**python-negar** is available on [PyPi](http://pypi.python.org/pypi/python-negar):
 
     $ pip install python-negar
 
 ## Git
 
 You can get latest stable changes from github server:
-::
 
     $ git clone https://github.com/shahinism/python-negar.git
     $ cd python-negar
@@ -42,10 +34,9 @@ You can get latest stable changes from github server:
 
 You can grab the latest tarball.
 
-### *unix
+### *nix
 
-Get the latest tarball & install
-::
+Get the latest tarball & install:
 
     $ wget https://github.com/shahinism/python-negar/archive/master.tar.gz
     $ tar xvzf python-negar-master.tar.gz && cd python-negar-master
@@ -57,23 +48,20 @@ Download latest zip archive.
 
 https://github.com/shahinism/python-negar/archive/master.zip
 
-Decompress it, and run the following command in root directory of python-negar
-::
+Decompress it, and run the following command in root directory of `python-negar`
 
     $ python setup.py install
 
 
-#### Requirements 
-The main class for text editing just relies on Python's standard library but the GUI part needs `PyICU`, `pyperclip`, and `pyqt6`.
-::
+#### Requirements
+The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt6`, `pyperclip`, and `PyICU`.
 
-    $ pip install PyICu pyperclip pyqt6
+    $ pip install PyQt6 PyICU pyperclip
 
 Usage
 ======
 
 Usage without extra args:
-::
 
     from negar.virastar import PersianEditor
 
@@ -81,7 +69,6 @@ Usage without extra args:
     print(PersianEditor(text)) # Done ;)
 
 Enabling extra features/args:
-::
 
     ##
     args = []
@@ -91,7 +78,6 @@ Enabling extra features/args:
 
 
 Full list of args with description:
-::
 
     --fix-dashes                 Disable fix dashes feature
     --fix-three-dots             Disable fix three dots feature
@@ -110,4 +96,5 @@ Full list of args with description:
     --cleanup-kashidas           Disable cleanup kashidas feature
     --cleanup-ex-marks           Disable cleanup extra marks feature
     --cleanup-spacing            Disable cleanup spacing feature
+    --trim-lt-whitespaces        Disable Trim leading trailing whitespaces
 

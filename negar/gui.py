@@ -324,7 +324,7 @@ class Form(QMainWindow):
         if not self.clnup_spacing.isChecked():
             self.editing_options.append("cleanup-spacing")
         if not self.trim_lt_whitespaces.isChecked():
-            self.editing_options.append("trim-leading-trailing-whitespaces")
+            self.editing_options.append("trim-lt-whitespaces")
 
     def file_dialog(self):
         fname, _ = QFileDialog.getOpenFileName(self, 'Open File - A Plain Text')
