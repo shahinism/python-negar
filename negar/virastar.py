@@ -57,9 +57,9 @@ class PersianEditor:
         if self._fix_suffix_spacing: self.fix_suffix_spacing()
         if self._fix_suffix_separate: self.fix_suffix_separate()
         if self._aggresive: self.aggressive()
-        if self._cleanup_spacing: self.cleanup_spacing()
         if self._fix_spacing_for_braces_and_quotes:
             self.fix_spacing_for_braces_and_quotes()
+        if self._cleanup_spacing: self.cleanup_spacing()
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_redundant_zwnj()
@@ -171,6 +171,8 @@ class PersianEditor:
             r"""\s+
             (تر(ی(ن)?)?
             |[تمش]ان
+            |ا[متش]
+            |ا((ی(م|د)?)|ند)
             |ها(ی(ی|ت|م|ش|تان|شان)?)?)
             \b""",
             re.VERBOSE
@@ -190,7 +192,7 @@ class PersianEditor:
         regex = re.compile(
             r"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             (تر(ی(ن)?)?
-            |[تمش]ان
+            # |[تمش]ان
             |ها(ی(ی|ت|م|ش|تان|شان)?)?)\b""",
             re.VERBOSE
         )
@@ -209,8 +211,8 @@ class PersianEditor:
     def aggressive(self):
         """Reduces Aggressive Punctuation to one sign."""
         if self._cleanup_extra_marks:
-            self.text = re.sub(r'(!){2,}[!\s]*', r'\1', self.text)
-            self.text = re.sub(r'(؟){2,}[؟\s]*', r'\1', self.text)
+            self.text = re.sub(r'(؟){2,}', r'\1', self.text)
+            self.text = re.sub(r'(!){2,}', r'\1', self.text)
 
         if self._cleanup_kashidas:
             self.text = re.sub(r'ـ+', "", self.text)
@@ -251,7 +253,7 @@ class PersianEditor:
         )
         self.text = re.sub(
             r'[ ‌ ]*((؟\s+!){1})[ ‌ ]*',
-            r'؟!',
+            r'؟! ',
             self.text
         )
         self.text = re.sub(
