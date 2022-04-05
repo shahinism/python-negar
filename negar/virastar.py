@@ -47,6 +47,7 @@ class PersianEditor:
 
     def cleanup(self):
         self._handle_urls(State.save)
+        self._xepersian(State.save)
         if self._fix_dashes: self.fix_dashes()
         if self._fix_three_dots: self.fix_three_dots()
         if self._fix_english_quotes: self.fix_english_quotes()
@@ -66,6 +67,7 @@ class PersianEditor:
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_redundant_zwnj()
+        self._xepersian(State.restore)
         self._handle_urls(State.restore)
         return self.text
 
@@ -84,6 +86,38 @@ class PersianEditor:
         if state == State.restore:
             for i, url in enumerate(self.urls):
                 self.text = re.sub(f'__URL__#{i}__', url, self.text)
+
+    def _xepersian(self, state):
+        """Some commands should be saved and then put back at the end of the process"""
+        if state == State.save:
+            comment_regex = re.compile(r"(\s*\%.*)\s*\n")
+            usepackage_regex = re.compile(r"""
+            # (?:\\(?:(?:use|input|set|title|author|include|document|graphic|vspace|hspace).*?)
+            (?:\\(?:[a-zA-Z]{1,20}(?:\*)?)
+            \s*
+            # (?:(?:(?:\[|\{).*?(?:\]|\})))*?
+            (?:\[.*?\])*
+            (?:\s*\{.*?\})*)"""
+            , re.DOTALL|re.VERBOSE)
+            newcommand_regex = re.compile(r"""
+            (?:\\(?:(?:new|renew).*?)
+            \s*
+            (?:\{?.*?\}?)*
+            \s*\{.*?\})"""
+            , re.DOTALL|re.VERBOSE)
+            self.preserved = [item for item in re.findall(comment_regex, self.text) if len(item)>1]
+            self.preserved += re.findall(usepackage_regex, self.text)
+            self.preserved += re.findall(newcommand_regex, self.text)
+            # self.urls.sort(key=lambda x: len(x), reverse=True)
+            for i, item in enumerate(self.preserved):
+                self.text = re.sub(rf"{re.escape(item)}", rf'__NGPRSV__#{i}__', self.text)
+
+            print(self.text)
+
+        if state == State.restore:
+            print(self.preserved)
+            for i, item in enumerate(self.preserved):
+                self.text = re.sub(f'__NGPRSV__#{i}__', re.escape(item), self.text)
 
     def fix_dashes(self):
         """Replaces double and triple dashes with `ndash` and `mdash`, respectively."""
