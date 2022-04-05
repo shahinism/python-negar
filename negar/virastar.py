@@ -75,7 +75,7 @@ class PersianEditor:
     __repr__ = __str__
 
     def _handle_urls(self, state):
-        """Removing URLs and putting them back at the end of process"""
+        """Removing URLs and putting them back at the end of the process"""
         if state == State.save:
             self.urls = re.findall(URLREGX, self.text, re.M)
             self.urls.sort(key=lambda x: len(x), reverse=True)
@@ -254,6 +254,8 @@ class PersianEditor:
             r'\1 ',
             self.text
         )
+        # special case for floating-point numbers like 12.7
+        self.text = re.sub(r'([\d])([.])\s([\d])', r'\1\2\3', self.text)
         self.text = re.sub(
             r'[ ‌ ]*((؟\s+!){1})[ ‌ ]*',
             r'؟! ',
@@ -261,6 +263,11 @@ class PersianEditor:
         )
         self.text = re.sub(
             r'([۰-۹]+):\s+([۰-۹]+)',
+            r'\1:\2',
+            self.text
+        )
+        self.text = re.sub(
+            r'(\d+):\s+(\d+)',
             r'\1:\2',
             self.text
         )
