@@ -17,7 +17,9 @@ utest: setup
 	twine upload --repository-url https://test.pypi.org/legacy/  dist/*
 
 compile: ver
-	nuitka3 negar/gui.py
+	nuitka3 --standalone --onefile --linux-onefile-icon=negar/logo.png \
+	--include-data-file=negar/data/untouchable.dat=data/untouchable.dat -o dist/gui-v$(VER).bin \
+	--output-dir=dist --remove-output --enable-plugin=pyqt6 negar/gui.py
 
 pyins: ver
 	rm build/gui/ -rfv
@@ -28,3 +30,5 @@ clean: ver
 	rm python_negar.egg-info/ -rfv
 	rm build/ -rfv
 	rm dist/ -rfv
+	rm gui.build/ -rfv
+	rm gui.dist/ -rfv
