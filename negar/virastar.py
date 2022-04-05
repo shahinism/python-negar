@@ -112,12 +112,12 @@ class PersianEditor:
             for i, item in enumerate(self.preserved):
                 self.text = re.sub(rf"{re.escape(item)}", rf'__NGPRSV__#{i}__', self.text)
 
-            print(self.text)
-
         if state == State.restore:
-            print(self.preserved)
+            self.text = re.sub(r'٪\s*\n', r'%\n', self.text)
+            self.text = re.sub(r'(=\.)\ (\d)', r'\1\2', self.text)
+            self.text = re.sub(r'(!)\ (\d)', r'\1\2', self.text)
             for i, item in enumerate(self.preserved):
-                self.text = re.sub(f'__NGPRSV__#{i}__', re.escape(item), self.text)
+                self.text = self.text.replace(f'__NGPRSV__#{i}__', item)
 
     def fix_dashes(self):
         """Replaces double and triple dashes with `ndash` and `mdash`, respectively."""
