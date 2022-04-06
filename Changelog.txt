@@ -1,5 +1,8 @@
+1.0.6 - 2022-04-06
+-- Fixed the issue with capital letters beside the English figures, e.g. `A4`.
+
 1.0.3 - 2022-04-05
--- -- Spaces around the point of a floating-point number will not appear.
+-- Spaces around the point of a floating-point number will not appear.
 
 1.0.2 - 2022-04-05
 -- In compliance with negar-cli
