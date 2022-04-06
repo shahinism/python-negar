@@ -67,7 +67,7 @@ class PersianEditor:
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_redundant_zwnj()
-        self._xepersian(State.restore)
+        self._xepersian(State.restore) if self._fix_english_numbers else True
         self._handle_urls(State.restore)
         return self.text
 
@@ -109,14 +109,16 @@ class PersianEditor:
             self.preserved += re.findall(usepackage_regex, self.text)
             self.preserved += re.findall(newcommand_regex, self.text)
             # self.urls.sort(key=lambda x: len(x), reverse=True)
-            for i, item in enumerate(self.preserved):
+            for i, item in enumerate(self.preserved, 1):
                 self.text = re.sub(rf"{re.escape(item)}", rf'__NGPRSV__#{i}__', self.text)
+            self.text = self.text.replace('\\\\', r'__NGPRSV__#0__')
 
         if state == State.restore:
+            self.text = re.sub(r'__NGPRSV__#0__', r'\\', self.text)
             self.text = re.sub(r'٪\s*\n', r'%\n', self.text)
             self.text = re.sub(r'(=\.)\ (\d)', r'\1\2', self.text)
             self.text = re.sub(r'(!)\ (\d)', r'\1\2', self.text)
-            for i, item in enumerate(self.preserved):
+            for i, item in enumerate(self.preserved, 1):
                 self.text = self.text.replace(f'__NGPRSV__#{i}__', item)
 
     def fix_dashes(self):
