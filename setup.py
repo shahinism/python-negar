@@ -23,6 +23,7 @@ setup(
     install_requires=[
         'pyperclip',
         'PyICU',
+        'PyQt5',
         'regex'
     ],
     package_dir={'negar': 'negar'},
