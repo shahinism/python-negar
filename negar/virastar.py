@@ -369,7 +369,7 @@ class UnTouchable:
 
     @classmethod
     def add(cls, word_list):
-        with (USERFILE/"untouchable.dat").open('a') as f:
+        with (USERFILE/"untouchable.dat").open('a', encoding="utf8") as f:
             for word in word_list:
                 if word not in cls.words:
                     f.write(word+"\n")
@@ -381,11 +381,11 @@ class UnTouchable:
         A Unicode list from 'data/untouchable.dat' and '~/.python-negar/untouchable.dat'
         containing such words like 'بهتر' or 'میلاد' won't receive any modifications.
         """
-        with DATAFILE.open() as f:
+        with DATAFILE.open(encoding="utf8") as f:
             for line in f:
                 cls.words.add(line.strip())
         try:
-            with (USERFILE/"untouchable.dat").open() as f:
+            with (USERFILE/"untouchable.dat").open(encoding="utf8") as f:
                 for line in f:
                     cls.words.add(line.strip())
         except:

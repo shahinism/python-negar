@@ -7,7 +7,7 @@ except ImportError:
 
 version = re.search(
     r'(__version__ = "(\d\.\d(\.\d+)?)")',
-    open("negar/constants.py").read(),
+    open("negar/constants.py", encoding="utf8").read(),
     re.M
 ).group(2)
 

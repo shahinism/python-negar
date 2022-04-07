@@ -4,9 +4,9 @@ import sys
 import icu
 from pathlib import Path
 from pyperclip import copy
-from PyQt6.QtGui import QIcon, QColor
-from PyQt6.QtCore import Qt, QAbstractTableModel, QSize
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QTableView, QHeaderView, QCheckBox,
+from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtCore import Qt, QAbstractTableModel, QSize
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QTableView, QHeaderView, QCheckBox,
                             QSlider, QLabel, QTextEdit, QLineEdit, QGroupBox, QGridLayout, QTabWidget,
                             QWidget, QHBoxLayout, QVBoxLayout, QFileDialog)
 sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/questions/16981921
@@ -329,7 +329,7 @@ class Form(QMainWindow):
     def file_dialog(self):
         fname, _ = QFileDialog.getOpenFileName(self, 'Open File - A Plain Text')
         try:
-            with open(fname, 'r') as f:
+            with open(fname, 'r', encoding="utf8") as f:
                 self.input_editor.setText(f.read())
         except:
             pass
