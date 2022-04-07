@@ -178,7 +178,7 @@ class PersianEditor:
 
         # Avoids to change English numbers in strings like 'Text12', 'Text_12', or 'A4'
         self.text = re.sub(
-            r'[a-zA-Z\-_]{1,}[۰-۹]+|[۰-۹]+[a-zA-Z\-_]{1,}',
+            r'[۰-۹]+[a-zA-Z_]{1,}[۰-۹]+|[a-zA-Z_]{1,}[۰-۹]+|[۰-۹]+[a-zA-Z_]{1,}',
             lambda m:
             self.char_translator(persian_numbers, english_numbers, m.group()),
             self.text

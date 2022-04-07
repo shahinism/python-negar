@@ -1,4 +1,7 @@
-1.0.6 - 2022-04-06
+1.0.5 - 2022-04-06
+-- English numbers around the minus sign will change to Persian counterparts if --fix-english-num is used.
+
+1.0.4 - 2022-04-06
 -- Fixed the issue with capital letters beside the English figures, e.g. `A4`.
 
 1.0.3 - 2022-04-05

@@ -1,5 +1,3 @@
-#!/bin/fish
-
 VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" ')
 
 .ONESHELL:
@@ -17,10 +15,12 @@ pins: ver
 	pip install python-negar==$(VER)
 
 upypi: setup
-	twine upload dist/*
+	twine upload dist/python-negar-$(VER).tar.gz
 
 utest: setup
-	twine upload --repository-url https://test.pypi.org/legacy/  dist/*
+	twine upload --repository-url https://test.pypi.org/legacy/  dist/python-negar-$(VER).tar.gz
+
+upload: setup upypi utest
 
 compile: ver
 	nuitka3 --standalone --onefile --linux-onefile-icon=negar/logo.png \
