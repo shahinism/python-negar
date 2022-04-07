@@ -1,3 +1,6 @@
+1.1.2 - 2022-04-08
+-- Support for new suffix گذار/گذاری and گزار/گزاری
+
 1.1.1 - 2022-04-08
 -- Fixed an issue with `^mi*haye$` with using regex module
 -- Suport for new suffix شناس/شناسی

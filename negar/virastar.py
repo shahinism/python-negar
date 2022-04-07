@@ -200,7 +200,7 @@ class PersianEditor:
         regx = regex.compile(r"""
         \b(بی|ن?می)‌*
         ([^\[\]\(\)\s]+)
-        (?<!های|هایی|ها|شناس|شناسی)\b
+        (?<!های|هایی|ها|شناس|شناسی|گذار|گذاری)\b
         """, re.VERBOSE) #  \b for words like سهمیه
 
         wlist = self.text.split(" ")
@@ -225,6 +225,7 @@ class PersianEditor:
             |ا((ی(م|د)?)|ند)
             |ها(ی(ی|ت|م|ش|تان|شان)?)?
             |شناس(ی)?
+            |گذار(ی)?|گزار(ی)?
             )\b""", re.VERBOSE
         )
         self.text = re.sub(regx, r'‌\1', self.text)
@@ -245,6 +246,7 @@ class PersianEditor:
             # |[تمش]ان
             |ها(ی(ی|ت|م|ش|تان|شان)?)?
             |شناس(ی)?
+            |گذار(ی)?|گزار(ی)?
             )\b""", re.VERBOSE
         )
         wlist = self.text.split(" ")
