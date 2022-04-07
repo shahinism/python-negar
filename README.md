@@ -58,9 +58,9 @@ For example, the latest version (as of Apr 2022) for your `32-bit` Windows and `
     pip install .\PyICU‑2.8.1‑cp38‑cp38‑win32.whl
 
 #### Requirements
-The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt6`, `pyperclip`, and `PyICU`.
+The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt5`, `pyperclip`, and `PyICU`.
 
-    $ pip install PyQt6 PyICU pyperclip
+    $ pip install PyQt5 PyICU pyperclip
 
 Usage
 ======

@@ -1,3 +1,6 @@
+1.1 - 2022-04-07
+-- Downgraded to PyQt5 for better support in Windows.
+
 1.0.6 - 2022-04-07
 -- Using `enconding='utf8'` for all `open` commands as Windows default code page is `CP1251/CP1252`.
 
