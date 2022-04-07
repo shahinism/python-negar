@@ -22,7 +22,8 @@ setup(
     packages=find_packages() + ['negar'],
     install_requires=[
         'pyperclip',
-        'PyICU'
+        'PyICU',
+        'regex'
     ],
     package_dir={'negar': 'negar'},
     package_data={'negar/data': ['data/*.dat']},

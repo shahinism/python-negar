@@ -54,9 +54,9 @@ Decompress it, and run the following command in root directory of `python-negar`
 
 
 #### Requirements
-The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt6`, `pyperclip`, and `PyICU`.
+The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt6`, `pyperclip`, 'regex', and `PyICU`.
 
-    $ pip install PyQt6 PyICU pyperclip
+    $ pip install PyQt6 PyICU pyperclipr regex
 
 Usage
 ======

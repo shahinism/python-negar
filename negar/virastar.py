@@ -1,7 +1,7 @@
 # pylint: disable=too-many-instance-attributes
 #!/usr/bin/env python
 
-import re
+import re, regex
 import sys
 import enum
 from pathlib import Path
@@ -90,6 +90,10 @@ class PersianEditor:
     def _xepersian(self, state):
         """Some commands should be saved and then put back at the end of the process"""
         if state == State.save:
+            reversed_sort = lambda x: sorted(x, key=lambda x: len(x), reverse=True)
+            # regular expressions ##################################
+            lr_regex = regex.compile(r'\\lr(\{(?:[^{}]++|(?1))*})')
+            # math_regex = regex.complie(r"""        """, re.VERBOSE)
             comment_regex = re.compile(r"(\s*\%.*)\s*\n")
             usepackage_regex = re.compile(r"""
             # (?:\\(?:(?:use|input|set|title|author|include|document|graphic|vspace|hspace).*?)
@@ -105,7 +109,9 @@ class PersianEditor:
             (?:\{?.*?\}?)*
             \s*\{.*?\})"""
             , re.DOTALL|re.VERBOSE)
+            ########################################################
             self.preserved = [item for item in re.findall(comment_regex, self.text) if len(item)>1]
+            self.preserved += reversed_sort([x.group() for x in regex.finditer(lr_regex, self.text, overlapped=True)])
             self.preserved += re.findall(usepackage_regex, self.text)
             self.preserved += re.findall(newcommand_regex, self.text)
             # self.urls.sort(key=lambda x: len(x), reverse=True)
