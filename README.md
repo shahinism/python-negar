@@ -52,6 +52,10 @@ Decompress it, and run the following command in root directory of `python-negar`
 
     $ python setup.py install
 
+If you coulddn't able to install PyICU, you can download a corresponding whl file from [Unofficial Windows Binaries for Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyicu).
+For example, the latest version (as of Apr 2022) for your `32-bit` Windows and `Python3.8` version is `PyICU‑2.8.1‑cp38‑cp38‑win32.whl`.
+
+    pip install .\PyICU‑2.8.1‑cp38‑cp38‑win32.whl
 
 #### Requirements
 The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt6`, `pyperclip`, and `PyICU`.
