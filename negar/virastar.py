@@ -196,11 +196,16 @@ class PersianEditor:
 
     def fix_prefix_separate(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
-        regex = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
+        # regx = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
+        regx = regex.compile(r"""
+        \b(بی|ن?می)‌*
+        ([^\[\]\(\)\s]+)
+        (?<!های|هایی|ها|شناس|شناسی)\b
+        """, re.VERBOSE) #  \b for words like سهمیه
 
         wlist = self.text.split(" ")
         for word in wlist:
-            regx_iter = regex.finditer(word)
+            regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
                 if p.group() not in UnTouchable.words:
@@ -212,38 +217,39 @@ class PersianEditor:
 
     def fix_suffix_spacing(self):
         """Puts ZWNJ between a word and its suffix (*ha[ye] *tar[in])"""
-        regex = re.compile(
+        regx = re.compile(
             r"""\s+
             (تر(ی(ن)?)?
             |[تمش]ان
             |ا[متش]
             |ا((ی(م|د)?)|ند)
-            |ها(ی(ی|ت|م|ش|تان|شان)?)?)
-            \b""",
-            re.VERBOSE
+            |ها(ی(ی|ت|م|ش|تان|شان)?)?
+            |شناس(ی)?
+            )\b""", re.VERBOSE
         )
-        self.text = re.sub(regex, r'‌\1', self.text)
+        self.text = re.sub(regx, r'‌\1', self.text)
 
         # Some special cases like و شان خود
-        regex = re.compile(r"\b(\w)‌([تمش]ان)\b", re.VERBOSE)
-        self.text = re.sub(regex, r'\1 \2', self.text)
+        regx = re.compile(r"\b(\w)‌([تمش]ان)\b", re.VERBOSE)
+        self.text = re.sub(regx, r'\1 \2', self.text)
 
         # Ash(=اش) at the end of some words like خانه‌اش or پایانی‌اش
-        regex = re.compile(r"\b(\w+)(ه|ی)\s+(اش)\b", re.VERBOSE)
-        self.text = re.sub(regex, r'\1\2‌\3', self.text)
+        regx = re.compile(r"\b(\w+)(ه|ی)\s+(اش)\b", re.VERBOSE)
+        self.text = re.sub(regx, r'\1\2‌\3', self.text)
 
     def fix_suffix_separate(self):
         """Puts ZWNJ between a word with its suffix (haye, ...)"""
-        regex = re.compile(
+        regx = re.compile(
             r"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             (تر(ی(ن)?)?
             # |[تمش]ان
-            |ها(ی(ی|ت|م|ش|تان|شان)?)?)\b""",
-            re.VERBOSE
+            |ها(ی(ی|ت|م|ش|تان|شان)?)?
+            |شناس(ی)?
+            )\b""", re.VERBOSE
         )
         wlist = self.text.split(" ")
         for word in wlist:
-            regx_iter = regex.finditer(word)
+            regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
                 if p.group() not in UnTouchable.words:

@@ -1,3 +1,7 @@
+1.1.1 - 2022-04-08
+-- Fixed an issue with `^mi*haye$` with using regex module
+-- Suport for new suffix شناس/شناسی
+
 1.1 - 2022-04-07
 -- Downgraded to PyQt5 for better support in Windows.
 
