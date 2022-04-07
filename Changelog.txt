@@ -1,3 +1,6 @@
+1.0.6 - 2022-04-07
+-- Using `enconding='utf8'` for all `open` commands as Windows default code page is `CP1251/CP1252`.
+
 1.0.5 - 2022-04-06
 -- English numbers around the minus sign will change to Persian counterparts if --fix-english-num is used.
 
