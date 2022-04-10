@@ -22,16 +22,19 @@ utest: setup
 
 upload: setup upypi utest
 
-compile: ver
+nuCompile: ver
 	nuitka3 --standalone --onefile --linux-onefile-icon=negar/logo.png \
-	--include-data-file=negar/data/untouchable.dat=data/untouchable.dat -o dist/gui-v$(VER).bin \
+	--include-data-file=negar/data/untouchable.dat=data/untouchable.dat \
+	--include-data-dir=.negar/lib/python3.10/site-packages/pyuca=pyuca \
+	-o dist/negar-gui-v$(VER).bin \
 	--output-dir=dist --remove-output --enable-plugin=pyqt5 negar/gui.py
 	ls -lh dist
 
-pyins: ver
+piCompile: ver
 	rm build/gui/ -rfv
 	. .negar/bin/activate
-	pyinstaller -p negar --onefile --add-data negar/data/untouchable.dat:data --noupx negar/gui.py -n gui-v$(VER)
+	pyinstaller -p negar --onefile --add-data negar/data/untouchable.dat:data \
+	--collect-data pyuca --noupx negar/gui.py -n negar-gui-v$(VER)
 	ls -lh dist
 
 clean: ver
