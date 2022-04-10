@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-import icu
+from pyuca import Collator
 from pathlib import Path
 from pyperclip import copy
 from PyQt5.QtGui import QIcon, QColor
@@ -13,7 +13,7 @@ sys.path.append(Path(__file__).parent.as_posix()) # https://stackoverflow.com/qu
 from virastar import PersianEditor, UnTouchable
 from constants import __version__, INFO, LOGO
 
-collator = icu.Collator.createInstance(icu.Locale('fa_IR.UTF-8'))
+collator = Collator()
 
 class TableModel(QAbstractTableModel):
     def __init__(self, data):
@@ -64,7 +64,7 @@ class Form(QMainWindow):
 
     def setup_table(self, col=8):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        data = sorted(list(UnTouchable().get()), key=collator.getSortKey)
+        data = sorted(list(UnTouchable().get()), key=collator.sort_key)
         data = [data[i*col:(i+1)*col] for i in range(int(len(data)//col)+1)]
         model = TableModel(data)
         self.table.setModel(model)

@@ -32,13 +32,13 @@ You can get latest stable changes from github server:
 
 ## Zip, Tarball
 
-You can grab the latest tarball.
+You can download the latest tarball.
 
 ### *nix
 
 Get the latest tarball & install:
 
-    $ wget https://github.com/shahinism/python-negar/archive/master.tar.gz
+    $ wget -O python-negar-master.tar.gz https://github.com/shahinism/python-negar/archive/master.tar.gz
     $ tar xvzf python-negar-master.tar.gz && cd python-negar-master
     $ python setup.py install
 
@@ -52,15 +52,10 @@ Decompress it, and run the following command in root directory of `python-negar`
 
     $ python setup.py install
 
-If you coulddn't able to install PyICU, you can download a corresponding whl file from [Unofficial Windows Binaries for Python Extension Packages](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyicu).
-For example, the latest version (as of Apr 2022) for your `32-bit` Windows and `Python3.8` version is `PyICU‑2.8.1‑cp38‑cp38‑win32.whl`.
-
-    pip install .\PyICU‑2.8.1‑cp38‑cp38‑win32.whl
-
 #### Requirements
-The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt5`, `pyperclip`, and `PyICU`.
+The main class for text editing just relies on Python's standard library but the GUI part needs `PyQt5`, `pyperclip`, `pyuca`, `regex`.
 
-    $ pip install PyQt5 PyICU pyperclip
+    $ pip install PyQt5 pyuca pyperclip regex
 
 Usage
 ======
@@ -71,6 +66,10 @@ Usage without extra args:
 
     text = "مانند 'همه ی ' که با 'ی' پسوند همراه هستند"
     print(PersianEditor(text)) # Done ;)
+
+resutl:
+
+    مانند «همه‌ی» که با «ی» پسوند همراه هستند
 
 Enabling extra features/args:
 

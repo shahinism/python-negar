@@ -21,9 +21,9 @@ setup(
     include_package_data=True,
     packages=find_packages() + ['negar'],
     install_requires=[
-        'pyperclip',
-        'PyICU',
         'PyQt5',
+        'pyperclip',
+        'pyuca',
         'regex'
     ],
     package_dir={'negar': 'negar'},
@@ -31,7 +31,7 @@ setup(
     description="Negar is a spell corrector and Persian text editor",
     license="GPL",
     keywords="spellcheck Persian editor",
-    url="http://shahinism.github.com/python-negar",
+    url="http://github.com/shahinism/python-negar",
     entry_points={
         'console_scripts': [
             'negar = negar.gui:main',
