@@ -43,3 +43,4 @@ clean: ver
 	rm dist/ -rfv
 	rm gui.build/ -rfv
 	rm gui.dist/ -rfv
+	rm negar*.spec -rfv
