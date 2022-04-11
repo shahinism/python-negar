@@ -91,10 +91,11 @@ class PersianEditor:
         """Some commands should be saved and then put back at the end of the process"""
         if state == State.save:
             reversed_sort = lambda x: sorted(x, key=lambda x: len(x), reverse=True)
-            # regular expressions ##################################
-            lr_regex = regex.compile(r'\\lr(\{(?:[^{}]++|(?1))*})')
-            # math_regex = regex.complie(r"""        """, re.VERBOSE)
+            ############################# Regular Expressions ##############################
             comment_regex = re.compile(r"(\s*\%.*)\s*\n")
+            lr_regex = regex.compile(r'\\lr(\{(?:[^{}]++|(?1))*})')
+            verb_regex = re.compile(r'\\([vV]erb(.).*(?:\2))')
+            # math_regex = regex.complie(r"""        """, re.VERBOSE)
             usepackage_regex = re.compile(r"""
             # (?:\\(?:(?:use|input|set|title|author|include|document|graphic|vspace|hspace).*?)
             (?:\\(?:[a-zA-Z]{1,20}(?:\*)?)
@@ -109,12 +110,12 @@ class PersianEditor:
             (?:\{?.*?\}?)*
             \s*\{.*?\})"""
             , re.DOTALL|re.VERBOSE)
-            ########################################################
-            self.preserved = [item for item in re.findall(comment_regex, self.text) if len(item)>1]
+            ################################################################################
+            self.preserved = reversed_sort([x.group() for x in re.finditer(verb_regex, self.text)])
+            self.preserved += reversed_sort([item for item in re.findall(comment_regex, self.text) if len(item)>1])
             self.preserved += reversed_sort([x.group() for x in regex.finditer(lr_regex, self.text, overlapped=True)])
             self.preserved += re.findall(usepackage_regex, self.text)
             self.preserved += re.findall(newcommand_regex, self.text)
-            # self.urls.sort(key=lambda x: len(x), reverse=True)
             for i, item in enumerate(self.preserved, 1):
                 self.text = re.sub(rf"{re.escape(item)}", rf'__NGPRSV__#{i}__', self.text)
             self.text = self.text.replace('\\\\', r'__NGPRSV__#0__')
