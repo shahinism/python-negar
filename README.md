@@ -70,7 +70,7 @@ Calling by default options:
 
     print(PersianEditor(text))
 
-resutl:
+result:
 
     نگار قابلیت‌های زیر را داراست:
     * خط تیره‌های پیاپی نظیر (–) و (—) را به معادل‌های استانداردشان تبدیل می‌کند.
@@ -117,3 +117,12 @@ Full list of args with description:
     --cleanup-spacing            Disable cleanup spacing feature
     --trim-lt-whitespaces        Disable Trim leading trailing whitespaces
 
+GUI & CLI
+======
+There are two companions with this repository to support GUI and CLI, named `negar-gui` and `negar-cli`, respectively.
+
+Both of them are available on PyPI. 
+
+* https://pypi.org/project/negar-gui/
+
+* https://pypi.org/project/negar-cli/
