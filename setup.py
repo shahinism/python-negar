@@ -21,9 +21,6 @@ setup(
     include_package_data=True,
     packages=find_packages() + ['negar'],
     install_requires=[
-        'PyQt5',
-        'pyperclip',
-        'pyuca',
         'regex'
     ],
     package_dir={'negar': 'negar'},

@@ -1,8 +1,7 @@
 from pathlib import Path
 
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 
-LOGO = (Path(__file__).parent.absolute()/"logo.png").as_posix()
 DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
 USERFILE = Path.home()/".python-negar"
 
