@@ -1,3 +1,6 @@
+1.1.4 - 2022-04-12
+-- GUI removed from `python-negar` and is initiated as `negar-gui`.
+
 1.1.3 - 2022-04-10
 -- `PyICU` is replaced by `pyuca` as the latter is more straightforward for Windows' installation.
 -- logo.ico for Windows
