@@ -5,7 +5,7 @@ import sys
 import enum
 from pathlib import Path
 sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
-from negar.constants import DATAFILE, USERFILE, URLREGX
+from negar.constants import DATAFILE, USERFILE, URLREGX, INFO
 
 class State(enum.Enum):
     save = 1
@@ -40,6 +40,7 @@ class PersianEditor:
         self._fix_english_numbers = is_in_args('fix-english-num')
         self._fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
         self._trim_leading_trailing_whitespaces = is_in_args('trim-lt-whitespaces')
+        self._exaggerating_zwnj = is_in_args('exaggerating-zwnj')
 
         UnTouchable() # to generate the untouchable words
         self.cleanup()
@@ -78,7 +79,7 @@ class PersianEditor:
     def _handle_urls(self, state):
         """Removing URLs and putting them back at the end of the process"""
         if state == State.save:
-            self.urls = re.findall(URLREGX, self.text, re.M)
+            self.urls = re.findall(URLREGX, self.text, re.M|re.I|re.X)
             self.urls.sort(key=lambda x: len(x), reverse=True)
             for i, url in enumerate(self.urls):
                 self.text = re.sub(rf"\b{re.escape(url)}\b", rf'__URL__#{i}__', self.text)
@@ -240,13 +241,18 @@ class PersianEditor:
 
     def fix_suffix_separate(self):
         """Puts ZWNJ between a word with its suffix (haye, ...)"""
+        exag = r"""
+            تر(ی(ن)?)?|
+            [تمش]ان|
+            ها(ی(ی|ت|م|ش|تان|شان)?)?|""" if self._exaggerating_zwnj else ''
         regx = re.compile(
-            r"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
-            (تر(ی(ن)?)?
-            # |[تمش]ان
-            |ها(ی(ی|ت|م|ش|تان|شان)?)?
-            |شناس(ی)?
-            |گذار(ی)?|گزار(ی)?
+            rf"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
+            ({exag}
+            # تر(ی(ن)?)?
+            # [تمش]ان|
+            # ها(ی(ی|ت|م|ش|تان|شان)?)?|
+            شناس(ی)?|
+            گذار(ی)?|گزار(ی)?
             )\b""", re.VERBOSE
         )
         wlist = self.text.split(" ")
@@ -400,4 +406,16 @@ class UnTouchable:
             pass
 
 if __name__ == "__main__":
-    print( "I'm a module, use ``negar'' instead. ;-)")
+    print( "I'm a module. If you'd like the GUI, use ``negar'' instead. ;-)")
+
+    print(f"""\nUsage:
+    from virastar import PersianEditor
+    args = []
+    # append your desired options
+    modifedText = PersianEditor(text, *args))
+
+    e.g.
+    text = {INFO}
+    print(PersianEditor(text, *['trim-lt-whitespaces',]))
+    """)
+    print(PersianEditor(f"{INFO}", *['trim-lt-whitespaces',]))

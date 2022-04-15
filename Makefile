@@ -19,7 +19,7 @@ upypi: setup
 	twine upload dist/python-negar-$(VER).tar.gz
 
 utest: setup
-	twine upload --repository-url https://test.pypi.org/legacy/  dist/python-negar-$(VER).tar.gz
+	twine upload -r testpypi dist/python-negar-$(VER).tar.gz
 
 upload: setup upypi utest
 
