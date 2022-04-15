@@ -1,3 +1,8 @@
+1.1.5 - 2022-04-15
+-- New option: `exaggeration_zwnj`
+    Recent writing rule for Persian text accepts both forms for some words like کتابها and کتاب‌ها
+    It's entirely up to the user to opt for it. Negar's default is to separate the suffixes of the words as much as possile.
+
 1.1.4 - 2022-04-12
 -- GUI removed from `python-negar` and is initiated as `negar-gui`.
 
