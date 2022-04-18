@@ -79,10 +79,10 @@ class PersianEditor:
     def _handle_urls(self, state):
         """Removing URLs and putting them back at the end of the process"""
         if state == State.save:
-            self.urls = re.findall(URLREGX, self.text, re.M|re.I|re.X)
+            self.urls = list(set(re.findall(URLREGX, self.text, re.M|re.I|re.X)))
             self.urls.sort(key=lambda x: len(x), reverse=True)
             for i, url in enumerate(self.urls):
-                self.text = re.sub(rf"\b{re.escape(url)}\b", rf'__URL__#{i}__', self.text)
+                self.text = regex.sub(rf"{re.escape(url)}", rf'__URL__#{i}__', self.text)
         if state == State.restore:
             for i, url in enumerate(self.urls):
                 self.text = re.sub(f'__URL__#{i}__', url, self.text)

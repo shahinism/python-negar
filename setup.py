@@ -36,4 +36,17 @@ setup(
     },
     long_description_content_type="text/markdown",
     long_description=open("README.md").read(),
+    python_requires=">=3.6",
+    classifiers=[
+        "Environment :: Console",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+    ],
+
 )

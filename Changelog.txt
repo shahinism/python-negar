@@ -1,3 +1,6 @@
+1.1.6 - 2012-04-19
+-- minor issue with handling urls
+
 1.1.5 - 2022-04-15
 -- New option: `exaggeration_zwnj`
     Recent writing rule for Persian text accepts both forms for some words like کتابها and کتاب‌ها
