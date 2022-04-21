@@ -18,61 +18,61 @@ class PersianEditor:
 
     def __init__(self, text, *args):
         # Check to see if `arg` exists in `args` or not
-        is_in_args = lambda arg: arg not in args
+        parse_args = lambda arg: arg not in args
 
         self.text = text
-        self._cleanup_zwnj = False
-        self._fix_dashes = is_in_args('fix-dashes')
-        self._fix_three_dots = is_in_args('fix-three-dots')
-        self._fix_hamzeh = is_in_args('fix-hamzeh')
-        self._hamzeh_with_yeh = is_in_args('hamzeh-with-yeh')
-        self._fix_prefix_spacing = is_in_args('fix-p-spacing')
-        self._fix_prefix_separate = is_in_args('fix-p-separate')
-        self._fix_suffix_spacing = is_in_args('fix-s-spacing')
-        self._fix_suffix_separate = is_in_args('fix-s-separate')
-        self._aggresive = is_in_args('aggresive')
-        self._cleanup_kashidas = is_in_args('cleanup-kashidas')
-        self._fix_english_quotes = is_in_args('fix-english-quotes')
-        self._cleanup_extra_marks = is_in_args('cleanup-ex-marks')
-        self._cleanup_spacing = is_in_args('cleanup-spacing')
-        self._fix_spacing_for_braces_and_quotes = is_in_args('fix-spacing-bq')
-        self._fix_arabic_numbers = is_in_args('fix-arabic-num')
-        self._fix_english_numbers = is_in_args('fix-english-num')
-        self._fix_misc_non_persian_chars = is_in_args('fix-non-persian-chars')
-        self._trim_leading_trailing_whitespaces = is_in_args('trim-lt-whitespaces')
-        self._exaggerating_zwnj = is_in_args('exaggerating-zwnj')
+        self._cleanup_zwnj                      = False
+        # checking for undesired options
+        self._aggresive                         = parse_args('aggresive')
+        self._fix_hamzeh                        = parse_args('fix-hamzeh')
+        self._fix_dashes                        = parse_args('fix-dashes')
+        self._fix_three_dots                    = parse_args('fix-three-dots')
+        self._hamzeh_with_yeh                   = parse_args('hamzeh-with-yeh')
+        self._fix_prefix_spacing                = parse_args('fix-p-spacing')
+        self._fix_prefix_separate               = parse_args('fix-p-separate')
+        self._fix_suffix_spacing                = parse_args('fix-s-spacing')
+        self._fix_suffix_separate               = parse_args('fix-s-separate')
+        self._fix_english_quotes                = parse_args('fix-english-quotes')
+        self._fix_arabic_numbers                = parse_args('fix-arabic-num')
+        self._fix_english_numbers               = parse_args('fix-english-num')
+        self._cleanup_spacing                   = parse_args('cleanup-spacing')
+        self._cleanup_kashidas                  = parse_args('cleanup-kashidas')
+        self._cleanup_extra_marks               = parse_args('cleanup-ex-marks')
+        self._exaggerating_zwnj                 = parse_args('exaggerating-zwnj')
+        self._fix_misc_non_persian_chars        = parse_args('fix-non-persian-chars')
+        self._fix_spacing_for_braces_and_quotes = parse_args('fix-spacing-bq')
+        self._trim_leading_trailing_whitespaces = parse_args('trim-lt-whitespaces')
 
         UnTouchable() # to generate the untouchable words
         self.cleanup()
 
     def cleanup(self):
         self._handle_urls(State.save)
-        if self._fix_dashes: self.fix_dashes()
-        if self._fix_three_dots: self.fix_three_dots()
-        if self._fix_english_quotes: self.fix_english_quotes()
-        if self._fix_hamzeh: self.fix_hamzeh()
-        if self._cleanup_zwnj: self.cleanup_zwnj()
-        if self._fix_misc_non_persian_chars: self.char_validator()
-        if self._fix_arabic_numbers: self.fix_arabic_numbers()
-        if self._fix_english_numbers: self.fix_english_numbers()
-        if self._fix_prefix_spacing: self.fix_prefix_spacing()
-        if self._fix_prefix_separate: self.fix_prefix_separate()
-        if self._fix_suffix_spacing: self.fix_suffix_spacing()
-        if self._fix_suffix_separate: self.fix_suffix_separate()
-        if self._aggresive: self.aggressive()
-        if self._fix_spacing_for_braces_and_quotes:
-            self.fix_spacing_for_braces_and_quotes()
-        if self._cleanup_spacing: self.cleanup_spacing()
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
+        self.cleanup_spacing()      if self._cleanup_spacing else None
+        self.fix_dashes()           if self._fix_dashes else None
+        self.fix_three_dots()       if self._fix_three_dots else None
+        self.fix_english_quotes()   if self._fix_english_quotes else None
+        self.fix_hamzeh()           if self._fix_hamzeh else None
+        self.cleanup_zwnj()         if self._cleanup_zwnj else None
+        self.char_validator()       if self._fix_misc_non_persian_chars else None
+        self.fix_arabic_numbers()   if self._fix_arabic_numbers else None
+        self.fix_english_numbers()  if self._fix_english_numbers else None
+        self.fix_prefix_spacing()   if self._fix_prefix_spacing else None
+        self.fix_prefix_separate()  if self._fix_prefix_separate else None
+        self.fix_suffix_spacing()   if self._fix_suffix_spacing else None
+        self.fix_suffix_separate()  if self._fix_suffix_separate else None
+        self.aggressive()           if self._aggresive else None
+        self.fix_spacing_for_braces_and_quotes() if self._fix_spacing_for_braces_and_quotes else None
         self.cleanup_redundant_zwnj()
         self._handle_urls(State.restore)
         return self.text
 
-    def __str__(self):
+    def __repr__(self):
         return self.text
 
-    __repr__ = __str__
+    __str__ = __repr__
 
     def _handle_urls(self, state):
         """Removing URLs and putting them back at the end of the process"""
@@ -236,31 +236,9 @@ class PersianEditor:
     def fix_spacing_for_braces_and_quotes(self):
         """Fixes the braces and quotes spacing problems."""
         # ()[]{}""«» should have one space before and no space after (inside)
-        self.text = re.sub(
-            r'[ ‌]*(\()\s*([^)]+?)\s*?(\))[ ‌]*',
-            r' \1\2\3 ',
-            self.text
-        )
-        self.text = re.sub(
-            r'[ ‌]*(\[)\s*([^)]+?)\s*?(\])[ ‌]*',
-            r' \1\2\3 ',
-            self.text
-        )
-        self.text = re.sub(
-            r'[ ‌]*(\{)\s*([^)]+?)\s*?(\})[ ‌]*',
-            r' \1\2\3 ',
-            self.text
-        )
-        self.text = re.sub(
-            r'[ ‌]*(“)\s*([^)]+?)\s*?(”)[ ‌]*',
-            r' \1\2\3 ',
-            self.text
-        )
-        self.text = re.sub(
-            r'[ ‌]*(«)\s*([^)]+?)\s*?(»)[ ‌]*',
-            r' \1\2\3 ',
-            self.text
-        )
+        for begin, end in zip(['\(','\[','\{','"','«'], ['\)','\]','\}','"','»']):
+            self.text = re.sub(rf'[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*',
+                r' \1\2\3 ', self.text )
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
         self.text = re.sub(
             r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
@@ -284,36 +262,10 @@ class PersianEditor:
             r'\1:\2',
             self.text
         )
-        # Fixes inside spacing for () [] {} "" «»
-        self.text = re.sub(
-            r'(\()\s*([^)]+?)\s*?(\))',
-            r'\1\2\3',
-            self.text
-        )
-        self.text = re.sub(
-            r'(\[)\s*([^)]+?)\s*?(\])',
-            r'\1\2\3',
-            self.text
-        )
-        self.text = re.sub(
-            r'(\{)\s*([^)]+?)\s*?(\})',
-            r'\1\2\3',
-            self.text
-        )
-        self.text = re.sub(
-            r'(“)\s*([^)]+?)\s*?(”)',
-            r'\1\2\3',
-            self.text
-        )
-        self.text = re.sub(
-            r'(«)\s*([^)]+?)\s*?(»)',
-            r'\1\2\3',
-            self.text
-        )
 
     def cleanup_spacing(self):
         """Reduces multiple consecutive spaces to one."""
-        self.text = re.sub(r'[ ]+', r' ', self.text)
+        self.text = re.sub(r'([ \t])+', r' ', self.text)
         # self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
         self.text = re.sub(r'\n{2,}', r'\n\n', self.text)
 

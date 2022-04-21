@@ -1,3 +1,7 @@
+1.1.7 - 2012-04-21
+-- tab* will be replaced by space
+-- Code sanitization
+
 1.1.6 - 2012-04-19
 -- minor issue with handling urls
 
