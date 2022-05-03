@@ -1,3 +1,7 @@
+1.1.8 - 2012-05-03
+-- minor issue with untouchable words
+-- remove `disutils` as it's deprecated now
+
 1.1.7 - 2012-04-21
 -- tab* will be replaced by space
 -- Code sanitization

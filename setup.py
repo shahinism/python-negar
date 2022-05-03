@@ -1,9 +1,6 @@
 import re
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
 version = re.search(
     r'(__version__ = "(\d\.\d(\.\d+)?)")',
