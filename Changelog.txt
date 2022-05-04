@@ -1,4 +1,7 @@
-1.1.9 - 2012-05-03
+1.1.10 - 2012-05-04
+-- enconding issues on Windows
+
+1.1.9 - 2012-05-04
 -- Update in compliance with `negar-gui` ver 0.2
 
 1.1.8 - 2012-05-03

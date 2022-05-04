@@ -32,7 +32,7 @@ setup(
         ],
     },
     long_description_content_type="text/markdown",
-    long_description=open("README.md").read(),
+    long_description=open("README.md", encoding="utf8").read(),
     python_requires=">=3.6",
     classifiers=[
         "Environment :: Console",
