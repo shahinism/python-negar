@@ -245,6 +245,8 @@ class PersianEditor:
             r'\1 ',
             self.text
         )
+        # special case for versioning numbers like 1.2.7
+        self.text = re.sub(r'([\d])([.])\s([\d])([.])\s([\d])', r'\1\2\3\4\5', self.text)
         # special case for floating-point numbers like 12.7
         self.text = re.sub(r'([\d])([.])\s([\d])', r'\1\2\3', self.text)
         self.text = re.sub(

@@ -1,4 +1,4 @@
-VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" ')
+VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" '|head -1)
 
 .ONESHELL:
 
