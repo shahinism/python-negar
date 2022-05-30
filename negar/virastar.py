@@ -149,8 +149,8 @@ class PersianEditor:
         )
 
     def fix_prefix_spacing(self):
-        """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
-        self.text = re.sub(r"\b(ن?می|بی)‌*(\s+)",r'\1‌', self.text)
+        """Puts ZWNJ between a word and its prefix (mi* nemi* bi* na*)"""
+        self.text = re.sub(r"\b(ن?می|بی|نا)‌*(\s+)",r'\1‌', self.text)
 
     def fix_prefix_separate(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
