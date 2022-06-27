@@ -1,3 +1,6 @@
+1.1.14 - 2022-06-27
+--  Puts ZWNJ between مند، ور، پور suffixes and the words
+
 1.1.13 - 2022-05-30
 --  نا should stick to the next word, like ناامن
 

@@ -184,6 +184,7 @@ class PersianEditor:
             |ها(ی(ی|ت|م|ش|تان|شان)?)?
             |شناس(ی)?
             |گذار(ی)?|گزار(ی)?
+            |مند|ور|پور
             )\b""", re.VERBOSE
         )
         self.text = re.sub(regx, r'‌\1', self.text)
