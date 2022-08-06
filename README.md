@@ -4,6 +4,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/shahinism/python-negar)](https://github.com/shahinism/python-negar/network)
 [![GitHub issues](https://img.shields.io/github/issues/shahinism/python-negar)](https://github.com/shahinism/python-negar/issues)
 [![GitHub license](https://img.shields.io/github/license/shahinism/python-negar)](https://github.com/shahinism/python-negar/blob/main/LICENSE)
+[![Downloads](https://pepy.tech/badge/python-negar)](https://pepy.tech/project/python-negar)
 
 Negar is an editor(=virastar in Persian) for Persian text. The project is initially inspired by [virastar](https://github.com/aziz/virastar/blob/master/lib/virastar.rb). Thank you [Aziz](https://github.com/aziz) for your great job.
 
