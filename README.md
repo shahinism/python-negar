@@ -143,3 +143,10 @@ Both of them are available on PyPI.
 * https://pypi.org/project/negar-gui/
 
 * https://pypi.org/project/negar-cli/
+
+
+## Contributors
+
+<a href="https://github.com/shahinism/python-negar/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=shahinism/python-negar" />
+</a>
