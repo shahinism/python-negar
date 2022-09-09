@@ -1,5 +1,6 @@
 ﻿Negar
 ==========
+[![PyPI](https://img.shields.io/pypi/v/python-negar)](https://pypi.org/project/python-negar/)
 [![repo size](https://img.shields.io/github/repo-size/shahinism/python-negar.svg)](https://github.com/shahinism/python-negar/archive/master.zip)
 [![GitHub forks](https://img.shields.io/github/forks/shahinism/python-negar)](https://github.com/shahinism/python-negar/network)
 [![GitHub issues](https://img.shields.io/github/issues/shahinism/python-negar)](https://github.com/shahinism/python-negar/issues)
