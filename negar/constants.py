@@ -2,10 +2,10 @@ from pathlib import Path
 
 __version__ = "1.1.16"
 
-DATAFILE = Path(__file__).parent.absolute()/"data/untouchable.dat"
-USERFILE = Path.home()/".python-negar"
+DATAFILE = Path(__file__).parent.absolute() / "data/untouchable.dat"
+USERFILE = Path.home() / ".python-negar"
 
-INFO=f"""قابلیت های ویراستار ' نگار  ' -- نسخه {__version__} :
+INFO = f"""قابلیت های ویراستار ' نگار  ' -- نسخه {__version__} :
 * جایگزینی
 	╛═ خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان
 	╛═ سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی
