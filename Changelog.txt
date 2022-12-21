@@ -1,3 +1,7 @@
+1.1.17 - 2022-12-21
+-- Fix the issue with می and نمی when they come as nouns, not prefixes.
+-- Several new untouchable words: تنهای/تنهایی/تک‌وتنهایی
+
 1.1.16 - 2022-09-11
 -- Fix issues with the following بهمان ,مهاجمان
 
@@ -11,7 +15,7 @@
 --  نا should stick to the next word, like ناامن
 
 1.1.12 - 2022-05-17
--- some issue with words ending in *tan
+-- some issues with words ending in *tan
 
 1.1.11 - 2022-05-09
 -- supports versioning numbers, e.g 1.1.11

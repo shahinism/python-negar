@@ -19,7 +19,7 @@ class PersianEditor:
     def __init__(self, text, *args):
         # Check to see if `arg` exists in `args` or not
         parse_args = lambda arg: arg not in args
-
+        self._prepositions = "از|در|به|با|بر|برای|بی|درباره|تا|را|جز|بدون|چون|مانند|مثل|زیر|روی|همراه|مگر|الا|اندر|زی|برت|الا|زی|چو|سوای|پایین|پشت|پهلوی|پس|پیش|بالای|بیرون|درون|توی|غیر|کنار|مقابل|بهر"
         self.text = text
         self._cleanup_zwnj                      = False
         # checking for undesired options
@@ -150,7 +150,9 @@ class PersianEditor:
 
     def fix_prefix_spacing(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi* na*)"""
-        self.text = re.sub(r"\b(ن?می|بی|نا)‌*(\s+)",r'\1‌', self.text)
+        self.text = re.sub(r"\b(بی|نا)‌*(\s+)(?!(می)\b)",r'\1‌', self.text)
+        # the following case is for the mi(n.) and nami(n.)
+        self.text = re.sub(rf"\b(ن?می)‌*(\s+)(?!(.|{self._prepositions})\b)",r'\1‌', self.text)
 
     def fix_prefix_separate(self):
         """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
