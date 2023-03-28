@@ -2,7 +2,7 @@ def main():
     try:
         from negar_gui import main
         main.main()
-    except ModuleNotFoundError:
+    except (ModuleNotFoundError, ImportError):
         print("Install `negar-gui` to have a GUI! :D")
         print("==>> pip install negar-gui")
         print("After installing negar-gui, `negar` would be an alias for `negar-gui`")

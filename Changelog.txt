@@ -1,3 +1,6 @@
+1.2 - 2023-03-28
+-- Fix GUI execution issue
+
 1.1.17 - 2022-12-21
 -- Fix the issue with می and نمی when they come as nouns, not prefixes.
 -- Several new untouchable words: تنهای/تنهایی/تک‌وتنهایی
