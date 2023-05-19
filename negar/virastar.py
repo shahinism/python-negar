@@ -48,6 +48,13 @@ class PersianEditor:
 
     def cleanup(self):
         self._handle_urls(State.save)
+        # fix punctuation spaces at first
+        # : ; , ! ? and their Persian counterparts should have one space after and no space before
+        self.text = re.sub(
+            r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
+            r'\1 ',
+            self.text
+        )
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_spacing()      if self._cleanup_spacing else None
@@ -242,12 +249,12 @@ class PersianEditor:
         for begin, end in zip(['\(','\[','\{','"','«'], ['\)','\]','\}','"','»']):
             self.text = re.sub(rf'[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*',
                 r' \1\2\3 ', self.text )
-        # : ; , ! ? and their Persian counterparts should have one space after and no space before
-        self.text = re.sub(
-            r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
-            r'\1 ',
-            self.text
-        )
+        # # : ; , ! ? and their Persian counterparts should have one space after and no space before
+        # self.text = re.sub(
+        #     r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
+        #     r'\1 ',
+        #     self.text
+        # )
         # special case for versioning numbers like 1.2.7
         self.text = re.sub(r'([\d])([.])\s([\d])([.])\s([\d])', r'\1\2\3\4\5', self.text)
         # special case for floating-point numbers like 12.7

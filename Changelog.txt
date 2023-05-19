@@ -1,3 +1,6 @@
+1.2.1 - 2023-05-23
+-- Fix an issue with punctuation like  '،ساختمان'
+
 1.2 - 2023-03-28
 -- Fix GUI execution issue
 
