@@ -50,6 +50,8 @@ class PersianEditor:
         self._handle_urls(State.save)
         # fix punctuation spaces at first
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
+        # An exception is triple dots, which should be handled first
+        self.fix_three_dots()       if self._fix_three_dots else None
         self.text = re.sub(
             r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
             r'\1 ',
@@ -59,7 +61,6 @@ class PersianEditor:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
         self.cleanup_spacing()      if self._cleanup_spacing else None
         self.fix_dashes()           if self._fix_dashes else None
-        self.fix_three_dots()       if self._fix_three_dots else None
         self.fix_english_quotes()   if self._fix_english_quotes else None
         self.fix_hamzeh()           if self._fix_hamzeh else None
         self.cleanup_zwnj()         if self._cleanup_zwnj else None

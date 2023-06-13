@@ -1,3 +1,6 @@
+1.2.2 - 2023-06-13
+-- Fix the issue with the triple dots that was caused by the previous update
+
 1.2.1 - 2023-05-23
 -- Fix an issue with punctuation like  '،ساختمان'
 
