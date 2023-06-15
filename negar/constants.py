@@ -1,6 +1,6 @@
 from pathlib import Path
 
-__version__ = "1.2.2"
+__version__ = "1.2.4"
 
 DATAFILE = Path(__file__).parent.absolute() / "data/untouchable.dat"
 USERFILE = Path.home() / ".python-negar"

@@ -1,3 +1,6 @@
+1.2.4 - 2023-06-15
+-- Fix the issue with multiple ! and ? and extra space after parantheses at the end of line
+
 1.2.2 - 2023-06-13
 -- Fix the issue with the triple dots that was caused by the previous update
 

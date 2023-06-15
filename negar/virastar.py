@@ -52,6 +52,7 @@ class PersianEditor:
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
         # An exception is triple dots, which should be handled first
         self.fix_three_dots()       if self._fix_three_dots else None
+        self.aggressive()           if self._aggresive else None
         self.text = re.sub(
             r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
             r'\1 ',
@@ -59,7 +60,6 @@ class PersianEditor:
         )
         if self._trim_leading_trailing_whitespaces:
             self.text = '\n'.join([line.strip() for line in self.text.split('\n')])
-        self.cleanup_spacing()      if self._cleanup_spacing else None
         self.fix_dashes()           if self._fix_dashes else None
         self.fix_english_quotes()   if self._fix_english_quotes else None
         self.fix_hamzeh()           if self._fix_hamzeh else None
@@ -71,9 +71,9 @@ class PersianEditor:
         self.fix_prefix_separate()  if self._fix_prefix_separate else None
         self.fix_suffix_spacing()   if self._fix_suffix_spacing else None
         self.fix_suffix_separate()  if self._fix_suffix_separate else None
-        self.aggressive()           if self._aggresive else None
         self.fix_spacing_for_braces_and_quotes() if self._fix_spacing_for_braces_and_quotes else None
         self.cleanup_redundant_zwnj()
+        self.cleanup_spacing()      if self._cleanup_spacing else None
         self._handle_urls(State.restore)
         return self.text
 
@@ -251,11 +251,11 @@ class PersianEditor:
             self.text = re.sub(rf'[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*',
                 r' \1\2\3 ', self.text )
         # # : ; , ! ? and their Persian counterparts should have one space after and no space before
-        # self.text = re.sub(
-        #     r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
-        #     r'\1 ',
-        #     self.text
-        # )
+        self.text = re.sub(
+            r'[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*',
+            r'\1 ',
+            self.text
+        )
         # special case for versioning numbers like 1.2.7
         self.text = re.sub(r'([\d])([.])\s([\d])([.])\s([\d])', r'\1\2\3\4\5', self.text)
         # special case for floating-point numbers like 12.7
@@ -281,6 +281,7 @@ class PersianEditor:
         self.text = re.sub(r'([ \t])+', r' ', self.text)
         # self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
         self.text = re.sub(r'\n{2,}', r'\n\n', self.text)
+        self.text = re.sub(r'[ \t]+(\n|$)', r'\1', self.text, re.MULTILINE)
 
     @classmethod
     def char_translator(cls, fromchar, tochar, string):
