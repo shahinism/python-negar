@@ -3,5 +3,4 @@ include AUTHORS
 include *.txt
 include negar/logo.png
 include negar/data/*.dat
-include negar/i18n/*.qm
 recursive-include docs *.txt
