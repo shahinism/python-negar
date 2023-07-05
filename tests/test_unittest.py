@@ -56,6 +56,11 @@ class Test(unittest.TestCase):
         self.input_ = "علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'"
         self.output_ = "علایمی نظیر کتیشن فارسی با گیومه؛ «نگار»"
 
+    @_assertEqual('Persian numbers')
+    def test_persian_numbers(self):
+        self.input_ = "اعداد عربی '١٢٣٤٥٦٧٨٩٠' و انگلیسی '1234567890'  با معادل فارسی"
+        self.output_ = "اعداد عربی «۱۲۳۴۵۶۷۸۹۰» و انگلیسی «۱۲۳۴۵۶۷۸۹۰» با معادل فارسی"
+
 
 if __name__ == '__main__':
     unittest.main()
