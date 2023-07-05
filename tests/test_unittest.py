@@ -46,6 +46,10 @@ class Test(unittest.TestCase):
         self.input_ = "خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان"
         self.output_ = "خط تیره‌های پیاپی نظیر (–) و (—) با معادل‌های استانداردشان"
 
+    @_assertEqual('triple dots')
+    def test_triple_dots(self):
+        self.input_ = "سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی"
+        self.output_ = "سه نقطه‌ی پیاپی (…) با کاراکتر استانداردش در زبان فارسی"
 
 
 if __name__ == '__main__':
