@@ -41,6 +41,12 @@ class Test(unittest.TestCase):
         self.input_ = "نسخه 1.2"
         self.output_ = "نسخه ۱.۲"
 
+    @_assertEqual('consecutive dashes')
+    def test_consecutive_dashes(self):
+        self.input_ = "خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان"
+        self.output_ = "خط تیره‌های پیاپی نظیر (–) و (—) با معادل‌های استانداردشان"
+
+
 
 if __name__ == '__main__':
     unittest.main()
