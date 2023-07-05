@@ -51,6 +51,11 @@ class Test(unittest.TestCase):
         self.input_ = "سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی"
         self.output_ = "سه نقطه‌ی پیاپی (…) با کاراکتر استانداردش در زبان فارسی"
 
+    @_assertEqual('Persian quotations')
+    def test_persian_quotations(self):
+        self.input_ = "علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'"
+        self.output_ = "علایمی نظیر کتیشن فارسی با گیومه؛ «نگار»"
+
 
 if __name__ == '__main__':
     unittest.main()
