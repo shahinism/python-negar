@@ -29,6 +29,18 @@ class Test(unittest.TestCase):
         self.input_ = "پرانتز ها  یا دیگر علایم ؛ ( نگار )"
         self.output_ = "پرانتزها یا دیگر علایم؛ (نگار)"
 
+    @_assertEqual('numbers as a version -- triple dots')
+    def test_versioning_numbers_triple(self):
+        """There is no space between dots of version number!"""
+        self.input_ = "نسخه 1.2.4"
+        self.output_ = "نسخه ۱.۲.۴"
+
+    @_assertEqual('numbers as a version -- double dots')
+    def test_versioning_numbers_double(self):
+        """There is no space between dots of version number!"""
+        self.input_ = "نسخه 1.2"
+        self.output_ = "نسخه ۱.۲"
+
 
 if __name__ == '__main__':
     unittest.main()
