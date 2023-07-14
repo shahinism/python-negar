@@ -1,3 +1,6 @@
+1.2.5 - 2023-07-14
+-- Fix issues with texts that include backslashes as part of their context, such as LaTeX source code.
+
 1.2.4 - 2023-06-15
 -- Fix the issue with multiple ! and ? and extra space after parantheses at the end of line
 

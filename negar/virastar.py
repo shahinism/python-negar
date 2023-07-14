@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import re, regex
+import re
+import regex
 import sys
 import enum
 from pathlib import Path
@@ -171,17 +172,21 @@ class PersianEditor:
         (?<!های|هایی|ها|شناس|شناسی|گذار|گذاری)\b
         """, re.VERBOSE) #  \b for words like سهمیه
 
-        wlist = self.text.split(" ")
+        # Replace backslashes with a temporary placeholder
+        text = self.text.replace('\\', 'PN__BACKSLASH__PN')
+        wlist = text.split(" ")
         for word in wlist:
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
                 if p.group() not in UnTouchable.words:
-                    self.text = re.sub(
+                    text = re.sub(
                         re.escape( p.group() ),
-                        p.group(1) + r"‌" + p.group(2),
-                        self.text
+                        p.group(1) + "\u200c" + p.group(2) ,
+                        text
                     )
+        # Restore the original backslashes
+        self.text = text.replace('PN__BACKSLASH__PN', '\\')
 
     def fix_suffix_spacing(self):
         """Puts ZWNJ between a word and its suffix (*ha[ye] *tar[in])"""
@@ -223,17 +228,21 @@ class PersianEditor:
             گذار(ی)?|گزار(ی)?
             )\b""", re.VERBOSE
         )
-        wlist = self.text.split(" ")
+        # Replace backslashes with a temporary placeholder
+        text = self.text.replace('\\', 'PN__BACKSLASH__PN')
+        wlist = text.split(" ")
         for word in wlist:
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
                 if p.group() not in UnTouchable.words:
-                    self.text = re.sub(
+                    text = re.sub(
                         re.escape( p.group() ),
-                        p.group(1) + r"‌" + p.group(2) ,
-                        self.text
+                        p.group(1) + "\u200c" + p.group(2) ,
+                        text
                     )
+        # Restore the original backslashes
+        self.text = text.replace('PN__BACKSLASH__PN', '\\')
 
     def aggressive(self):
         """Reduces Aggressive Punctuation to one sign."""
