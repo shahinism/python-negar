@@ -7,6 +7,11 @@ VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" '|head -1)
 ver:
 	@echo python-negar ver. "$(VER)"
 
+.PHONY: uninstall
+uninstall:
+	@echo "Uninstalling python-negar ..."
+	pip uninstall python-negar
+
 setup: ver
 	python setup.py sdist
 	python setup.py bdist_wheel
