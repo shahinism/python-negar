@@ -24,11 +24,6 @@ class Test(unittest.TestCase):
         self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )" # noqa: E501
         self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"     # noqa: E501
 
-    @_assertEqual("Fix Parantheses")
-    def test_fix_parantheses(self):
-        self.input_ = "پرانتز ها  یا دیگر علایم ؛ ( نگار )"
-        self.output_ = "پرانتزها یا دیگر علایم؛ (نگار)"
-
     @_assertEqual("Numbers as a Version -- Triple Dots")
     def test_versioning_numbers_triple(self):
         """There is no space between dots of version number!"""
@@ -70,6 +65,17 @@ class Test(unittest.TestCase):
     def test_persian_yeh_as_a_kasreh(self):
         self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )"
         self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"
+
+    @_assertEqual("Fix Parantheses")
+    def test_fix_parantheses(self):
+        self.input_ = "پرانتز ها  یا دیگر علایم ؛ ( نگار )"
+        self.output_ = "پرانتزها یا دیگر علایم؛ (نگار)"
+
+    @_assertEqual("Fix Punctuations")
+    def test_fix_punctuation(self):
+        self.input_ = "علائم نقطه‌گذاری ؛ بدون فاصله از قبل و با یک فاصله از بعد به استثنای اعداد اعشاری/نسخه نرم‌افزاری مانند	12.4/1.2.4"
+        self.output_ = "علائم نقطه‌گذاری؛ بدون فاصله از قبل و با یک فاصله از بعد به استثنای اعداد اعشاری/نسخه نرم‌افزاری مانند ۱۲.۴/۱.۲.۴"
+
 
 if __name__ == "__main__":
     unittest.main()
