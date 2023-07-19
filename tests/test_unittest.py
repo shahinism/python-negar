@@ -14,53 +14,53 @@ class Test(unittest.TestCase):
         return decorator
 
     # @unittest.skip("")
-    @_assertEqual('trim leading trailing whitespaces')
+    @_assertEqual("trim leading trailing whitespaces")
     def test_trim_leading_trailing_whitespaces(self):
         self.input_ = "فضا های         خالی     بیش          از       حد"
         self.output_ = "فضاهای خالی بیش از حد"
 
-    @_assertEqual('fix hamzeh')
+    @_assertEqual("fix hamzeh")
     def test_fix_hamzeh(self):
-        self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )"
-        self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"
+        self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )" # noqa: E501
+        self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"     # noqa: E501
 
-    @_assertEqual('fix parantheses')
+    @_assertEqual("fix parantheses")
     def test_fix_parantheses(self):
         self.input_ = "پرانتز ها  یا دیگر علایم ؛ ( نگار )"
         self.output_ = "پرانتزها یا دیگر علایم؛ (نگار)"
 
-    @_assertEqual('numbers as a version -- triple dots')
+    @_assertEqual("numbers as a version -- triple dots")
     def test_versioning_numbers_triple(self):
         """There is no space between dots of version number!"""
         self.input_ = "نسخه 1.2.4"
         self.output_ = "نسخه ۱.۲.۴"
 
-    @_assertEqual('numbers as a version -- double dots')
+    @_assertEqual("numbers as a version -- double dots")
     def test_versioning_numbers_double(self):
         """There is no space between dots of version number!"""
         self.input_ = "نسخه 1.2"
         self.output_ = "نسخه ۱.۲"
 
-    @_assertEqual('consecutive dashes')
+    @_assertEqual("consecutive dashes")
     def test_consecutive_dashes(self):
         self.input_ = "خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان"
         self.output_ = "خط تیره‌های پیاپی نظیر (–) و (—) با معادل‌های استانداردشان"
 
-    @_assertEqual('triple dots')
+    @_assertEqual("triple dots")
     def test_triple_dots(self):
         self.input_ = "سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی"
         self.output_ = "سه نقطه‌ی پیاپی (…) با کاراکتر استانداردش در زبان فارسی"
 
-    @_assertEqual('Persian quotations')
+    @_assertEqual("Persian quotations")
     def test_persian_quotations(self):
         self.input_ = "علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'"
         self.output_ = "علایمی نظیر کتیشن فارسی با گیومه؛ «نگار»"
 
-    @_assertEqual('Persian numbers')
+    @_assertEqual("Persian numbers")
     def test_persian_numbers(self):
         self.input_ = "اعداد عربی '١٢٣٤٥٦٧٨٩٠' و انگلیسی '1234567890'  با معادل فارسی"
         self.output_ = "اعداد عربی «۱۲۳۴۵۶۷۸۹۰» و انگلیسی «۱۲۳۴۵۶۷۸۹۰» با معادل فارسی"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

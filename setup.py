@@ -16,19 +16,19 @@ setup(
     maintainer="Javad Razavian, Alireza Savand",
     maintainer_email="javadr@gmail.com, alireza.savand@gmail.com",
     include_package_data=True,
-    packages=find_packages() + ['negar'],
+    packages=find_packages() + ["negar"],
     install_requires=[
-        'regex'
+        "regex"
     ],
-    package_dir={'negar': 'negar'},
-    package_data={'negar/data': ['data/*.dat']},
+    package_dir={"negar": "negar"},
+    package_data={"negar/data": ["data/*.dat"]},
     description="Negar is a spell corrector and Persian text editor",
     license="GPL",
     keywords="spellcheck Persian editor",
     url="http://github.com/shahinism/python-negar",
     entry_points={
-        'console_scripts': [
-            'negar = negar.gui:main',
+        "console_scripts": [
+            "negar = negar.gui:main",
         ],
     },
     long_description_content_type="text/markdown",
