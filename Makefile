@@ -16,8 +16,8 @@ setup: ver
 	python setup.py sdist
 	python setup.py bdist_wheel
 
-lins: ver
-	python setup.py install
+lins: ver setup
+	pip install "dist/python_negar-$(VER)-py3-none-any.whl"
 
 pins: ver
 	pip install python-negar=="$(VER)"
