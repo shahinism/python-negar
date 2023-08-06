@@ -26,13 +26,13 @@ class Test(unittest.TestCase):
 
     @_assertEqual("Numbers as a Version -- Triple Dots")
     def test_versioning_numbers_triple(self):
-        """There is no space between dots of version number!"""
+        """There is no space between dots of version number!."""
         self.input_ = "نسخه 1.2.4"
         self.output_ = "نسخه ۱.۲.۴"
 
     @_assertEqual("Numbers as a Version -- Double Dots")
     def test_versioning_numbers_double(self):
-        """There is no space between dots of version number!"""
+        """There is no space between dots of version number!."""
         self.input_ = "نسخه 1.2"
         self.output_ = "نسخه ۱.۲"
 

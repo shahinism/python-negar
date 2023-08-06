@@ -16,9 +16,7 @@ class State(enum.Enum):
     restore = 2
 
 class PersianEditor:
-    """
-    Persian Text Editor for some sanitiztion task called Virastary in Persian
-    """
+    """Persian Text Editor for some sanitiztion task called Virastary in Persian."""
 
     def __init__(self, text, *args):
         # Check to see if `arg` exists in `args` or not
@@ -63,7 +61,7 @@ class PersianEditor:
         self.text = re.sub(
             r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
             r"\1 ",
-            self.text
+            self.text,
         )
         if self._trim_leading_trailing_whitespaces:
             self.text = "\n".join([line.strip() for line in self.text.split("\n")])
@@ -91,7 +89,7 @@ class PersianEditor:
     __str__ = __repr__
 
     def _handle_urls(self, state):
-        """Removing URLs and putting them back at the end of the process"""
+        """Remove URLs and putting them back at the end of the process."""
         if state == State.save:
             self.urls = list(set(re.findall(URLREGX, self.text, re.M|re.I|re.X)))
             self.urls.sort(key=lambda x: len(x), reverse=True)
@@ -102,20 +100,21 @@ class PersianEditor:
                 self.text = re.sub(f"__URL__#{i}__", url, self.text)
 
     def fix_dashes(self):
-        """Replaces double and triple dashes with `ndash` and `mdash`, respectively."""
+        """Replace double and triple dashes with `ndash` and `mdash`, respectively."""
         self.text = re.sub(r"-{3}", r"—", self.text)
         self.text = re.sub(r"-{2}", r"–", self.text)
 
     def fix_three_dots(self):
-        """Replaces three dots with an ellipsis."""
+        """Replace three dots with an ellipsis."""
         self.text = re.sub(r"\s*\.{3,}", r"…", self.text)
 
     def fix_english_quotes(self):
-        """Replaces English quotes with their Persian counterparts."""
+        """Replace English quotes with their Persian counterparts."""
         self.text = re.sub(r"([\"'`]+)(.+?)(\1)", r"«\2»", self.text)
 
     def fix_hamzeh(self):
-        """Replaces trailing 'ه ی' with 'هٔ' or 'ه‌ی'
+        """Replace trailing 'ه ی' with 'هٔ' or 'ه‌ی'.
+
         --the last one is achievable if hamzeh_with_yeh set.
         """
         if self._hamzeh_with_yeh:
@@ -124,38 +123,38 @@ class PersianEditor:
             self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)",r"\1هٔ\3", self.text)
 
     def cleanup_zwnj(self):
-        """Removes unnecessary ZWNJ that are succeeded/preceded by a space."""
+        """Remove unnecessary ZWNJ that are succeeded/preceded by a space."""
         self.text = re.sub(r"\s+|\s+", r" ", self.text)
 
     def cleanup_redundant_zwnj(self):
-        """Removes unwanted ZWNJs which are added by some sanitization tasks."""
+        """Remove unwanted ZWNJs which are added by some sanitization tasks."""
         self.text = re.sub(r"([ءاأدذرزژوؤ])‌+", r"\1", self.text)
         self.text = re.sub(r"(‌)+", r"\1", self.text)
 
     def char_validator(self):
-        """Replaces invalid characters with valid ones."""
+        """Replace invalid characters with valid ones."""
         bad_chars  = ",;%يةك"
         good_chars = "،؛٪یهک"
         self.text = self.char_translator(bad_chars, good_chars, self.text)
 
     def fix_arabic_numbers(self):
-        """Translates Arabic numbers to their Persian counterparts."""
+        """Translate Arabic numbers to their Persian counterparts."""
         persian_numbers = "۱۲۳۴۵۶۷۸۹۰"
         arabic_numbers = "١٢٣٤٥٦٧٨٩٠"
         self.text = self.char_translator(
             arabic_numbers,
             persian_numbers,
-            self.text
+            self.text,
         )
 
     def fix_english_numbers(self):
-        """Translates English numbers to their Persian counterparts."""
+        """Translate English numbers to their Persian counterparts."""
         persian_numbers = "۱۲۳۴۵۶۷۸۹۰"
         english_numbers = "1234567890"
         self.text = self.char_translator(
             english_numbers,
             persian_numbers,
-            self.text
+            self.text,
         )
 
         # Avoids to change English numbers in strings like 'Text12', 'Text_12', or 'A4'
@@ -163,17 +162,17 @@ class PersianEditor:
             r"[۰-۹]+[a-zA-Z_]{1,}[۰-۹]+|[a-zA-Z_]{1,}[۰-۹]+|[۰-۹]+[a-zA-Z_]{1,}",
             lambda m:
             self.char_translator(persian_numbers, english_numbers, m.group()),
-            self.text
+            self.text,
         )
 
     def fix_prefix_spacing(self):
-        """Puts ZWNJ between a word and its prefix (mi* nemi* bi* na*)"""
+        """Put ZWNJ between a word and its prefix (mi* nemi* bi* na*)."""
         self.text = re.sub(r"\b(بی|نا)‌*(\s+)(?!(می)\b)",r"\1‌", self.text)
         # the following case is for the mi(n.) and nami(n.)
         self.text = re.sub(rf"\b(ن?می)‌*(\s+)(?!(.|{self._prepositions})\b)",r"\1‌", self.text)
 
     def fix_prefix_separate(self):
-        """Puts ZWNJ between a word and its prefix (mi* nemi* bi*)"""
+        """Put ZWNJ between a word and its prefix (mi* nemi* bi*)."""
         # regx = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
         regx = regex.compile(r"""
         \b(بی|ن?می)‌*
@@ -192,13 +191,13 @@ class PersianEditor:
                     text = re.sub(
                         re.escape( p.group() ),
                         p.group(1) + "\u200c" + p.group(2) ,
-                        text
+                        text,
                     )
         # Restore the original backslashes
         self.text = text.replace("PN__BACKSLASH__PN", "\\")
 
     def fix_suffix_spacing(self):
-        """Puts ZWNJ between a word and its suffix (*ha[ye] *tar[in])"""
+        """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
         regx = re.compile(
             r"""\s+
             (تر(ی(ن)?)?
@@ -209,7 +208,7 @@ class PersianEditor:
             |شناس(ی)?
             |گذار(ی)?|گزار(ی)?
             |مند|ور|پور
-            )\b""", re.VERBOSE
+            )\b""", re.VERBOSE,
         )
         self.text = re.sub(regx, r"‌\1", self.text)
 
@@ -222,7 +221,7 @@ class PersianEditor:
         self.text = re.sub(regx, r"\1\2‌\3", self.text)
 
     def fix_suffix_separate(self):
-        """Puts ZWNJ between a word with its suffix (haye, ...)"""
+        """Put ZWNJ between a word with its suffix (haye, ...)."""
         exag = r"""
             تر(ی(ن)?)?|
             [تمش]ان|
@@ -235,7 +234,7 @@ class PersianEditor:
             # ها(ی(ی|ت|م|ش|تان|شان)?)?|
             شناس(ی)?|
             گذار(ی)?|گزار(ی)?
-            )\b""", re.VERBOSE
+            )\b""", re.VERBOSE,
         )
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
@@ -247,14 +246,14 @@ class PersianEditor:
                 if p.group() not in UnTouchable.words:
                     text = re.sub(
                         re.escape( p.group() ),
-                        p.group(1) + "\u200c" + p.group(2) ,
-                        text
+                        p.group(1) + "\u200c" + p.group(2),
+                        text,
                     )
         # Restore the original backslashes
         self.text = text.replace("PN__BACKSLASH__PN", "\\")
 
     def aggressive(self):
-        """Reduces Aggressive Punctuation to one sign."""
+        """Reduce Aggressive Punctuation to one sign."""
         if self._cleanup_extra_marks:
             self.text = re.sub(r"(؟){2,}", r"\1", self.text)
             self.text = re.sub(r"(!){2,}", r"\1", self.text)
@@ -263,7 +262,7 @@ class PersianEditor:
             self.text = re.sub(r"ـ+", "", self.text)
 
     def fix_spacing_for_braces_and_quotes(self):
-        """Fixes the braces and quotes spacing problems."""
+        """Fix the braces and quotes spacing problems."""
         # ()[]{}""«» should have one space before and no space after (inside)
         for begin, end in zip(["\(","\[","\{",'"',"«"], ["\)","\]","\}",'"',"»"]):
             self.text = re.sub(rf"[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*",
@@ -272,7 +271,7 @@ class PersianEditor:
         self.text = re.sub(
             r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
             r"\1 ",
-            self.text
+            self.text,
         )
         # special case for versioning numbers like 1.2.7
         self.text = re.sub(r"([\d])([.])\s([\d])([.])\s([\d])", r"\1\2\3\4\5", self.text)
@@ -281,21 +280,21 @@ class PersianEditor:
         self.text = re.sub(
             r"[ ‌ ]*((؟\s+!){1})[ ‌ ]*",
             r"؟! ",
-            self.text
+            self.text,
         )
         self.text = re.sub(
             r"([۰-۹]+):\s+([۰-۹]+)",
             r"\1:\2",
-            self.text
+            self.text,
         )
         self.text = re.sub(
             r"(\d+):\s+(\d+)",
             r"\1:\2",
-            self.text
+            self.text,
         )
 
     def cleanup_spacing(self):
-        """Reduces multiple consecutive spaces to one."""
+        """Reduce multiple consecutive spaces to one."""
         self.text = re.sub(r"([ \t])+", r" ", self.text)
         # self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
         self.text = re.sub(r"\n{2,}", r"\n\n", self.text)
@@ -303,7 +302,7 @@ class PersianEditor:
 
     @classmethod
     def char_translator(cls, fromchar, tochar, string):
-        """Translates the 'string' character by character from 'fromchar' to 'tochar'."""
+        """Translate the 'string' character by character from 'fromchar' to 'tochar'."""
         newstring = string
         for fc, tc in zip(fromchar, tochar):
             newstring = re.sub(fc, tc, newstring)
@@ -332,7 +331,8 @@ class UnTouchable:
 
     @classmethod
     def generate(cls):
-        """
+        """Make a list from untoucahle words.
+
         A Unicode list from 'data/untouchable.dat' and '~/.python-negar/untouchable.dat'
         containing such words like 'بهتر' or 'میلاد' won't receive any modifications.
         """
@@ -357,6 +357,6 @@ if __name__ == "__main__":
 
     e.g.
     text = {INFO}
-    print(PersianEditor(text, *['trim-lt-whitespaces',]))
+    print(PersianEditor(text, *['trim-lt-whitespaces']))
     """)
-    print(PersianEditor(f"{INFO}", *["trim-lt-whitespaces",]))
+    print(PersianEditor(f"{INFO}", *["trim-lt-whitespaces"]))

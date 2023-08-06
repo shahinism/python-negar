@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 version = re.search(
     r'(__version__ = "(\d\.\d(\.\d+)?)")',
     open("negar/constants.py", encoding="utf8").read(),
-    re.M
+    re.M,
 ).group(2)
 
 setup(
@@ -18,7 +18,7 @@ setup(
     include_package_data=True,
     packages=find_packages() + ["negar"],
     install_requires=[
-        "regex"
+        "regex",
     ],
     package_dir={"negar": "negar"},
     package_data={"negar/data": ["data/*.dat"]},
