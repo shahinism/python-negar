@@ -1,5 +1,8 @@
+1.2.7 - 2023-08-07
+-- Remove dot from saving directory under Windows OS.
+
 1.2.6 - 2023-08-07
--- Better location for saving user defined untouchable data under Windows OS. 
+-- Better location for saving user defined untouchable data under Windows OS.
 
 1.2.5 - 2023-07-14
 -- Fix issues with texts that include backslashes as part of their context, such as LaTeX source code.
