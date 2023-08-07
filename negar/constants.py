@@ -1,9 +1,11 @@
+import platform
 from pathlib import Path
 
-__version__ = "1.2.5"
+__version__ = "1.2.6"
 
 DATAFILE = Path(__file__).parent.absolute() / "data/untouchable.dat"
-USERFILE = Path.home() / ".python-negar"
+APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else ""
+USERFILE = Path.home() / f"{APPDATA}.python-negar"
 
 INFO = f"""قابلیت های ویراستار ' نگار  ' -- نسخه {__version__} :
 * جایگزینی
