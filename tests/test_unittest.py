@@ -86,6 +86,11 @@ class Test(unittest.TestCase):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
         self.output_ = "در پسوند کلمات با نیم‌فاصله نظیر کتاب‌ها، خوش‌ترین – و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
 
+    @_assertEqual("Fix Redundant Glyphs")
+    def test_fix_redundant_glyphs(self):
+        self.input_ = "استفاده ی بیش از یک علامت ؟؟؟؟ یا !!!"
+        self.output_ = "استفاده‌ی بیش از یک علامت؟ یا!"
+
 
 if __name__ == "__main__":
     unittest.main()
