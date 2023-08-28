@@ -87,14 +87,19 @@ class Test(unittest.TestCase):
         self.output_ = "در پسوند کلمات با نیم‌فاصله نظیر کتاب‌ها، خوش‌ترین – و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
 
     @_assertEqual("Fix Redundant Glyphs")
-    def test_fix_redundant_glyphs(self):
+    def test_cleanup_redundant_glyphs(self):
         self.input_ = "استفاده ی بیش از یک علامت ؟؟؟؟ یا !!!"
         self.output_ = "استفاده‌ی بیش از یک علامت؟ یا!"
 
-    @_assertEqual("Fix Kashidas")
-    def test_fix_kashidas(self):
+    @_assertEqual("Cleanup Kashidas")
+    def test_cleanup_kashidas(self):
         self.input_ = "کشیـــــــــدگـــــــــــــــــی در کــــــــــــلمــــات"
         self.output_ = "کشیدگی در کلمات"
+
+    @_assertEqual("Cleanup Extra Spaces")
+    def test_cleanup_extra_spaces(self):
+        self.input_ = "فضا های         خالی     بیش          از       حد"
+        self.output_ = "فضاهای خالی بیش از حد"
 
 
 if __name__ == "__main__":
