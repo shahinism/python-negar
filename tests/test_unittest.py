@@ -91,6 +91,11 @@ class Test(unittest.TestCase):
         self.input_ = "استفاده ی بیش از یک علامت ؟؟؟؟ یا !!!"
         self.output_ = "استفاده‌ی بیش از یک علامت؟ یا!"
 
+    @_assertEqual("Fix Kashidas")
+    def test_fix_kashidas(self):
+        self.input_ = "کشیـــــــــدگـــــــــــــــــی در کــــــــــــلمــــات"
+        self.output_ = "کشیدگی در کلمات"
+
 
 if __name__ == "__main__":
     unittest.main()
