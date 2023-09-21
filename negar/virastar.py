@@ -59,7 +59,7 @@ class PersianEditor:
         self.fix_three_dots()       if self._fix_three_dots else None
         self.aggressive()           if self._aggresive else None
         self.text = re.sub(
-            r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
+            r"[ ‌ ]*([…:;,؛،.؟!]{1})[ ‌ ]*",
             r"\1 ",
             self.text,
         )
@@ -80,6 +80,11 @@ class PersianEditor:
             if self._fix_spacing_for_braces_and_quotes else None
         self.cleanup_redundant_zwnj()
         self.cleanup_spacing()      if self._cleanup_spacing else None
+        self.text = re.sub(
+            r"…([.؟!])",
+            r"… \1",
+            self.text,
+        )
         self._handle_urls(State.restore)
         return self.text
 
@@ -106,7 +111,7 @@ class PersianEditor:
 
     def fix_three_dots(self):
         """Replace three dots with an ellipsis."""
-        self.text = re.sub(r"\s*\.{3,}", r"…", self.text)
+        self.text = re.sub(r"\s*\.{3,}(\s)*", r"…\1", self.text)
 
     def fix_english_quotes(self):
         """Replace English quotes with their Persian counterparts."""

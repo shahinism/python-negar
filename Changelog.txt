@@ -1,3 +1,6 @@
+1.2.8 - 2023-09-21
+-- Fix subtle issue with triple dots at the end of sentence followed by another [?!.]
+
 1.2.7 - 2023-08-07
 -- Remove dot from saving directory under Windows OS.
 
