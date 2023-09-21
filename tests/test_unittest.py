@@ -41,10 +41,15 @@ class Test(unittest.TestCase):
         self.input_ = "خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان"
         self.output_ = "خط تیره‌های پیاپی نظیر (–) و (—) با معادل‌های استانداردشان"
 
-    @_assertEqual("Triple Dots")
-    def test_triple_dots(self):
+    @_assertEqual("Triple Dots I")
+    def test_triple_dots_i(self):
         self.input_ = "سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی"
         self.output_ = "سه نقطه‌ی پیاپی (…) با کاراکتر استانداردش در زبان فارسی"
+
+    @_assertEqual("Triple Dots II")
+    def test_triple_dots_ii(self):
+        self.input_ = "پرتره ، طبیعت و غیره یا پرتره ، طبیعت و  .... ؟"
+        self.output_ = "پرتره، طبیعت و غیره یا پرتره، طبیعت و… ؟"
 
     @_assertEqual("Persian Quotations")
     def test_persian_quotations(self):
