@@ -86,8 +86,8 @@ class Test(unittest.TestCase):
         self.input_ = r"در پیشوند کلمات با نیم‌فاصله نظیر ' می شود '، ' میشود '، ' بی شک '، ' بیشک ' , ' خانه اش '، ' وظیفه شناس ' ، ' کمک تان '  و یا ' نمیرود '"
         self.output_ = "در پیشوند کلمات با نیم‌فاصله نظیر «می‌شود»، «می‌شود»، «بی‌شک»، «بی‌شک»، «خانه‌اش»، «وظیفه‌شناس»، «کمک‌تان» و یا «نمی‌رود»"
 
-    @_assertEqual("Fix Suffix ZWNJ")
-    def test_fix_suffix_ZWNJ(self):
+    @_assertEqual("Fix Suffix ZWNJ I")
+    def test_fix_suffix_ZWNJ_I(self):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
         self.output_ = "در پسوند کلمات با نیم‌فاصله نظیر کتاب‌ها، خوش‌ترین – و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
 
@@ -105,6 +105,11 @@ class Test(unittest.TestCase):
     def test_cleanup_extra_spaces(self):
         self.input_ = "فضا های         خالی     بیش          از       حد"
         self.output_ = "فضاهای خالی بیش از حد"
+
+    @_assertEqual("Untouchable Words I")
+    def test_untouchable_words_i(self):
+        self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
+        self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
 
 
 if __name__ == "__main__":
