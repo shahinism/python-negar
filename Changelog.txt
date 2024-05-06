@@ -1,3 +1,7 @@
+1.2.9 - 2024-05-07
+-- Fix subtle issue with untoucahle words which stick to nonliteral symbols like Parantheses
+-- new test for untoucahle words
+
 1.2.8 - 2023-09-21
 -- Fix subtle issue with triple dots at the end of sentence followed by another [?!.]
 

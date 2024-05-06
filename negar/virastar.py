@@ -232,7 +232,7 @@ class PersianEditor:
             [تمش]ان|
             ها(ی(ی|ت|م|ش|تان|شان)?)?|""" if self._exaggerating_zwnj else ""
         regx = re.compile(
-            rf"""(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
+            rf"""\b(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             ({exag}
             # تر(ی(ن)?)?
             # [تمش]ان|

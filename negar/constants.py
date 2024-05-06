@@ -1,7 +1,7 @@
 import platform
 from pathlib import Path
 
-__version__ = "1.2.8"
+__version__ = "1.2.9"
 
 DATAFILE = Path(__file__).parent.absolute() / "data/untouchable.dat"
 APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else "."
