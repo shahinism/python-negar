@@ -106,10 +106,20 @@ class Test(unittest.TestCase):
         self.input_ = "فضا های         خالی     بیش          از       حد"
         self.output_ = "فضاهای خالی بیش از حد"
 
-    @_assertEqual("Untouchable Words I")
-    def test_untouchable_words_i(self):
+    @_assertEqual("Immutable Words I")
+    def test_immutable_words_i(self):
         self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
         self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
+        
+    @_assertEqual("Immutable Words II")
+    def test_immutable_words_ii(self):
+        self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
+        self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
+
+    @_assertEqual("Fix Suffix ZWNJ II")
+    def test_fix_suffix_ZWNJ_II(self):
+        self.input_ = "بیستم ماه میلادی"
+        self.output_ = "بیستم ماه میلادی"
 
 
 if __name__ == "__main__":
