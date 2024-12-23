@@ -21,7 +21,7 @@ setup(
         "regex",
     ],
     package_dir={"negar": "negar"},
-    package_data={"negar/data": ["data/*.dat"]},
+    package_data={"negar/data": ["data/*.words"]},
     description="Negar is a spell corrector and Persian text editor",
     license="GPL",
     keywords="spellcheck Persian editor",
