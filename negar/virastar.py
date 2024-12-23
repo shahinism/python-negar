@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# ruff: noqa: T201
 
 import enum
 import re
@@ -7,26 +8,30 @@ from pathlib import Path
 
 import regex
 
-sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
-from negar.constants import DATAFILE, INFO, URLREGX, USERFILE # noqa: E402
+sys.path.append(
+    Path(__file__).parent.parent.as_posix()
+)  # https://stackoverflow.com/questions/16981921
+from negar.constants import DATAFILE, INFO, URLREGX, USERFILE  # noqa: E402
 
 
 class State(enum.Enum):
     save = 1
     restore = 2
 
+
 class PersianEditor:
-    """Persian Text Editor for some sanitiztion task called Virastary in Persian."""
+    """Persian Text Editor for some sanitization task called Virastary in Persian."""
 
     def __init__(self, text, *args):
         # Check to see if `arg` exists in `args` or not
-        parse_args = lambda arg: arg not in args # noqa: E731
-        self._prepositions = \
-            "از|در|به|با|بر|برای|بی|درباره|تا|را|جز|بدون|چون|مانند|مثل" \
-            "|زیر|روی|همراه|مگر|الا|اندر|زی|برت|الا|زی|چو|سوای|پایین" \
+        parse_args = lambda arg: arg not in args  # noqa: E731
+        self._prepositions = (
+            "از|در|به|با|بر|برای|بی|درباره|تا|را|جز|بدون|چون|مانند|مثل"
+            "|زیر|روی|همراه|مگر|الا|اندر|زی|برت|الا|زی|چو|سوای|پایین"
             "|پشت|پهلوی|پس|پیش|بالای|بیرون|درون|توی|غیر|کنار|مقابل|بهر"
+        )
         self.text = text
-        self._cleanup_zwnj                      = False
+        self._cleanup_zwnj = False
         # checking for undesired options
         self._aggresive                         = parse_args("aggresive")
         self._fix_hamzeh                        = parse_args("fix-hamzeh")
@@ -48,7 +53,7 @@ class PersianEditor:
         self._fix_spacing_for_braces_and_quotes = parse_args("fix-spacing-bq")
         self._trim_leading_trailing_whitespaces = parse_args("trim-lt-whitespaces")
 
-        UnTouchable() # to generate the untouchable words
+        ImmutableWords()  # to generate the immutable words
         self.cleanup()
 
     def cleanup(self):
@@ -56,8 +61,8 @@ class PersianEditor:
         # fix punctuation spaces at first
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
         # An exception is triple dots, which should be handled first
-        self.fix_three_dots()       if self._fix_three_dots else None
-        self.aggressive()           if self._aggresive else None
+        self.fix_three_dots() if self._fix_three_dots else None
+        self.aggressive() if self._aggresive else None
         self.text = re.sub(
             r"[ ‌ ]*([…:;,؛،.؟!]{1})[ ‌ ]*",
             r"\1 ",
@@ -79,12 +84,14 @@ class PersianEditor:
         self.fix_spacing_for_braces_and_quotes() \
             if self._fix_spacing_for_braces_and_quotes else None
         self.cleanup_redundant_zwnj()
-        self.cleanup_spacing()      if self._cleanup_spacing else None
+        self.cleanup_spacing() if self._cleanup_spacing else None
         self.text = re.sub(
             r"…([.؟!])",
             r"… \1",
             self.text,
         )
+        if self._trim_leading_trailing_whitespaces:
+            self.text = "\n".join([line.strip() for line in self.text.split("\n")])
         self._handle_urls(State.restore)
         return self.text
 
@@ -96,7 +103,7 @@ class PersianEditor:
     def _handle_urls(self, state):
         """Remove URLs and putting them back at the end of the process."""
         if state == State.save:
-            self.urls = list(set(re.findall(URLREGX, self.text, re.M|re.I|re.X)))
+            self.urls = list(set(re.findall(URLREGX, self.text, re.M | re.I | re.X)))
             self.urls.sort(key=lambda x: len(x), reverse=True)
             for i, url in enumerate(self.urls):
                 self.text = regex.sub(rf"{re.escape(url)}", rf"__URL__#{i}__", self.text)
@@ -123,9 +130,9 @@ class PersianEditor:
         --the last one is achievable if hamzeh_with_yeh set.
         """
         if self._hamzeh_with_yeh:
-            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)",r"\1ه‌ی\3",self.text)
+            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)", r"\1ه‌ی\3", self.text)
         else:
-            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)",r"\1هٔ\3", self.text)
+            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)", r"\1هٔ\3", self.text)
 
     def cleanup_zwnj(self):
         """Remove unnecessary ZWNJ that are succeeded/preceded by a space."""
@@ -138,7 +145,7 @@ class PersianEditor:
 
     def char_validator(self):
         """Replace invalid characters with valid ones."""
-        bad_chars  = ",;%يةك"
+        bad_chars = ",;%يةك"
         good_chars = "،؛٪یهک"
         self.text = self.char_translator(bad_chars, good_chars, self.text)
 
@@ -165,25 +172,27 @@ class PersianEditor:
         # Avoids to change English numbers in strings like 'Text12', 'Text_12', or 'A4'
         self.text = re.sub(
             r"[۰-۹]+[a-zA-Z_]{1,}[۰-۹]+|[a-zA-Z_]{1,}[۰-۹]+|[۰-۹]+[a-zA-Z_]{1,}",
-            lambda m:
-            self.char_translator(persian_numbers, english_numbers, m.group()),
+            lambda m: self.char_translator(persian_numbers, english_numbers, m.group()),
             self.text,
         )
 
     def fix_prefix_spacing(self):
         """Put ZWNJ between a word and its prefix (mi* nemi* bi* na*)."""
-        self.text = re.sub(r"\b(بی|نا)‌*(\s+)(?!(می)\b)",r"\1‌", self.text)
-        # the following case is for the mi(n.) and nami(n.)
-        self.text = re.sub(rf"\b(ن?می)‌*(\s+)(?!(.|{self._prepositions})\b)",r"\1‌", self.text)
+        self.text = re.sub(r"\b(بی|نا)‌*(\s+)(?!(می)\b)", r"\1‌", self.text)
+        # the following case is for the mi(n.) and nemi(n.)
+        self.text = re.sub(rf"\b(ن?می)‌*(\s+)(?!(.|{self._prepositions})\b)", r"\1‌", self.text)
 
     def fix_prefix_separate(self):
         """Put ZWNJ between a word and its prefix (mi* nemi* bi*)."""
         # regx = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
-        regx = regex.compile(r"""
+        regx = regex.compile(
+            r"""
         \b(بی|ن?می)‌*
         ([^\[\]\(\)\s]+)
         (?<!های|هایی|ها|شناس|شناسی|گذار|گذاری)\b
-        """, re.VERBOSE) #  \b for words like سهمیه
+        """,
+            re.VERBOSE,
+        )  #  \b for words like سهمیه
 
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
@@ -192,10 +201,10 @@ class PersianEditor:
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
-                if p.group() not in UnTouchable.words:
+                if p.group() not in ImmutableWords.get():
                     text = re.sub(
-                        re.escape( p.group() ),
-                        p.group(1) + "\u200c" + p.group(2) ,
+                        re.escape(p.group()),
+                        p.group(1) + "\u200c" + p.group(2),
                         text,
                     )
         # Restore the original backslashes
@@ -213,7 +222,8 @@ class PersianEditor:
             |شناس(ی)?
             |گذار(ی)?|گزار(ی)?
             |مند|ور|پور
-            )\b""", re.VERBOSE,
+            )\b""",
+            re.VERBOSE,
         )
         self.text = re.sub(regx, r"‌\1", self.text)
 
@@ -227,10 +237,14 @@ class PersianEditor:
 
     def fix_suffix_separate(self):
         """Put ZWNJ between a word with its suffix (haye, ...)."""
-        exag = r"""
+        exag = (
+            r"""
             تر(ی(ن)?)?|
             [تمش]ان|
-            ها(ی(ی|ت|م|ش|تان|شان)?)?|""" if self._exaggerating_zwnj else ""
+            ها(ی(ی|ت|م|ش|تان|شان)?)?|"""
+            if self._exaggerating_zwnj
+            else ""
+        )
         regx = re.compile(
             rf"""\b(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             ({exag}
@@ -239,7 +253,8 @@ class PersianEditor:
             # ها(ی(ی|ت|م|ش|تان|شان)?)?|
             شناس(ی)?|
             گذار(ی)?|گزار(ی)?
-            )\b""", re.VERBOSE,
+            )\b""",
+            re.VERBOSE,
         )
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
@@ -248,9 +263,9 @@ class PersianEditor:
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
-                if p.group() not in UnTouchable.words:
+                if p.group() not in ImmutableWords.get():
                     text = re.sub(
-                        re.escape( p.group() ),
+                        re.escape(p.group()),
                         p.group(1) + "\u200c" + p.group(2),
                         text,
                     )
@@ -269,9 +284,12 @@ class PersianEditor:
     def fix_spacing_for_braces_and_quotes(self):
         """Fix the braces and quotes spacing problems."""
         # ()[]{}""«» should have one space before and no space after (inside)
-        for begin, end in zip(["\(","\[","\{",'"',"«"], ["\)","\]","\}",'"',"»"]):
-            self.text = re.sub(rf"[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*",
-                r" \1\2\3 ", self.text )
+        for begin, end in zip(["\(", "\[", "\{", '"', "«"], ["\)", "\]", "\}", '"', "»"]):
+            self.text = re.sub(
+                rf"[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*", r" \1\2\3 ", self.text
+            )
+            # self.text = re.sub(rf"^[ ‌]*(.*)[ ‌]*$",
+            #     r"\1", self.text, flags=re.MULTILINE)
         # # : ; , ! ? and their Persian counterparts should have one space after and no space before
         self.text = re.sub(
             r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
@@ -314,8 +332,8 @@ class PersianEditor:
         return newstring
 
 
-class UnTouchable:
-    words = set() # a set storing all untouchable words
+class ImmutableWords:
+    words = set()  # a set storing all immutable words
 
     @classmethod
     def __init__(cls):
@@ -328,31 +346,35 @@ class UnTouchable:
 
     @classmethod
     def add(cls, word_list):
-        with (USERFILE/"untouchable.dat").open("a", encoding="utf8") as f:
+        with (USERFILE / "immutable.dat").open("a", encoding="utf8") as f:
             for word in word_list:
                 if word not in cls.words:
-                    f.write(word+"\n")
+                    f.write(word + "\n")
                     cls.words.add(word)
 
     @classmethod
     def generate(cls):
-        """Make a list from untoucahle words.
+        """Make a list from immutable words.
 
-        A Unicode list from 'data/untouchable.dat' and '~/.python-negar/untouchable.dat'
+        A Unicode list from 'data/immutable.words' and '~/.python-negar/immutable.words'
         containing such words like 'بهتر' or 'میلاد' won't receive any modifications.
         """
         with DATAFILE.open(encoding="utf8") as f:
             for line in f:
                 cls.words.add(line.strip())
         try:
-            with (USERFILE/"untouchable.dat").open(encoding="utf8") as f:
+            # for compatibility with previous versions, since immutable.dat was untouchable.dat before ver 1.2.10
+            if (USERFILE / "untouchable.dat").exists():
+                (USERFILE / "untouchable.dat").rename(USERFILE / "immutable.words")
+            with (USERFILE / "immutable.words").open(encoding="utf8") as f:
                 for line in f:
                     cls.words.add(line.strip())
         except FileNotFoundError:
             pass
 
+
 if __name__ == "__main__":
-    print( "I'm a module. If you'd like the GUI, use ``negar'' instead. ;-)")
+    print("I'm a module. If you'd like the GUI, use ``negar'' instead. ;-)")
 
     print(f"""\nUsage:
     from virastar import PersianEditor

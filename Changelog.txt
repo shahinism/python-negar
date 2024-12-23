@@ -1,6 +1,10 @@
+1.2.11 - 2024-12-23
+-- Typo Fix
+-- Renamed `untouchable.dat` to `immutable.words`
+
 1.2.9 - 2024-05-07
--- Fix subtle issue with untoucahle words which stick to nonliteral symbols like Parantheses
--- new test for untoucahle words
+-- Fix subtle issue with immutable words which stick to non-literal symbols like Parentheses
+-- new test for immutable words
 
 1.2.8 - 2023-09-21
 -- Fix subtle issue with triple dots at the end of sentence followed by another [?!.]
@@ -9,13 +13,13 @@
 -- Remove dot from saving directory under Windows OS.
 
 1.2.6 - 2023-08-07
--- Better location for saving user defined untouchable data under Windows OS.
+-- Better location for saving user defined immutable data under Windows OS.
 
 1.2.5 - 2023-07-14
 -- Fix issues with texts that include backslashes as part of their context, such as LaTeX source code.
 
 1.2.4 - 2023-06-15
--- Fix the issue with multiple ! and ? and extra space after parantheses at the end of line
+-- Fix the issue with multiple ! and ? and extra space after parentheses at the end of line
 
 1.2.2 - 2023-06-13
 -- Fix the issue with the triple dots that was caused by the previous update
@@ -28,7 +32,7 @@
 
 1.1.17 - 2022-12-21
 -- Fix the issue with می and نمی when they come as nouns, not prefixes.
--- Several new untouchable words: تنهای/تنهایی/تک‌وتنهایی
+-- Several new immutable words: تنهای/تنهایی/تک‌وتنهایی
 
 1.1.16 - 2022-09-11
 -- Fix issues with the following بهمان ,مهاجمان
@@ -55,7 +59,7 @@
 -- Update in compliance with `negar-gui` ver 0.2
 
 1.1.8 - 2012-05-03
--- minor issue with untouchable words
+-- minor issue with immutable words
 -- remove `disutils` as it's deprecated now
 
 1.1.7 - 2012-04-21
@@ -82,7 +86,7 @@
 
 1.1.1 - 2022-04-08
 -- Fixed an issue with `^mi*haye$` with using regex module
--- Suport for new suffix شناس/شناسی
+-- Support for new suffix شناس/شناسی
 
 1.1 - 2022-04-07
 -- Downgraded to PyQt5 for better support in Windows.
@@ -123,7 +127,7 @@
 
 0.9.6 - 2022-04-02
 -- Fixed issue #21, suffix اش
--- Untouchable words updated
+-- Immutable words updated
 
 0.9.5 - 2022-04-01
 -- New options for trimming leading/trailing whitespaces
@@ -145,11 +149,11 @@
 -- Revision of functions' names and their docstrings and comments to fix issue #14
 
 0.8.9 - 2022-03-29
--- Supprot of import button via QFileDialog
+-- Support of import button via QFileDialog
 
 0.8.8 - 2022-03-29
 -- constants.py would encompass some constants variables like __version__
--- Untouchable words update
+-- Immutable words update
 
 0.8.7 - 2022-03-29
 -- Fixed issue #4, users just add their own words to their private file-system
@@ -168,16 +172,16 @@
 
 0.8.2 - 2022-03-27
 -- copy button redesign
--- Untouchable words revision
+-- Immutable words revision
 
 0.8.1 - 2022-03-27
 -- Auto Stretch of headers in QTableView
 -- No header name for QTableView
 
 0.8.0 - 2022-03-26
--- Extra Class for untouchable words
--- Shows untouchable words in config tab via QTableView
--- Untouchable words update
+-- Extra Class for immutable words
+-- Shows immutable words in config tab via QTableView
+-- Immutable words update
 -- Right alignment for data in QTableView
 
 0.7.4 - 2022-03-25
@@ -185,7 +189,7 @@
 -- Fixed issue with relative import (https://stackoverflow.com/questions/16981921)
 
 0.7.3 - 2022-03-25
--- Untouchable words update
+-- Immutable words update
 -- Fixed issue with import
 
 0.7.2 - 2022-03-24
@@ -204,32 +208,32 @@
 0.6.8 - 2022-03-21
 -- os replaced by Pathlib
 -- Fixed some hot-keys in `Config` tab
--- fixed the issue with 'می' at the begaining of the line
+-- fixed the issue with 'می' at the beginning of the line
 
 0.6.7 - 2022-03-20
 -- auto focus on input field
 
 0.6.6 - 2022-03-19
 -- Fixed issue with words that contain 'ها' in the middle or at the end, like 'مهاباد' and 'دانشکده ها'
--- Untouchable words list update as well as redundancy removed
+-- Immutable words list update as well as redundancy removed
 -- Removing unwanted extra zwmjs
 -- Negar logo for better desktop switching
 
 0.6.5 - 2022-03-18
 -- Font Size Slider relocate to the bottom
 -- Fixed issue with words that contain 'می' in the middle like 'سهمیه'
--- Tremendous addition of words start with 'می' into untouchable words
+-- Tremendous addition of words start with 'می' into immutable words
 
 0.6.4 - 2022-03-18
 -- Font Size Slider
 
 0.6.3 - 2022-03-18
 -- Fixed issue with some words like سهمیه
--- untouchable list update
+-- Immutable list update
 -- Fixed issue with relative import in Python3
 
 0.6.2 - 2022-03-17
--- Fixed 17: Some addition to Untouchable words
+-- Fixed 17: Some addition to immutable words
 -- Revision in compliance with Python3.10 and PyQt6
 -- Fixed issue with setup
 
@@ -250,4 +254,3 @@
 -- More options added to command-line version
 
 0.2 - 2012-08-05 Initial release.
-

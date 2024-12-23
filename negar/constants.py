@@ -1,9 +1,9 @@
 import platform
 from pathlib import Path
 
-__version__ = "1.2.9"
+__version__ = "1.2.11"
 
-DATAFILE = Path(__file__).parent.absolute() / "data/untouchable.dat"
+DATAFILE = Path(__file__).parent.absolute() / "data/immutable.dat"
 APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else "."
 USERFILE = Path.home() / f"{APPDATA}python-negar"
 
@@ -11,7 +11,7 @@ INFO = f"""قابلیت های ویراستار ' نگار  ' -- نسخه {__ver
 * جایگزینی
 	╛═ خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان
 	╛═ سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی
-	╛═ علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'
+	╛═ علایمی نظیر کوتیشن فارسی با گیومه ؛  'نگار'
 	╛═ اعداد عربی '١٢٣٤٥٦٧٨٩٠' و انگلیسی '1234567890'  با معادل فارسی
 	╛═ کاراکتر های غیر فارسی نظیر ',;%يةك' با معادل های فارسی
 * تنظیم فاصله
