@@ -23,10 +23,10 @@ pins: ver
 	pip install python-negar=="$(VER)"
 
 upypi: setup
-	twine upload "dist/python-negar-$(VER).tar.gz"
+	twine upload "dist/python_negar-$(VER).tar.gz"
 
 utest: setup
-	twine upload -r testpypi "dist/python-negar-$(VER).tar.gz"
+	twine upload -r testpypi "dist/python_negar-$(VER).tar.gz"
 
 upload: setup upypi utest
 
