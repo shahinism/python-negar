@@ -1,9 +1,9 @@
 import platform
 from pathlib import Path
 
-__version__ = "1.2.11"
+__version__ = "1.2.12"
 
-DATAFILE = Path(__file__).parent.absolute() / "data/immutable.dat"
+DATAFILE = Path(__file__).parent.absolute() / "data/immutable.words"
 APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else "."
 USERFILE = Path.home() / f"{APPDATA}python-negar"
 

@@ -1,3 +1,6 @@
+1.2.12 - 2024-12-23
+-- Fix critical issue with naming `immutable.words`
+
 1.2.11 - 2024-12-23
 -- Typo Fix
 -- Renamed `untouchable.dat` to `immutable.words`

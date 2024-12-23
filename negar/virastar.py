@@ -346,7 +346,7 @@ class ImmutableWords:
 
     @classmethod
     def add(cls, word_list):
-        with (USERFILE / "immutable.dat").open("a", encoding="utf8") as f:
+        with (USERFILE / "immutable.words").open("a", encoding="utf8") as f:
             for word in word_list:
                 if word not in cls.words:
                     f.write(word + "\n")
@@ -363,7 +363,7 @@ class ImmutableWords:
             for line in f:
                 cls.words.add(line.strip())
         try:
-            # for compatibility with previous versions, since immutable.dat was untouchable.dat before ver 1.2.10
+            # for compatibility with previous versions, since immutable.words was untouchable.dat before ver 1.2.10
             if (USERFILE / "untouchable.dat").exists():
                 (USERFILE / "untouchable.dat").rename(USERFILE / "immutable.words")
             with (USERFILE / "immutable.words").open(encoding="utf8") as f:
