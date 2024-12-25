@@ -51,10 +51,16 @@ class Test(unittest.TestCase):
         self.input_ = "پرتره ، طبیعت و غیره یا پرتره ، طبیعت و  .... ؟"
         self.output_ = "پرتره، طبیعت و غیره یا پرتره، طبیعت و… ؟"
 
-    @_assertEqual("Persian Quotations")
-    def test_persian_quotations(self):
+    @_assertEqual("Persian Quotations I")
+    def test_persian_quotations_i(self):
         self.input_ = "علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'"
         self.output_ = "علایمی نظیر کتیشن فارسی با گیومه؛ «نگار»"
+
+    @_assertEqual("Persian Quotations II")
+    def test_persian_quotations_ii(self):
+        self.input_ = "«تاثیر نسبی داشته است. »"
+        self.output_ = "«تاثیر نسبی داشته است.»"
+    
 
     @_assertEqual("Persian Numbers")
     def test_persian_numbers(self):
