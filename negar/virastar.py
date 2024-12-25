@@ -291,8 +291,18 @@ class PersianEditor:
             # self.text = re.sub(rf"^[ ‌]*(.*)[ ‌]*$",
             #     r"\1", self.text, flags=re.MULTILINE)
         # # : ; , ! ? and their Persian counterparts should have one space after and no space before
+        # self.text = re.sub(
+        #     r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
+        #     r"\1 ",
+        #     self.text,
+        # )
         self.text = re.sub(
-            r"[ ‌ ]*([:;,؛،.؟!]{1})[ ‌ ]*",
+            r"[ ‌ ]*([:;,،؛]{1})[ ‌ ]*",
+            r"\1 ",
+            self.text,
+        )
+        self.text = re.sub(
+            r"[ ‌ ]*([.؟!]{1})[ ‌ ]*(?![\)\]\}\"»])",
             r"\1 ",
             self.text,
         )

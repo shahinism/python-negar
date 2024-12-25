@@ -1,3 +1,6 @@
+1.2.13 - 2024-12-26
+-- Fixed issue with quotes after a dot where no space was allowed in between.
+
 1.2.12 - 2024-12-23
 -- Fix critical issue with naming `immutable.words`
 
