@@ -4,6 +4,7 @@ from negar.virastar import PersianEditor
 
 
 class Test(unittest.TestCase):
+    @staticmethod
     def _assertEqual(message=""):
         def decorator(func):
             @functools.wraps(func)
