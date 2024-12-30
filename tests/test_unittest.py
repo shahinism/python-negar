@@ -93,6 +93,16 @@ class Test(unittest.TestCase):
         self.input_ = r"در پیشوند کلمات با نیم‌فاصله نظیر ' می شود '، ' میشود '، ' بی شک '، ' بیشک ' , ' خانه اش '، ' وظیفه شناس ' ، ' کمک تان '  و یا ' نمیرود '"
         self.output_ = "در پیشوند کلمات با نیم‌فاصله نظیر «می‌شود»، «می‌شود»، «بی‌شک»، «بی‌شک»، «خانه‌اش»، «وظیفه‌شناس»، «کمک‌تان» و یا «نمی‌رود»"
 
+    @_assertEqual("Fix Prefix ZWNJ II")
+    def test_fix_prefix_ZWNJ_ii(self):
+        self.input_ = r"می‌ شود"
+        self.output_ = "می‌شود"
+
+    @_assertEqual("Fix Prefix ZWNJ III")
+    def test_fix_prefix_ZWNJ_iii(self):
+        self.input_ = r"می ‌شود"
+        self.output_ = "می‌شود"
+        
     @_assertEqual("Fix Suffix ZWNJ I")
     def test_fix_suffix_ZWNJ_I(self):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
