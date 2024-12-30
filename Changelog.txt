@@ -1,3 +1,6 @@
+1.2.14 - 2024-12-30
+-- Fixed issue with prefix spacing in cases like "mi + space + ZWNJ + <word>".
+
 1.2.13 - 2024-12-26
 -- Fixed issue with quotes after a dot where no space was allowed in between.
 
