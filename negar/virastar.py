@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ruff: noqa: T201
+# ruff: noqa: T201, E221
 
 import enum
 import re
@@ -57,7 +57,7 @@ class PersianEditor:
         self.cleanup()
 
     def cleanup(self):
-        self._handle_urls(State.save)
+        self.__handle_urls__(State.save)
         # fix punctuation spaces at first
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
         # An exception is triple dots, which should be handled first
@@ -92,7 +92,7 @@ class PersianEditor:
         )
         if self._trim_leading_trailing_whitespaces:
             self.text = "\n".join([line.strip() for line in self.text.split("\n")])
-        self._handle_urls(State.restore)
+        self.__handle_urls__(State.restore)
         return self.text
 
     def __repr__(self):
@@ -100,7 +100,7 @@ class PersianEditor:
 
     __str__ = __repr__
 
-    def _handle_urls(self, state):
+    def __handle_urls__(self, state):
         """Remove URLs and putting them back at the end of the process."""
         if state == State.save:
             self.urls = list(set(re.findall(URLREGX, self.text, re.M | re.I | re.X)))
@@ -193,24 +193,8 @@ class PersianEditor:
         """,
             re.VERBOSE,
         )  #  \b for words like سهمیه
-
-        # Replace backslashes with a temporary placeholder
-        text = self.text.replace("\\", "PN__BACKSLASH__PN")
-        wlist = text.split()
-        for word in wlist:
-            if word.strip() in ImmutableWords.get():
-                continue
-            regx_iter = regx.finditer(word)
-            for p in regx_iter:
-                # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
-                if p.group() not in ImmutableWords.get():
-                    text = re.sub(
-                        re.escape(p.group()),
-                        p.group(1) + "\u200c" + p.group(2),
-                        text,
-                    )
-        # Restore the original backslashes
-        self.text = text.replace("PN__BACKSLASH__PN", "\\")
+        # Checks that the prefix (mi*, nemi*, and bi*) is part a a word or not, like میلاد.
+        self.__immutability_check__(regx)
 
     def fix_suffix_spacing(self):
         """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
@@ -258,6 +242,10 @@ class PersianEditor:
             )\b""",
             re.VERBOSE,
         )
+        # Checks that the suffix (tar*, haye*) is part of a word or not, like بهتر.
+        self.__immutability_check__(regx)
+
+    def __immutability_check__(self, regx: re.Pattern):
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
         wlist = text.split()
@@ -266,7 +254,6 @@ class PersianEditor:
                 continue
             regx_iter = regx.finditer(word)
             for p in regx_iter:
-                # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.
                 if p.group() not in ImmutableWords.get():
                     text = re.sub(
                         re.escape(p.group()),
