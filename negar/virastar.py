@@ -196,8 +196,10 @@ class PersianEditor:
 
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
-        wlist = text.split(" ")
+        wlist = text.split()
         for word in wlist:
+            if word.strip() in ImmutableWords.get():
+                continue
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the prefix (mi* nemi* bi*) is part a a word or not, like میلاد.
@@ -258,8 +260,10 @@ class PersianEditor:
         )
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
-        wlist = text.split(" ")
+        wlist = text.split()
         for word in wlist:
+            if word.strip() in ImmutableWords.get():
+                continue
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # Checks that the suffix (tar* haye*) is part of a word or not, like بهتر.

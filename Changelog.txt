@@ -1,3 +1,6 @@
+1.2.15 - 2024-12-31
+-- Fixed issue #24 and added several new immutable words.
+
 1.2.14 - 2024-12-30
 -- Fixed issue with prefix spacing in cases like "mi + space + ZWNJ + <word>".
 
