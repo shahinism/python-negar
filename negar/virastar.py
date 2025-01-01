@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ruff: noqa: T201, E221
+# ruff: noqa: T201
 
 import enum
 import re
@@ -77,10 +77,12 @@ class PersianEditor:
         self.char_validator()       if self._fix_misc_non_persian_chars else None
         self.fix_arabic_numbers()   if self._fix_arabic_numbers else None
         self.fix_english_numbers()  if self._fix_english_numbers else None
+        self.__handle_immutable_words__(State.save)
         self.fix_prefix_spacing()   if self._fix_prefix_spacing else None
         self.fix_prefix_separate()  if self._fix_prefix_separate else None
         self.fix_suffix_spacing()   if self._fix_suffix_spacing else None
         self.fix_suffix_separate()  if self._fix_suffix_separate else None
+        self.__handle_immutable_words__(State.restore)
         self.fix_spacing_for_braces_and_quotes() \
             if self._fix_spacing_for_braces_and_quotes else None
         self.cleanup_redundant_zwnj()
@@ -110,6 +112,19 @@ class PersianEditor:
         if state == State.restore:
             for i, url in enumerate(self.urls):
                 self.text = re.sub(f"__URL__#{i}__", url, self.text)
+
+    def __handle_immutable_words__(self, state):
+        """Remove URLs and putting them back at the end of the process."""
+        if state == State.save:
+            self.immutable_words = {}
+            words = self.text.split()
+            for i, word in enumerate(words):
+                if (word:=word.strip()) in ImmutableWords.get():
+                    self.immutable_words[i] = word
+                    self.text = regex.sub(rf"\b{word}\b", rf"__IMM__#{i}__", self.text)
+        if state == State.restore:
+            for imm_key, imm_word in self.immutable_words.items():
+                self.text = re.sub(f"__IMM__#{imm_key}__", imm_word, self.text)
 
     def fix_dashes(self):
         """Replace double and triple dashes with `ndash` and `mdash`, respectively."""
@@ -250,16 +265,14 @@ class PersianEditor:
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
         wlist = text.split()
         for word in wlist:
-            if word.strip() in ImmutableWords.get():
-                continue
             regx_iter = regx.finditer(word)
             for p in regx_iter:
-                if p.group() not in ImmutableWords.get():
-                    text = re.sub(
-                        re.escape(p.group()),
-                        p.group(1) + "\u200c" + p.group(2),
-                        text,
-                    )
+                # if p.group() not in ImmutableWords.get():
+                text = re.sub(
+                    rf"\b{re.escape(p.group())}\b",
+                    p.group(1) + "\u200c" + p.group(2),
+                    text,
+                )
         # Restore the original backslashes
         self.text = text.replace("PN__BACKSLASH__PN", "\\")
 
