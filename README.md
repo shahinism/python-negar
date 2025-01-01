@@ -21,7 +21,7 @@ Installation
 
 ## Git
 
-You can get latest stable changes from github server:
+You can get the latest stable changes from the GitHub server:
 
     $ git clone https://github.com/shahinism/python-negar.git
     $ cd python-negar
@@ -41,11 +41,11 @@ Get the latest tarball & install:
 
 ### Windows
 
-Download latest zip archive.
+Download the latest zip archive.
 
 https://github.com/shahinism/python-negar/archive/master.zip
 
-Decompress it, and run the following command in root directory of `python-negar`
+Decompress it, and run the following command in the root directory of `python-negar`
 
     $ python setup.py install
 
@@ -64,7 +64,7 @@ Calling by default options:
     * جایگزینی
     + خط تیره های پیاپی نظیر (--) و (---) با معادل های استاندارد شان
     + سه نقطه ی پیاپی (...) با کاراکتر استانداردش در زبان فارسی
-        + علایمی نظیر کتیشن فارسی با گیومه ؛  'نگار'
+        + علایمی نظیر کوتیشن فارسی با گیومه ؛  'نگار'
         + اعداد عربی '١٢٣٤٥٦٧٨٩٠' و انگلیسی '1234567890'  با معادل فارسی
         + کاراکتر های غیر فارسی نظیر ',;%يةك' با معادل های فارسی
 
