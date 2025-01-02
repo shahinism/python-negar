@@ -103,7 +103,7 @@ class PersianEditor:
     __str__ = __repr__
 
     def __handle_urls__(self, state):
-        """Remove URLs and putting them back at the end of the process."""
+        """Remove URLs temporarily and reinsert them at the end of the process."""
         if state == State.save:
             self.urls = list(set(re.findall(URLREGX, self.text, re.M | re.I | re.X)))
             self.urls.sort(key=lambda x: len(x), reverse=True)
@@ -114,7 +114,7 @@ class PersianEditor:
                 self.text = re.sub(f"__URL__#{i}__", url, self.text)
 
     def __handle_immutable_words__(self, state):
-        """Remove URLs and putting them back at the end of the process."""
+        """Remove immutable words temporarily and reapply them at the end of the process."""
         if state == State.save:
             self.immutable_words = {}
             words = self.text.split()
