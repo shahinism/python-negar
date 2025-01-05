@@ -57,6 +57,7 @@ class PersianEditor:
         self.cleanup()
 
     def cleanup(self):
+        self.__handle_comments__(State.save)
         self.__handle_urls__(State.save)
         # fix punctuation spaces at first
         # : ; , ! ? and their Persian counterparts should have one space after and no space before
@@ -95,12 +96,25 @@ class PersianEditor:
         if self._trim_leading_trailing_whitespaces:
             self.text = "\n".join([line.strip() for line in self.text.split("\n")])
         self.__handle_urls__(State.restore)
+        self.__handle_comments__(State.restore)
         return self.text
 
     def __repr__(self):
         return self.text
 
     __str__ = __repr__
+
+    def __handle_comments__(self, state):
+        """Extract comments, process the content, and reinsert the comments at the end."""
+        if state == State.save:
+            self.comments = list(set(re.findall(r"#>.*$", self.text, re.I | re.M)))
+            self.comments.sort(key=lambda x: len(x), reverse=True)
+            for i, comment in enumerate(self.comments):
+                self.text = regex.sub(rf"{re.escape(comment)}", rf"__COMMENT__#{i}__", self.text)
+            print(self.text)
+        if state == State.restore:
+            for i, comment in enumerate(self.comments):
+                self.text = re.sub(f"__COMMENT__#{i}__", comment, self.text)
 
     def __handle_urls__(self, state):
         """Remove URLs temporarily and reinsert them at the end of the process."""
@@ -119,7 +133,7 @@ class PersianEditor:
             self.immutable_words = {}
             words = self.text.split()
             for i, word in enumerate(words):
-                if (word:=word.strip()) in ImmutableWords.get():
+                if (word := word.strip()) in ImmutableWords.get():
                     self.immutable_words[i] = word
                     self.text = regex.sub(rf"\b{word}\b", rf"__IMM__#{i}__", self.text)
         if state == State.restore:
