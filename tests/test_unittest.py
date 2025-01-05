@@ -11,7 +11,9 @@ class Test(unittest.TestCase):
             def wrapper(self, *args, **kwargs):
                 func(self, *args, **kwargs)
                 return self.assertEqual(f"{PersianEditor(self.input_)}", self.output_, message)
+
             return wrapper
+
         return decorator
 
     # @unittest.skip("")
@@ -22,8 +24,8 @@ class Test(unittest.TestCase):
 
     @_assertEqual("Fix Hamzeh")
     def test_fix_hamzeh(self):
-        self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )" # noqa: E501
-        self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"     # noqa: E501
+        self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )"  # noqa: E501
+        self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"  # noqa: E501
 
     @_assertEqual("Numbers as a Version -- Triple Dots")
     def test_versioning_numbers_triple(self):
@@ -61,7 +63,6 @@ class Test(unittest.TestCase):
     def test_persian_quotations_ii(self):
         self.input_ = "«تاثیر نسبی داشته است. »"
         self.output_ = "«تاثیر نسبی داشته است.»"
-    
 
     @_assertEqual("Persian Numbers")
     def test_persian_numbers(self):
@@ -102,7 +103,7 @@ class Test(unittest.TestCase):
     def test_fix_prefix_ZWNJ_iii(self):
         self.input_ = r"می ‌شود"
         self.output_ = "می‌شود"
-        
+
     @_assertEqual("Fix Suffix ZWNJ I")
     def test_fix_suffix_ZWNJ_I(self):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"
@@ -127,7 +128,7 @@ class Test(unittest.TestCase):
     def test_immutable_words_i(self):
         self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
         self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
-        
+
     @_assertEqual("Immutable Words II")
     def test_immutable_words_ii(self):
         self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
@@ -137,6 +138,11 @@ class Test(unittest.TestCase):
     def test_fix_suffix_ZWNJ_II(self):
         self.input_ = "بیستم ماه میلادی"
         self.output_ = "بیستم ماه میلادی"
+
+    @_assertEqual("Ignote Comment")
+    def test_ignore_comment(self):
+        self.input_ = "کشیـــــــــده  شده اند #> می نویسد  .... "
+        self.output_ = "کشیده شده‌اند #> می نویسد  .... "
 
 
 if __name__ == "__main__":
