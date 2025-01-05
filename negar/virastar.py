@@ -111,7 +111,6 @@ class PersianEditor:
             self.comments.sort(key=lambda x: len(x), reverse=True)
             for i, comment in enumerate(self.comments):
                 self.text = regex.sub(rf"{re.escape(comment)}", rf"__COMMENT__#{i}__", self.text)
-            print(self.text)
         if state == State.restore:
             for i, comment in enumerate(self.comments):
                 self.text = re.sub(f"__COMMENT__#{i}__", comment, self.text)
