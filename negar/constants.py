@@ -1,7 +1,7 @@
 import platform
 from pathlib import Path
 
-__version__ = "1.4"
+__version__ = "1.4.1"
 
 DATAFILE = Path(__file__).parent.absolute() / "data/immutable.words"
 APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else "."

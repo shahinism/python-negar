@@ -130,7 +130,7 @@ class PersianEditor:
         """Remove immutable words temporarily and reapply them at the end of the process."""
         if state == State.save:
             self.immutable_words = {}
-            words = self.text.split()
+            words = re.findall(r"\b[\w\u200c]+\b", self.text, re.UNICODE)
             for i, word in enumerate(words):
                 if (word := word.strip()) in ImmutableWords.get():
                     self.immutable_words[i] = word
