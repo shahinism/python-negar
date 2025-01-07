@@ -139,10 +139,15 @@ class Test(unittest.TestCase):
         self.input_ = "بیستم ماه میلادی"
         self.output_ = "بیستم ماه میلادی"
 
-    @_assertEqual("Ignote Comment")
+    @_assertEqual("Ignore Comment")
     def test_ignore_comment(self):
         self.input_ = "کشیـــــــــده  شده اند #> می نویسد  .... "
         self.output_ = "کشیده شده‌اند #> می نویسد  .... "
+
+    @_assertEqual("mix_parentheses_suffix")
+    def test_mix_parentheses_suffix(self):
+        self.input_ = '"دختر تنهایی "   ( کهتر بمان )'
+        self.output_ = "«دختر تنهایی» (کهتر بمان)"
 
 
 if __name__ == "__main__":
