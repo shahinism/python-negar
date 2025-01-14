@@ -5,6 +5,7 @@ import enum
 import re
 import sys
 from pathlib import Path
+from contextlib import suppress
 
 import regex
 
@@ -389,15 +390,14 @@ class ImmutableWords:
         with DATAFILE.open(encoding="utf8") as f:
             for line in f:
                 cls.words.add(line.strip())
-        try:
-            # for compatibility with previous versions, since immutable.words was untouchable.dat before ver 1.2.10
-            if (USERFILE / "untouchable.dat").exists():
-                (USERFILE / "untouchable.dat").rename(USERFILE / "immutable.words")
+
+        # for compatibility with previous versions, since immutable.words was untouchable.dat before ver 1.2.10
+        if (USERFILE / "untouchable.dat").exists():
+            (USERFILE / "untouchable.dat").rename(USERFILE / "immutable.words")
+        with suppress(FileNotFoundError):
             with (USERFILE / "immutable.words").open(encoding="utf8") as f:
                 for line in f:
                     cls.words.add(line.strip())
-        except FileNotFoundError:
-            pass
 
 
 if __name__ == "__main__":
