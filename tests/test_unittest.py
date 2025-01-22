@@ -148,6 +148,11 @@ class Test(unittest.TestCase):
     def test_mix_parentheses_suffix(self):
         self.input_ = '"دختر تنهایی "   ( کهتر بمان )'
         self.output_ = "«دختر تنهایی» (کهتر بمان)"
+        
+    @_assertEqual("unchanged")
+    def test_unchanged(self):
+        self.input_ = "نشان‌دهنده  همان‌طور"
+        self.output_ = "نشان‌دهنده همان‌طور"
 
 
 if __name__ == "__main__":
