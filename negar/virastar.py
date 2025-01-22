@@ -260,7 +260,7 @@ class PersianEditor:
             if self._exaggerating_zwnj
             else ""
         )
-        regx = re.compile(
+        regx = regex.compile(
             rf"""\b(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
             ({exag}
             # تر(ی(ن)?)?
@@ -268,13 +268,13 @@ class PersianEditor:
             # ها(ی(ی|ت|م|ش|تان|شان)?)?|
             شناس(ی)?|
             گذار(ی)?|گزار(ی)?
-            )\b""",
+            )(?:(?=\b)|(?=\u200C))""", # ensures that it is followed by either \b or \u200C
             re.VERBOSE,
         )
         # Checks that the suffix (tar*, haye*) is part of a word or not, like بهتر.
         self.__immutability_check__(regx)
 
-    def __immutability_check__(self, regx: re.Pattern):
+    def __immutability_check__(self, regx: regex.Pattern):
         # Replace backslashes with a temporary placeholder
         text = self.text.replace("\\", "PN__BACKSLASH__PN")
         wlist = text.split()
@@ -282,7 +282,7 @@ class PersianEditor:
             regx_iter = regx.finditer(word)
             for p in regx_iter:
                 # if p.group() not in ImmutableWords.get():
-                text = re.sub(
+                text = regex.sub(
                     rf"\b{re.escape(p.group())}\b",
                     p.group(1) + "\u200c" + p.group(2),
                     text,
