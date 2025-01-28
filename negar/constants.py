@@ -1,10 +1,10 @@
 import platform
 from pathlib import Path
 
-__version__ = "1.4.2"
+__version__ = "1.4.3"
 
 DATAFILE = Path(__file__).parent.absolute() / "data/immutable.words"
-APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else "."
+APPDATA = "AppData/Roaming/" if platform.system() == "Windows" else ".config/"
 USERFILE = Path.home() / f"{APPDATA}python-negar"
 
 INFO = f"""قابلیت های ویراستار ' نگار  ' -- نسخه {__version__} :

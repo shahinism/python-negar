@@ -1,3 +1,6 @@
+1.4.3 - 2025-01-28
+-- Save user defined immutable words under .config/python-negar
+
 1.4.2 - 2025-01-23
 -- Fixed issue with همان‌طور، نشان‌دهنده
 
