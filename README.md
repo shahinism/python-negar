@@ -10,6 +10,8 @@
 
 Negar is an editor(=virastar in Persian) for Persian text. The project is initially inspired by [virastar](https://github.com/aziz/virastar/blob/master/lib/virastar.rb). Thank you [Aziz](https://github.com/aziz) for your great job.
 
+## [Demo View ![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://negar-web.streamlit.app/)
+
 Installation
 ==============
 
