@@ -8,6 +8,7 @@ VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" '|head -1)
 UV := $(shell command -v uv 2>/dev/null)
 ifdef UV
 PIP := uv pip
+REFRESH := --refresh  # a just-uploaded version is otherwise hidden by uv's cached index
 else
 PIP := pip
 endif
@@ -32,7 +33,7 @@ lins: ver setup
 	$(PIP) install "dist/python_negar-$(VER)-py3-none-any.whl"
 
 pins: ver
-	$(PIP) install python-negar=="$(VER)"
+	$(PIP) install $(REFRESH) python-negar=="$(VER)"
 
 upypi: setup
 	twine upload "dist/python_negar-$(VER).tar.gz"
