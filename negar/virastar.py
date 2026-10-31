@@ -312,7 +312,7 @@ class PersianEditor:
     def fix_spacing_for_braces_and_quotes(self):
         """Fix the braces and quotes spacing problems."""
         # ()[]{}""«» should have one space before and no space after (inside)
-        for begin, end in zip(["\(", "\[", "\{", '"', "«"], ["\)", "\]", "\}", '"', "»"]):
+        for begin, end in zip([r"\(", r"\[", r"\{", '"', "«"], [r"\)", r"\]", r"\}", '"', "»"]):
             self.text = re.sub(
                 rf"[ ‌]*({begin})\s*([^{end}]+?)\s*?({end})[ ‌]*", r" \1\2\3 ", self.text
             )
@@ -359,7 +359,7 @@ class PersianEditor:
         self.text = re.sub(r"([ \t])+", r" ", self.text)
         # self.text = re.sub(r'([\n]+)[ ‌]', r'\1', self.text)
         self.text = re.sub(r"\n{2,}", r"\n\n", self.text)
-        self.text = re.sub(r"[ \t]+(\n|$)", r"\1", self.text, re.MULTILINE)
+        self.text = re.sub(r"[ \t]+(\n|$)", r"\1", self.text, flags=re.MULTILINE)
 
     @classmethod
     def char_translator(cls, fromchar, tochar, string):

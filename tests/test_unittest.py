@@ -154,6 +154,12 @@ class Test(unittest.TestCase):
         self.input_ = "ناوِلْها اَهْمِلْها بُستان"
         self.output_ = "ناوِلْها اَهْمِلْها بُستان"
 
+    @_assertEqual("Immutable Boundary Words")
+    def test_immutable_boundary_words(self):
+        # words that look like prefix/suffix + stem (بی/می/ها/ستان ...) but must stay untouched
+        self.input_ = "کمان بی‌اساید همدستان همداستان میارید بیضا بیهده گستری پرستان بینم بینی موکشان ببخشای میان میانت بیاساید بیضاء بیضایی بیضائی میاری بینند"
+        self.output_ = self.input_
+
     @_assertEqual("Fix Suffix ZWNJ II")
     def test_fix_suffix_ZWNJ_II(self):
         self.input_ = "بیستم ماه میلادی"
