@@ -4,23 +4,35 @@ VER=$(shell grep __version__ negar/constants.py|cut -d= -f2|tr -d '\" '|head -1)
 
 .ONESHELL:
 
+# use uv when it is available, fall back to pip/setup.py otherwise
+UV := $(shell command -v uv 2>/dev/null)
+ifdef UV
+PIP := uv pip
+else
+PIP := pip
+endif
+
 ver:
 	@echo python-negar ver. "$(VER)"
 
 .PHONY: uninstall
 uninstall:
 	@echo "Uninstalling python-negar ..."
-	pip uninstall python-negar
+	$(PIP) uninstall python-negar
 
 setup: ver
+ifdef UV
+	uv build
+else
 	python setup.py sdist
 	python setup.py bdist_wheel
+endif
 
 lins: ver setup
-	pip install "dist/python_negar-$(VER)-py3-none-any.whl"
+	$(PIP) install "dist/python_negar-$(VER)-py3-none-any.whl"
 
 pins: ver
-	pip install python-negar=="$(VER)"
+	$(PIP) install python-negar=="$(VER)"
 
 upypi: setup
 	twine upload "dist/python_negar-$(VER).tar.gz"
