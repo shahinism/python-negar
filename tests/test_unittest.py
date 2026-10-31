@@ -545,6 +545,21 @@ class Test(unittest.TestCase):
         self.input_ = "کلماتی که با 'ی' پسوند همراه هستند مانند 'همه ی ' -- و البته امکان جایگزینی آن با حمزه 'ء' ( در صورت انتخاب کاربر )"  # noqa: E501
         self.output_ = "کلماتی که با «ی» پسوند همراه هستند مانند «همه‌ی» – و البته امکان جایگزینی آن با حمزه «ء» (در صورت انتخاب کاربر)"  # noqa: E501
 
+    @_assertEqual("Fix Hamzeh -- word starting with a diacritized ی")
+    def test_fix_hamzeh_diacritic(self):
+        self.input_ = "کــه یَــزدان زِ نــاچــیــز چــیــز آفــریــد"
+        self.output_ = "که یَزدان زِ ناچیز چیز آفرید"
+
+    @_assertEqual("Suffix -- no های after ٔ or a repeated های")
+    def test_suffix_after_hamzeh_and_repeated_hay(self):
+        self.input_ = "گریهٔ های های"
+        self.output_ = "گریهٔ های های"
+
+    @_assertEqual("Suffix -- no lone letter left after a prefix ZWNJ")
+    def test_suffix_no_lone_letter_after_prefix(self):
+        self.input_ = "بینهایت بیندت"
+        self.output_ = "بی‌نهایت بیندت"
+
     @_assertEqual("Numbers as a Version -- Triple Dots")
     def test_versioning_numbers_triple(self):
         """There is no space between dots of version number!."""

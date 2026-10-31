@@ -168,10 +168,9 @@ class PersianEditor:
 
         --the last one is achievable if hamzeh_with_yeh set.
         """
-        if self._hamzeh_with_yeh:
-            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)", r"\1ه‌ی\3", self.text)
-        else:
-            self.text = re.sub(r"(\S)(ه[\s]+[یي])(\b)", r"\1هٔ\3", self.text)
+        # \b alone treats a diacritic as a word end, so "که یَزدان" would match; forbid a following diacritic
+        regx = r"(\S)(ه[\s]+[یي])(\b)(?![ً-ْٰ])"
+        self.text = re.sub(regx, r"\1ه‌ی\3" if self._hamzeh_with_yeh else r"\1هٔ\3", self.text)
 
     def cleanup_zwnj(self):
         """Remove unnecessary ZWNJ that are succeeded/preceded by a space."""
@@ -281,7 +280,8 @@ class PersianEditor:
     def fix_suffix_spacing(self):
         """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
         regx = re.compile(
-            r"""(?<![\u064B-\u0652\u0670])\s+  # a diacritic before the suffix means an Arabic word
+            r"""(?<![\u064B-\u0652\u0654\u0670])  # a diacritic before the suffix means an Arabic word; \u0654 (\u06AF\u0631\u06CC\u0647\u0654) closes the word
+            (?<!(?<!\w)\u0647\u0627\u06CC)\s+  # repeated \u0647\u0627\u06CC (\u0647\u0627\u06CC \u0647\u0627\u06CC) is a word, not a plural suffix
             (تر(ی(ن)?)?
             |[تمش]ان
             |ا[متش]
@@ -322,7 +322,7 @@ class PersianEditor:
             else ""
         )
         regx = regex.compile(
-            rf"""\b(\S{{2,}}?(?<![\u064B-\u0652\u0670])) # >=2 letters so a lone letter is never left before the suffix; not-greedy fetch to handle some case like هایشان instead شان; no diacritic before the suffix
+            rf"""\b([^\s\u200c]{{2,}}?(?<![\u064B-\u0652\u0670])) # >=2 letters so a lone letter is never left before the suffix; not-greedy fetch to handle some case like هایشان instead شان; no diacritic before the suffix
             ({exag}
             # تر(ی(ن)?)?
             # [تمش]ان|

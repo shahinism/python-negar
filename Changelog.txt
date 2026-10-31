@@ -1,3 +1,9 @@
+1.4.10 - 2026-10-31
+-- ه + ی fix (همه‌ی) no longer fires when the ی starts a diacritized word (که یَزدان stays apart)
+-- No suffix joins after ٔ or onto a repeated های (گریهٔ های های stays apart)
+-- Suffix stem no longer spans a ZWNJ, so no lone letter is left between prefix and suffix (بی‌نهایت, not بی‌ن‌هایت)
+-- Added immutable words: زیشان, بیندت
+
 1.4.9 - 2026-10-31
 -- ای after a silent ه decides indefinite/copula (خانه‌ای) vs vocative (که ای دوست) from context cues: what follows, determiners, addressee nouns, prose vs verse line; never joins across a line break (docs/adr/0002)
 
