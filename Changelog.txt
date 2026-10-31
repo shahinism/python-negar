@@ -1,3 +1,6 @@
+1.4.11 - 2026-10-31
+-- Suffixes never join a one-letter word (و تر stays apart)
+
 1.4.10 - 2026-10-31
 -- ه + ی fix (همه‌ی) no longer fires when the ی starts a diacritized word (که یَزدان stays apart)
 -- No suffix joins after ٔ or onto a repeated های (گریهٔ های های stays apart)

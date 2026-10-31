@@ -560,6 +560,11 @@ class Test(unittest.TestCase):
         self.input_ = "بینهایت بیندت"
         self.output_ = "بی‌نهایت بیندت"
 
+    @_assertEqual("Suffix -- never joins a one-letter word")
+    def test_suffix_not_after_one_letter_word(self):
+        self.input_ = "سـبـو شـکـسـته و تر کرده جامه چندین بار"
+        self.output_ = "سبو شکسته و تر کرده جامه چندین بار"
+
     @_assertEqual("Numbers as a Version -- Triple Dots")
     def test_versioning_numbers_triple(self):
         """There is no space between dots of version number!."""

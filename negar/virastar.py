@@ -281,6 +281,7 @@ class PersianEditor:
         """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
         regx = re.compile(
             r"""(?<![\u064B-\u0652\u0654\u0670])  # a diacritic before the suffix means an Arabic word; \u0654 (\u06AF\u0631\u06CC\u0647\u0654) closes the word
+            (?<!(?<!\w)\w)  # a one-letter word (\u0648 \u062A\u0631) never takes a suffix
             (?<!(?<!\w)\u0647\u0627\u06CC)\s+  # repeated \u0647\u0627\u06CC (\u0647\u0627\u06CC \u0647\u0627\u06CC) is a word, not a plural suffix
             (تر(ی(ن)?)?
             |[تمش]ان
