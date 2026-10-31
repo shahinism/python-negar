@@ -657,6 +657,21 @@ class Test(unittest.TestCase):
         self.input_ = "موسِمی عجب و موسِبیکار"
         self.output_ = "موسِمی عجب و موسِبیکار"
 
+    @_assertEqual("Fix Prefix ZWNJ -- می as wine after a preposition or before an adjective+ی")
+    def test_fix_prefix_mi_wine_prep(self):
+        self.input_ = "به می عمارتِ دل کن، می لعلی که می خورم، زآن می سرمست، بهایِ می اکنون، این می رود"
+        self.output_ = "به می عمارتِ دل کن، می لعلی که می‌خورم، زآن می سرمست، بهایِ می اکنون، این می‌رود"
+
+    @_assertEqual("Immutable head keeps its attached tail")
+    def test_immutable_head(self):
+        self.input_ = "بیهُده‌گوست و بیداری‌ست و میان‌موی و میازار و بیارید"
+        self.output_ = "بیهُده‌گوست و بیداری‌ست و میان‌موی و میازار و بیارید"
+
+    @_assertEqual("Fix Suffix ZWNJ -- ور after ی is a word")
+    def test_fix_suffix_var_after_yeh(self):
+        self.input_ = "خوشدلی ور دانش ور، یارِ ما ور نی، جان ور نه"
+        self.output_ = "خوشدلی ور دانش‌ور، یارِ ما ور نی، جان ور نه"
+
     @_assertEqual("Fix Suffix ZWNJ I")
     def test_fix_suffix_ZWNJ_I(self):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"

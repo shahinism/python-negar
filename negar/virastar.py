@@ -139,11 +139,18 @@ class PersianEditor:
             def protect(m):
                 # look up without diacritics (بُستان -> بستان) or a trailing ZWNJ, but keep them in the text
                 word = m.group()
-                if re.sub(f"[{DIACRITICS}]", "", word).rstrip("\u200c") not in ImmutableWords.get():
-                    return word
+                key = re.sub(f"[{DIACRITICS}]", "", word).rstrip("\u200c")
+                if key not in ImmutableWords.get():
+                    # an immutable head keeps its attached tail (بیداری‌ست, بیهُده‌گو)
+                    head = word.split("\u200c", 1)[0]
+                    if head == word or re.sub(f"[{DIACRITICS}]", "", head) not in ImmutableWords.get():
+                        return word
+                    word, tail = head, word[len(head):]
+                else:
+                    tail = ""
                 i = len(self.immutable_words)
                 self.immutable_words[i] = word
-                return f"__IMM__#{i}__"
+                return f"__IMM__#{i}__{tail}"
 
             # diacritics are part of the word, otherwise `re` cuts it at them
             self.text = re.sub(rf"\b[\w\u200c{DIACRITICS}]+", protect, self.text)
@@ -219,7 +226,7 @@ class PersianEditor:
     # function words, wine adjectives, and imperatives taking wine as object (می خور، می بیار)
     _mi_wine_next = (
         "که|است|نیست|هست|هر|این|آن|همه|اگر|گر|ما|من|تو|او|مرا|ترا|چه|هم|نه|یا|نیز|ولی|اما"
-        "|ناب|لعل|گلگون|گلرنگ|صاف|صافی|کهنه|کهن|خوشگوار|مغانه|نوشین|احمر|سرخ|روشن|عشق|مدام|باقی|پی|پیاپی"
+        "|(?:ناب|لعل|گلگون|گلرنگ|صاف|صافی|کهنه|کهن|خوشگوار|مغانه|نوشین|احمر|سرخ|روشن|عشق|مدام|باقی)ی?|پی|پیاپی"
         "|نوش|بنوش|بیار|بستان|ده|بده|خور|بخور|گیر|بگیر|آر|آور|بیاور|ریز|بریز|مخور|منوش"
     )
 
@@ -232,8 +239,15 @@ class PersianEditor:
         wine_next = self._mi_wine_next.split("|")
         # a protected immutable word (e.g. بیار) is a placeholder here, so match its placeholder too
         wine_next += [f"__IMM__#{k}__" for k, w in getattr(self, "immutable_words", {}).items() if w in wine_next]
-        self.text = re.sub(
-            rf"{_WORD_START}(نمی|می(?![ ‌]+(?:{'|'.join(wine_next)})(?![\w‌])))([ ‌]+)(?!(.|{self._prepositions})\b)",
+        # a preposition right before می makes it a noun (به می عمارت کن); not در/بر/تا/را (در می‌آید، او را می‌زند)
+        # poetic ز+این/آن (زآن می سرمست) too; plain این/آن stay out (این می‌تواند)
+        after_prep = (
+            r"(?<!(?<![\w‌])(?:به|با|از|ز|بی|بهر|برای|بدون|جز|مثل|مانند"
+            r"|زآن|زان|زین|کزآن|کزان|کزین|وزآن|وزان|وزین)[ ‌]+)"
+            r"(?<![ِٔ][ ‌]+)"  # an ezafe (بهایِ می، جامهٔ می) is followed by a noun, never a verb
+        )
+        self.text = regex.sub(
+            rf"{_WORD_START}(نمی|{after_prep}می(?![ ‌]+(?:{'|'.join(wine_next)})(?![\w‌])))([ ‌]+)(?!(.|{self._prepositions})\b)",
             r"\1‌",
             self.text,
         )
@@ -302,7 +316,11 @@ class PersianEditor:
         regx = re.compile(
             r"""(?<![\u064B-\u0652\u0654\u0670])  # a diacritic before the suffix means an Arabic word; \u0654 (\u06AF\u0631\u06CC\u0647\u0654) closes the word
             (?<!(?<!\w)\w)  # a one-letter word (\u0648 \u062A\u0631) never takes a suffix
-            (?<!(?<!\w)\u0647\u0627\u06CC)\s+  # repeated \u0647\u0627\u06CC (\u0647\u0627\u06CC \u0647\u0627\u06CC) is a word, not a plural suffix
+            (?<!(?<!\w)\u0647\u0627\u06CC)  # repeated \u0647\u0627\u06CC (\u0647\u0627\u06CC \u0647\u0627\u06CC) is a word, not a plural suffix
+            # \u0648\u0631 is the word "and if" after \u06CC, after a pronoun, or in "\u0648\u0631 \u0646\u0647/\u0646\u06CC" (\u062E\u0648\u0634\u062F\u0644\u06CC \u0648\u0631\u060C \u06CC\u0627\u0631\u0650 \u0645\u0627 \u0648\u0631 \u0646\u06CC)
+            (?!(?:(?<=\u06CC)|(?<=(?<!\w)\u0645\u0627)|(?<=(?<!\w)\u0645\u0646)|(?<=(?<!\w)\u062A\u0648)|(?<=(?<!\w)\u0627\u0648)|(?<=(?<!\w)\u0634\u0645\u0627))\s+\u0648\u0631\b)
+            (?!\s+\u0648\u0631\s+(?:\u0646\u0647|\u0646\u06CC)\b)
+            \s+
             (تر(ی(ن)?)?
             |[تمش]ان
             |ا[متش]
