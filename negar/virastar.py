@@ -235,6 +235,49 @@ class PersianEditor:
         # Checks that the prefix (mi*, nemi*, and bi*) is part a a word or not, like میلاد.
         self.__immutability_check__(regx)
 
+    _not_before_nokare = frozenset("که چه به نه ده مه همه".split())  # "گفتا که ای دوست": ای is a vocative
+
+    # "اینجایگه ای جان": a following vocative noun makes ای a vocative; shortcut: fixed list, upgrade to POS if it grows
+    _vocative_targets = frozenset(
+        "جان جانا جانان دوست دل دلبر دلدار یار یارا خدا خداوند ساقی عزیز نگار گل مطرب"
+        " ماه مه شاه پسر برادر مردم صبا بلبل زاهد شیخ صوفی واعظ عشق".split()
+    )
+
+    # ای after a silent ه is ambiguous: indefinite/copula (خانه‌ای) or vocative (که ای دوست).
+    # A vocative must be followed by its addressee (a noun), so cues around it decide; see docs/adr/0002.
+    _ai_determiners = frozenset("یک چه چنین چنان هر عجب فلان".split())  # یک خانه ای -> indefinite
+    _ai_not_addressee = frozenset(  # function words: a vocative can never be followed by these
+        "را که و از در به با بر برای تا یا هم نیز اگر ولی اما بی ز ای چون چو همچو همچون مانند مثل"
+        " است هست نیست بود نبود باشد شد".split()
+    )
+    _ai_verb = re.compile(
+        r"ن?می\u200c\w+|(?:کرد|شد|بود|دید|نوشت|خرید|ساخت|گرفت|خواند|یافت|آورد|گفت)(?:م|ی|یم|ید|ند)?"
+        r"|(?:دار|کن|شو|بین|نویس|خر|ساز|گیر|خوان|یاب|آور|گوی)(?:م|ی|د|یم|ید|ند)"
+    )
+    _ai_next = re.compile(r" (\w+(?:\u200c\w+)*)(!?)(?: (\w+))?")  # addressee?, '!', the word after it
+    _ai_hemistich_gap = re.compile(r"\t| {2,}| / ")
+    _ai_prose_period = re.compile(r"\w\.(?:\s|$)")
+
+    def _join_ai(self, m):
+        text, joined, kept = m.string, f"{m[1]}\u200cای", m[0]
+        if m[1] in self._not_before_nokare:
+            return kept
+        line_start = text.rfind("\n", 0, m.start()) + 1
+        line_end = text.find("\n", m.end()) % (len(text) + 1)  # -1 -> len(text)
+        nxt = self._ai_next.match(text, m.end(), line_end)
+        if nxt and nxt[1] in self._vocative_targets:
+            return kept
+        prev = re.search(r"(\w+) $", text[line_start:m.start(1)])
+        if prev and prev[1] in self._ai_determiners:
+            return joined
+        if not nxt or nxt[1] in self._ai_not_addressee or self._ai_verb.fullmatch(nxt[1]):
+            return joined  # line/hemistich end, punctuation, a function word or a verb: not an addressee
+        if nxt[2] or nxt[3] in ("من", "ما"):
+            return kept  # ای مهربان! / ای مهربان من
+        line = text[line_start:line_end]
+        verse = self._ai_hemistich_gap.search(line) or (len(line.split()) <= 14 and not self._ai_prose_period.search(line))
+        return kept if verse else joined  # no cue: prose joins, verse keeps the user's spacing
+
     def fix_suffix_spacing(self):
         """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
         regx = re.compile(
@@ -242,7 +285,7 @@ class PersianEditor:
             (تر(ی(ن)?)?
             |[تمش]ان
             |ا[متش]
-            |ا((ی(م|د)?)|ند)
+            |ا(ی(م|د)|ند)
             |ها(ی(ی|ت|م|ش|تان|شان)?)?
             |شناس(ی)?
             |گذار(ی)?|گزار(ی)?
@@ -251,6 +294,14 @@ class PersianEditor:
             re.VERBOSE,
         )
         self.text = re.sub(regx, r"‌\1", self.text)
+
+        # indefinite/copula ای (خانه‌ای): only after a silent ه (not اه as in راه/شاه), on the same line,
+        # and not when the word before or after marks ای as a vocative
+        self.text = re.sub(
+            r"(\w+(?<![ا\u064B-\u0652\u0670])ه) ای\b(?![\u064B-\u0652\u0670])(?:(?= (\w+)(?![\w\u200c])))?",
+            self._join_ai,
+            self.text,
+        )
 
         # Some special cases like و شان خود
         regx = re.compile(r"\b(\w)‌([تمش]ان)\b", re.VERBOSE)

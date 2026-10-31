@@ -736,6 +736,44 @@ class Test(unittest.TestCase):
         self.input_ = "بیخشان بخشان کشان کتابشان خانه‌شان خانهشان"
         self.output_ = "بیخشان بخشان کشان کتابشان خانه‌شان خانه‌شان"
 
+    @_assertEqual("Nokare/copula ai after silent heh")
+    def test_ai_nokare(self):
+        self.input_ = "خانه ای دیدم و تو خسته ای. کتاب‌خانه ای دل‌انگیز و پرده ای گل‌دار"
+        self.output_ = "خانه‌ای دیدم و تو خسته‌ای. کتاب‌خانه‌ای دل‌انگیز و پرده‌ای گل‌دار"
+
+    @_assertEqual("Vocative ai stays separate")
+    def test_ai_vocative(self):
+        self.input_ = "بــگــو ایــنــجــایــگـه ای جـان ودلـدار\nگفتا که ای دوست\nدل ای یار، خانه، ای ماه\nبنده\nای خدا\n«که ای دوست» شاه ای پسر خانه ای جان!"
+        self.output_ = "بگو اینجایگه ای جان ودلدار\nگفتا که ای دوست\nدل ای یار، خانه، ای ماه\nبنده\nای خدا\n«که ای دوست» شاه ای پسر خانه ای جان!"
+
+    def test_ai_context_cues(self):
+        # want: True = ای joins (indefinite/copula), False = stays separate (vocative / no cue in verse)
+        cases = {
+            # prose: a period marks the line as prose, so even cue-less cases join
+            "دیروز نامه ای نوشتم و خانه ای بزرگ خریدم.": True,
+            "این مقاله ای جامع است.": True,
+            "او دیده ای مهربان دارد.": True,
+            # cues that rule out a vocative (verse-like short lines)
+            "یک خانه ای بزرگ": True,              # determiner before
+            "تو خسته ای": True,                   # line end
+            "کجا رفته ای؟": True,                 # punctuation
+            "رفته ای  بیا که": True,              # hemistich gap
+            "خانه ای که دیدم": True,              # function word
+            "چه پروانه ای چون شمع": True,         # determiner / function word
+            "نامه ای می‌نویسم": True,             # verb
+            "خانه ای دارد": True,
+            # vocative cues
+            "دیده ای مهربان من": False,
+            "خسته ای مهربان!": False,
+            "اینجایگه ای جان": False,
+            "گفتا که ای دوست": False,
+            # no cue in a verse-like line: keep the user's spacing
+            "دیده ای مهربان بگو": False,
+            "رفته ای مهربان  دل ما را بردی": False,
+        }
+        for text, want in cases.items():
+            with self.subTest(text=text):
+                self.assertEqual("\u200cای" in f"{PersianEditor(text)}", want)
 
 if __name__ == "__main__":
     unittest.main()

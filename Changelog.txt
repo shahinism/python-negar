@@ -1,3 +1,6 @@
+1.4.9 - 2026-10-31
+-- ای after a silent ه decides indefinite/copula (خانه‌ای) vs vocative (که ای دوست) from context cues: what follows, determiners, addressee nouns, prose vs verse line; never joins across a line break (docs/adr/0002)
+
 1.4.8 - 2026-10-31
 -- Immutable lookup ignores a trailing ZWNJ (میرد‌ no longer splits)
 -- Added immutable words: میرد, بیارایی, بیارای, فرمایشان
