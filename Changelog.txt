@@ -1,3 +1,7 @@
+1.4.7 - 2026-10-31
+-- Pronoun endings تان/مان/شان stay attached after joining letters (بخشان, کشان, کتابشان); ZWNJ only after ه/ی (docs/adr/0001)
+-- Removed 322 more words from immutable.words (covered by unit tests)
+
 1.4.6 - 2026-10-31
 -- Never leave a lone letter before a suffix (مگذار, بتر, کشان) or after a prefix (نمیر)
 -- Removed 190 words from immutable.words, now handled by the rules (covered by a unit test)

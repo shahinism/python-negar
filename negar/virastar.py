@@ -265,7 +265,7 @@ class PersianEditor:
         exag = (
             r"""
             تر(ی(ن)?)?|
-            [تمش]ان|
+            (?<=[هی])[تمش]ان|  # ADR-0001: pronoun endings stay attached after joining letters
             ها(ی(ی|ت|م|ش|تان|شان)?)?|"""
             if self._exaggerating_zwnj
             else ""
