@@ -1,3 +1,7 @@
+1.4.6 - 2026-10-31
+-- Never leave a lone letter before a suffix (مگذار, بتر, کشان) or after a prefix (نمیر)
+-- Removed 190 words from immutable.words, now handled by the rules (covered by a unit test)
+
 1.4.5 - 2026-10-31
 -- Added several additional immutable words.
 

@@ -227,7 +227,7 @@ class PersianEditor:
         regx = regex.compile(
             r"""
         \b(بی|ن?می)‌*
-        ([^\[\]\(\)\s]+)
+        ([^\[\]\(\)\s]{2,})
         (?<!های|هایی|ها|شناس|شناسی|گذار|گذاری)\b
         """,
             re.VERBOSE,
@@ -271,7 +271,7 @@ class PersianEditor:
             else ""
         )
         regx = regex.compile(
-            rf"""\b(\S+?(?<![\u064B-\u0652\u0670])) # not-greedy fetch to handle some case like هایشان instead شان; no diacritic before the suffix
+            rf"""\b(\S{{2,}}?(?<![\u064B-\u0652\u0670])) # >=2 letters so a lone letter is never left before the suffix; not-greedy fetch to handle some case like هایشان instead شان; no diacritic before the suffix
             ({exag}
             # تر(ی(ن)?)?
             # [تمش]ان|
