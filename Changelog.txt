@@ -1,3 +1,8 @@
+1.4.4 - 2026-10-31
+-- Fixed handling of Arabic words with diacritics (ایّام, بیمِ, بُستان, ناوِلْها): no wrong ZWNJ/separation
+-- Immutable words are now matched ignoring diacritics
+-- Added several additional immutable words.
+
 1.4.3 - 2025-01-28
 -- Save user defined immutable words under .config/python-negar
 

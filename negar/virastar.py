@@ -15,6 +15,9 @@ sys.path.append(
 from negar.constants import DATAFILE, INFO, URLREGX, USERFILE  # noqa: E402
 
 
+DIACRITICS = "\u064B-\u0652\u0670"  # to be used inside a character class
+
+
 class State(enum.Enum):
     save = 1
     restore = 2
@@ -131,11 +134,18 @@ class PersianEditor:
         """Remove immutable words temporarily and reapply them at the end of the process."""
         if state == State.save:
             self.immutable_words = {}
-            words = re.findall(r"\b[\w\u200c]+\b", self.text, re.UNICODE)
-            for i, word in enumerate(words):
-                if (word := word.strip()) in ImmutableWords.get():
-                    self.immutable_words[i] = word
-                    self.text = regex.sub(rf"\b{word}\b", rf"__IMM__#{i}__", self.text)
+
+            def protect(m):
+                # look up without diacritics (بُستان -> بستان) but keep them in the text
+                word = m.group()
+                if re.sub(f"[{DIACRITICS}]", "", word) not in ImmutableWords.get():
+                    return word
+                i = len(self.immutable_words)
+                self.immutable_words[i] = word
+                return f"__IMM__#{i}__"
+
+            # diacritics are part of the word, otherwise `re` cuts it at them
+            self.text = re.sub(rf"\b[\w\u200c{DIACRITICS}]+", protect, self.text)
         if state == State.restore:
             for imm_key, imm_word in self.immutable_words.items():
                 self.text = re.sub(f"__IMM__#{imm_key}__", imm_word, self.text)
@@ -228,7 +238,7 @@ class PersianEditor:
     def fix_suffix_spacing(self):
         """Put ZWNJ between a word and its suffix (*ha[ye] *tar[in])."""
         regx = re.compile(
-            r"""\s+
+            r"""(?<![\u064B-\u0652\u0670])\s+  # a diacritic before the suffix means an Arabic word
             (تر(ی(ن)?)?
             |[تمش]ان
             |ا[متش]
@@ -237,7 +247,7 @@ class PersianEditor:
             |شناس(ی)?
             |گذار(ی)?|گزار(ی)?
             |مند|ور|پور
-            )\b""",
+            )\b(?![\u064B-\u0652\u0670])""",  # a trailing diacritic (e.g. ایّام) means the word goes on
             re.VERBOSE,
         )
         self.text = re.sub(regx, r"‌\1", self.text)
@@ -261,7 +271,7 @@ class PersianEditor:
             else ""
         )
         regx = regex.compile(
-            rf"""\b(\S+?) # not-greedy fetch to handle some case like هایشان instead شان
+            rf"""\b(\S+?(?<![\u064B-\u0652\u0670])) # not-greedy fetch to handle some case like هایشان instead شان; no diacritic before the suffix
             ({exag}
             # تر(ی(ن)?)?
             # [تمش]ان|

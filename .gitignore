@@ -31,3 +31,11 @@ pip-log.txt
 .idea/
 .pydev/
 .vscode/
+
+# Claude Code & AI tooling
+.claude/
+CLAUDE.md
+.serena/
+.mcp.json
+graphify-out/
+.codebase-memory/

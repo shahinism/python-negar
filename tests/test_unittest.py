@@ -134,6 +134,26 @@ class Test(unittest.TestCase):
         self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
         self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
 
+    @_assertEqual("Suffix With Diacritics")
+    def test_suffix_with_diacritics(self):
+        self.input_ = "غم ایّام"
+        self.output_ = "غم ایّام"
+
+    @_assertEqual("Suffix With Diacritics")
+    def test_suffix_with_diacritics_ii(self):
+        self.input_ = "غمِ ایّام"
+        self.output_ = "غمِ ایّام"
+
+    @_assertEqual("Immutable Word With Diacritics")
+    def test_immutable_word_with_diacritics(self):
+        self.input_ = "بیمِ جان بُستان"
+        self.output_ = "بیمِ جان بُستان"
+
+    @_assertEqual("Arabic Word Before Plural Suffix")
+    def test_arabic_word_before_plural_suffix(self):
+        self.input_ = "ناوِلْها اَهْمِلْها بُستان"
+        self.output_ = "ناوِلْها اَهْمِلْها بُستان"
+
     @_assertEqual("Fix Suffix ZWNJ II")
     def test_fix_suffix_ZWNJ_II(self):
         self.input_ = "بیستم ماه میلادی"
