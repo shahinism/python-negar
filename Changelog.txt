@@ -1,3 +1,9 @@
+1.4.12 - 2026-10-31
+-- می as wine stays a separate word when followed by a function word, a wine adjective, a non-verb like پی, or an imperative (جام می لعل, می که, می پی در پی, می خور, می بیار)
+-- Prefixes بی/نا/می/نمی never join across a line break or a tab
+-- Prefix rules no longer start a word after a diacritic (موسِمی عجب stays apart)
+-- Added immutable words: نمیرد, شدی, بمیرد
+
 1.4.11 - 2026-10-31
 -- Suffixes never join a one-letter word (و تر stays apart)
 

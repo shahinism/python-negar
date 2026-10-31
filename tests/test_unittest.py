@@ -642,6 +642,21 @@ class Test(unittest.TestCase):
         self.input_ = r"می ‌شود"
         self.output_ = "می‌شود"
 
+    @_assertEqual("Fix Prefix ZWNJ -- می as wine stays a word")
+    def test_fix_prefix_mi_wine(self):
+        self.input_ = "ساقیا جام می\nبیار که جام می لعل و می ناب خوش است، می خور و می ده تا او می رود"
+        self.output_ = "ساقیا جام می\nبیار که جام می لعل و می ناب خوش است، می خور و می ده تا او می‌رود"
+
+    @_assertEqual("Fix Prefix ZWNJ -- می before a non-verb (پی)")
+    def test_fix_prefix_mi_wine_pey(self):
+        self.input_ = "چنانم ده می پی در پی عشق"
+        self.output_ = "چنانم ده می پی در پی عشق"
+
+    @_assertEqual("Fix Prefix ZWNJ -- no prefix after a diacritic inside a word")
+    def test_fix_prefix_after_diacritic(self):
+        self.input_ = "موسِمی عجب و موسِبیکار"
+        self.output_ = "موسِمی عجب و موسِبیکار"
+
     @_assertEqual("Fix Suffix ZWNJ I")
     def test_fix_suffix_ZWNJ_I(self):
         self.input_ = r"در پسوند کلمات با نیم‌فاصله نظیر کتابها، خوشترین -- و البته امکان عدم تنظیم (در صورت انتخاب کاربر)"

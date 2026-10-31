@@ -16,6 +16,7 @@ from negar.constants import DATAFILE, INFO, URLREGX, USERFILE  # noqa: E402
 
 
 DIACRITICS = "\u064B-\u0652\u0670"  # to be used inside a character class
+_WORD_START = rf"(?<![\w{DIACRITICS}])"  # \b counts a diacritic as a boundary, so a word continues past it
 
 
 class State(enum.Enum):
@@ -214,18 +215,37 @@ class PersianEditor:
             self.text,
         )
 
+    # بی/نمی/می never precedes these as a verb prefix, so می here is the noun "wine" (from ganjoor):
+    # function words, wine adjectives, and imperatives taking wine as object (می خور، می بیار)
+    _mi_wine_next = (
+        "که|است|نیست|هست|هر|این|آن|همه|اگر|گر|ما|من|تو|او|مرا|ترا|چه|هم|نه|یا|نیز|ولی|اما"
+        "|ناب|لعل|گلگون|گلرنگ|صاف|صافی|کهنه|کهن|خوشگوار|مغانه|نوشین|احمر|سرخ|روشن|عشق|مدام|باقی|پی|پیاپی"
+        "|نوش|بنوش|بیار|بستان|ده|بده|خور|بخور|گیر|بگیر|آر|آور|بیاور|ریز|بریز|مخور|منوش"
+    )
+
     def fix_prefix_spacing(self):
         """Put ZWNJ between a word and its prefix (mi* nemi* bi* na*)."""
-        self.text = re.sub(r"\b(بی|نا)([\s|‌]+)(?!(می)\b)", r"\1‌", self.text)
+        # only spaces/ZWNJ: a line break or a tab (hemistich gap) never joins a prefix to the next word
+        # word start: \b alone sees a boundary after a diacritic (موسِ|می عجب)
+        self.text = re.sub(rf"{_WORD_START}(بی|نا)([ ‌]+)(?!(می)\b)", r"\1‌", self.text)
         # the following case is for the mi(n.) and nemi(n.)
-        self.text = re.sub(rf"\b(ن?می)([\s|‌]+)(?!(.|{self._prepositions})\b)", r"\1‌", self.text)
+        wine_next = self._mi_wine_next.split("|")
+        # a protected immutable word (e.g. بیار) is a placeholder here, so match its placeholder too
+        wine_next += [f"__IMM__#{k}__" for k, w in getattr(self, "immutable_words", {}).items() if w in wine_next]
+        self.text = re.sub(
+            rf"{_WORD_START}(نمی|می(?![ ‌]+(?:{'|'.join(wine_next)})(?![\w‌])))([ ‌]+)(?!(.|{self._prepositions})\b)",
+            r"\1‌",
+            self.text,
+        )
 
     def fix_prefix_separate(self):
         """Put ZWNJ between a word and its prefix (mi* nemi* bi*)."""
         # regx = re.compile(r"\b(بی|ن?می)‌*([^\[\]\(\)\s]+)") #  \b for words like سهمیه
         regx = regex.compile(
             r"""
-        \b(بی|ن?می)‌*
+        """
+        + _WORD_START
+        + r"""(بی|ن?می)‌*
         ([^\[\]\(\)\s]{2,})
         (?<!های|هایی|ها|شناس|شناسی|گذار|گذاری)\b
         """,
