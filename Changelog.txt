@@ -1,3 +1,7 @@
+1.4.8 - 2026-10-31
+-- Immutable lookup ignores a trailing ZWNJ (میرد‌ no longer splits)
+-- Added immutable words: میرد, بیارایی, بیارای, فرمایشان
+
 1.4.7 - 2026-10-31
 -- Pronoun endings تان/مان/شان stay attached after joining letters (بخشان, کشان, کتابشان); ZWNJ only after ه/ی (docs/adr/0001)
 -- Removed 322 more words from immutable.words (covered by unit tests)

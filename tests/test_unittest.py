@@ -652,6 +652,21 @@ class Test(unittest.TestCase):
         self.input_ = "تنها ترین خدمتگزار (تنها ترین خدمتگزار)"
         self.output_ = "تنهاترین خدمتگزار (تنهاترین خدمتگزار)"
 
+    @_assertEqual("Immutable Word Mirad")
+    def test_immutable_word_mirad(self):
+        self.input_ = "میرد\u200c میرداد میرد"
+        self.output_ = "میرد میرداد میرد"
+
+    @_assertEqual("Immutable Word Biarayi")
+    def test_immutable_word_biarayi(self):
+        self.input_ = "بیارایی بیارای"
+        self.output_ = "بیارایی بیارای"
+
+    @_assertEqual("Immutable Word Farmayeshan")
+    def test_immutable_word_farmayeshan(self):
+        self.input_ = "فرمایشان"
+        self.output_ = "فرمایشان"
+
     @_assertEqual("Suffix With Diacritics")
     def test_suffix_with_diacritics(self):
         self.input_ = "غم ایّام"

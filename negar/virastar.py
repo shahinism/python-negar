@@ -136,9 +136,9 @@ class PersianEditor:
             self.immutable_words = {}
 
             def protect(m):
-                # look up without diacritics (بُستان -> بستان) but keep them in the text
+                # look up without diacritics (بُستان -> بستان) or a trailing ZWNJ, but keep them in the text
                 word = m.group()
-                if re.sub(f"[{DIACRITICS}]", "", word) not in ImmutableWords.get():
+                if re.sub(f"[{DIACRITICS}]", "", word).rstrip("\u200c") not in ImmutableWords.get():
                     return word
                 i = len(self.immutable_words)
                 self.immutable_words[i] = word
