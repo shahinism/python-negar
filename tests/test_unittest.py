@@ -707,6 +707,12 @@ class Test(unittest.TestCase):
         self.input_ = "میرد\u200c میرداد میرد"
         self.output_ = "میرد میرداد میرد"
 
+    @_assertEqual("Immutable Word Vanagozari")
+    def test_immutable_word_vanagozari(self):
+        # وا+نگذاری (negative of واگذاری), not وان+گذاری
+        self.input_ = "کنون سزد که به خلقم ز خویش وانگذاری وانگذار"
+        self.output_ = "کنون سزد که به خلقم ز خویش وانگذاری وانگذار"
+
     @_assertEqual("Immutable Word Biarayi")
     def test_immutable_word_biarayi(self):
         self.input_ = "بیارایی بیارای"

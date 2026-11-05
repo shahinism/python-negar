@@ -1,3 +1,7 @@
+1.4.14 - 2026-11-05
+-- Suffix گذار/گذاری no longer splits وانگذاری (وا+نگذاری, negative of واگذاری)
+-- Added immutable words: وانگذار, وانگذاری
+
 1.4.13 - 2026-10-31
 -- Suffix ور never joins a word ending in ی, a pronoun, or before نه/نی (خوشدلی ور، یارِ ما ور نی)
 -- می as wine also after a preposition (به می عمارت، زآن می سرمست), after an ezafe (بهایِ می) and before an adjective with ی (می لعلی)
